@@ -7,8 +7,8 @@
   <ns1:parameter name="dotNetSoapEncFix" value="true"/>
   <ns1:parameter name="enableNamespacePrefixOptimization" value="false"/>
   <ns1:parameter name="sendXMLDeclaration" value="true"/>
-  <ns1:parameter name="sendXsiTypes" value="true"/>
   <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+  <ns1:parameter name="sendXsiTypes" value="true"/>
   <ns1:requestFlow>
    <ns1:handler type="java:org.apache.axis.handlers.JWSHandler">
     <ns1:parameter name="scope" value="session"/>
@@ -33,14 +33,10 @@
   <ns1:parameter name="className" value="org.apache.axis.Version"/>
  </ns1:service>
  <ns1:service name="Customers" provider="java:RPC" style="wrapped" use="literal">
-  <ns2:operation name="testConnection" qname="ns1:testConnection" returnQName="ns1:testConnectionReturn" returnType="xsd:float" soapAction="" xmlns:ns1="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://xml.apache.org/axis/wsdd/">
-   <ns2:parameter qname="ns1:a" type="xsd:float"/>
-   <ns2:parameter qname="ns1:b" type="xsd:float"/>
+  <ns2:operation name="createCustomer" qname="ns1:createCustomer" soapAction="" xmlns:ns1="http://Y3853992.assessment.soar" xmlns:ns2="http://xml.apache.org/axis/wsdd/">
+   <ns2:parameter qname="ns1:details" type="ns1:Customer"/>
   </ns2:operation>
-  <ns1:operation name="createCustomer" qname="ns2:createCustomer" soapAction="" xmlns:ns2="http://Y3853992.assessment.soar">
-   <ns1:parameter qname="ns2:details" type="ns2:Customer"/>
-  </ns1:operation>
-  <ns1:parameter name="allowedMethods" value="createCustomer testConnection"/>
+  <ns1:parameter name="allowedMethods" value="createCustomer"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="wsdlPortType" value="Customers"/>
   <ns1:parameter name="className" value="soar.assessment.Y3853992.Customers"/>
@@ -48,7 +44,7 @@
   <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlServiceElement" value="CustomersService"/>
-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns3:Customer" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:soar.assessment.Y3853992.Customer" xmlns:ns3="http://Y3853992.assessment.soar"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns2:Customer" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:soar.assessment.Y3853992.Customer" xmlns:ns2="http://Y3853992.assessment.soar"/>
  </ns1:service>
  <ns1:transport name="http">
   <ns1:requestFlow>
