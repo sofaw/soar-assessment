@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://Y3853992.assessment.soar" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://Y3853992.assessment.soar" xmlns:intf="http://Y3853992.assessment.soar" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="testConnection">
+    <complexType>
+     <sequence>
+      <element name="a" type="xsd:float"/>
+      <element name="b" type="xsd:float"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="testConnectionResponse">
+    <complexType>
+     <sequence>
+      <element name="testConnectionReturn" type="xsd:float"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="createCustomer">
+    <complexType>
+     <sequence>
+      <element name="details" type="impl:Customer"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Customer">
+    <sequence>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="fullname" nillable="true" type="xsd:string"/>
+     <element name="id" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="createCustomerResponse">
+    <complexType/>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="createCustomerResponse">
+
+      <wsdl:part element="impl:createCustomerResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="testConnectionRequest">
+
+      <wsdl:part element="impl:testConnection" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="testConnectionResponse">
+
+      <wsdl:part element="impl:testConnectionResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="createCustomerRequest">
+
+      <wsdl:part element="impl:createCustomer" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="Customers">
+
+      <wsdl:operation name="testConnection">
+
+         <wsdl:input message="impl:testConnectionRequest" name="testConnectionRequest"/>
+
+         <wsdl:output message="impl:testConnectionResponse" name="testConnectionResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createCustomer">
+
+         <wsdl:input message="impl:createCustomerRequest" name="createCustomerRequest"/>
+
+         <wsdl:output message="impl:createCustomerResponse" name="createCustomerResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="CustomersSoapBinding" type="impl:Customers">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="testConnection">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="testConnectionRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="testConnectionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createCustomer">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createCustomerRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createCustomerResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="CustomersService">
+
+      <wsdl:port binding="impl:CustomersSoapBinding" name="Customers">
+
+         <wsdlsoap:address location="http://localhost:8080/soar.assessment.Y3853992/services/Customers"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

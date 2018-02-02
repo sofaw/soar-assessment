@@ -1,0 +1,41 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from CustomersService WSDL service -->
+
+  <service name="Customers" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
+      <parameter name="wsdlServiceElement" value="CustomersService"/>
+      <parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
+      <parameter name="wsdlServicePort" value="Customers"/>
+      <parameter name="className" value="soar.assessment.Y3853992.CustomersSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="Customers"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="testConnection" qname="operNS:testConnection" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:testConnectionReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:float" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:a" xmlns:pns="http://Y3853992.assessment.soar" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:b" xmlns:pns="http://Y3853992.assessment.soar" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="createCustomer" qname="operNS:createCustomer" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:details" xmlns:pns="http://Y3853992.assessment.soar" type="tns:Customer" xmlns:tns="http://Y3853992.assessment.soar"/>
+      </operation>
+      <parameter name="allowedMethods" value="createCustomer testConnection"/>
+
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:Customer"
+        type="java:soar.assessment.Y3853992.Customer"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>

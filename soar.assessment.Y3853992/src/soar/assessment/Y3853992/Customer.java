@@ -7,11 +7,14 @@ public class Customer {
 	private String username;
 	private String password;
 	
-	public Customer(String id, String fullname, String email, String username) {
+	public Customer() {};
+	
+	public Customer(String id, String fullname, String email, String username, String password) {
 		this.id = id;
 		this.fullname = fullname;
 		this.email = email;
 		this.username = username;
+		this.password = password;
 	}
 	
 	public String getId() {
