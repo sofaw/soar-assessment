@@ -22,6 +22,22 @@
  <ns1:handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
  <ns1:handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
  <ns1:handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+ <ns1:service name="CustomerServices" provider="java:RPC" style="wrapped" use="literal">
+  <ns2:operation name="registerCustomer" qname="ns1:registerCustomer" returnQName="ns1:registerCustomerReturn" returnType="xsd:int" soapAction="" xmlns:ns1="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://xml.apache.org/axis/wsdd/">
+   <ns2:parameter qname="ns1:username" type="xsd:string"/>
+   <ns2:parameter qname="ns1:name" type="xsd:string"/>
+   <ns2:parameter qname="ns1:cardNumber" type="xsd:string"/>
+   <ns2:parameter qname="ns1:password" type="xsd:string"/>
+  </ns2:operation>
+  <ns1:parameter name="allowedMethods" value="registerCustomer"/>
+  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+  <ns1:parameter name="wsdlPortType" value="CustomerServices"/>
+  <ns1:parameter name="className" value="soar.assessment.Y3853992.CustomerServices"/>
+  <ns1:parameter name="wsdlServicePort" value="CustomerServices"/>
+  <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
+  <ns1:parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
+  <ns1:parameter name="wsdlServiceElement" value="CustomerServicesService"/>
+ </ns1:service>
  <ns1:service name="AdminService" provider="java:MSG">
   <ns1:parameter name="allowedMethods" value="AdminService"/>
   <ns1:parameter name="enableRemoteAdmin" value="false"/>
@@ -33,19 +49,27 @@
   <ns1:parameter name="className" value="org.apache.axis.Version"/>
  </ns1:service>
  <ns1:service name="RestaurantServices" provider="java:RPC" style="wrapped" use="literal">
-  <ns2:operation name="registerRestaurant" qname="ns1:registerRestaurant" returnQName="ns1:registerRestaurantReturn" returnType="xsd:int" soapAction="" xmlns:ns1="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://xml.apache.org/axis/wsdd/">
-   <ns2:parameter qname="ns1:username" type="xsd:string"/>
-   <ns2:parameter qname="ns1:name" type="xsd:string"/>
-   <ns2:parameter qname="ns1:address" type="xsd:string"/>
-   <ns2:parameter qname="ns1:email" type="xsd:string"/>
-   <ns2:parameter qname="ns1:password" type="xsd:string"/>
-  </ns2:operation>
-  <ns1:parameter name="allowedMethods" value="registerRestaurant"/>
-  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+  <ns1:operation name="registerRestaurant" qname="ns2:registerRestaurant" returnQName="ns2:registerRestaurantReturn" returnType="xsd:int" soapAction="" xmlns:ns2="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns2:username" type="xsd:string"/>
+   <ns1:parameter qname="ns2:name" type="xsd:string"/>
+   <ns1:parameter qname="ns2:address" type="xsd:string"/>
+   <ns1:parameter qname="ns2:email" type="xsd:string"/>
+   <ns1:parameter qname="ns2:password" type="xsd:string"/>
+  </ns1:operation>
+  <ns1:operation name="deleteMenu" qname="ns3:deleteMenu" soapAction="" xmlns:ns3="http://Y3853992.assessment.soar">
+   <ns1:parameter qname="ns3:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  </ns1:operation>
+  <ns1:operation name="addMenuItem" qname="ns4:addMenuItem" soapAction="" xmlns:ns4="http://Y3853992.assessment.soar">
+   <ns1:parameter qname="ns4:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns4:title" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns4:price" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  </ns1:operation>
+  <ns1:parameter name="allowedMethods" value="deleteMenu registerRestaurant addMenuItem"/>
   <ns1:parameter name="wsdlPortType" value="RestaurantServices"/>
-  <ns1:parameter name="className" value="soar.assessment.Y3853992.RestaurantServices"/>
-  <ns1:parameter name="wsdlServicePort" value="RestaurantServices"/>
+  <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
+  <ns1:parameter name="wsdlServicePort" value="RestaurantServices"/>
+  <ns1:parameter name="className" value="soar.assessment.Y3853992.RestaurantServices"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlServiceElement" value="RestaurantServicesService"/>
  </ns1:service>

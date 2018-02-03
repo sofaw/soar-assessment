@@ -27,7 +27,15 @@
         <parameter qname="pns:email" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:password" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <parameter name="allowedMethods" value="registerRestaurant"/>
+      <operation name="deleteMenu" qname="operNS:deleteMenu" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="addMenuItem" qname="operNS:addMenuItem" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:title" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:price" xmlns:pns="http://Y3853992.assessment.soar" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="deleteMenu registerRestaurant addMenuItem"/>
 
   </service>
 </deployment>

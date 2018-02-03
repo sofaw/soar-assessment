@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from CustomerServicesService WSDL service -->
+
+  <service name="CustomerServices" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
+      <parameter name="wsdlServiceElement" value="CustomerServicesService"/>
+      <parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
+      <parameter name="wsdlServicePort" value="CustomerServices"/>
+      <parameter name="className" value="soar.assessment.Y3853992.CustomerServices"/>
+      <parameter name="wsdlPortType" value="CustomerServices"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="registerCustomer" qname="operNS:registerCustomer" returnQName="retNS:registerCustomerReturn" returnType="rtns:int" soapAction="">
+        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
+        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:name" type="tns:string"/>
+        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:cardNumber" type="tns:string"/>
+        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:password" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="registerCustomer"/>
+
+  </service>
+</deployment>
