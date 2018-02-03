@@ -36,7 +36,6 @@
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/servlet/AdminServlet</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>H2Console</servlet-name>
     <servlet-class>org.h2.server.web.WebServlet</servlet-class>

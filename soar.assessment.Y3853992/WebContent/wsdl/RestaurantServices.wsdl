@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://Y3853992.assessment.soar" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://Y3853992.assessment.soar" xmlns:intf="http://Y3853992.assessment.soar" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="registerRestaurant">
+    <complexType>
+     <sequence>
+      <element name="username" type="xsd:string"/>
+      <element name="name" type="xsd:string"/>
+      <element name="address" type="xsd:string"/>
+      <element name="email" type="xsd:string"/>
+      <element name="password" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="registerRestaurantResponse">
+    <complexType>
+     <sequence>
+      <element name="registerRestaurantReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="registerRestaurantResponse">
+
+      <wsdl:part element="impl:registerRestaurantResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="registerRestaurantRequest">
+
+      <wsdl:part element="impl:registerRestaurant" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="RestaurantServices">
+
+      <wsdl:operation name="registerRestaurant">
+
+         <wsdl:input message="impl:registerRestaurantRequest" name="registerRestaurantRequest"/>
+
+         <wsdl:output message="impl:registerRestaurantResponse" name="registerRestaurantResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="RestaurantServicesSoapBinding" type="impl:RestaurantServices">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="registerRestaurant">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="registerRestaurantRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="registerRestaurantResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="RestaurantServicesService">
+
+      <wsdl:port binding="impl:RestaurantServicesSoapBinding" name="RestaurantServices">
+
+         <wsdlsoap:address location="http://localhost:8080/soar.assessment.Y3853992/services/RestaurantServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
