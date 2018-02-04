@@ -20,18 +20,10 @@
       <parameter name="className" value="soar.assessment.Y3853992.CustomersSoapBindingImpl"/>
       <parameter name="wsdlPortType" value="Customers"/>
       <parameter name="typeMappingVersion" value="1.2"/>
-      <operation name="createCustomer" qname="operNS:createCustomer" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
-        <parameter qname="pns:details" xmlns:pns="http://Y3853992.assessment.soar" type="tns:Customer" xmlns:tns="http://Y3853992.assessment.soar"/>
+      <operation name="getUsername" qname="operNS:getUsername" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getUsernameReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:customerID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <parameter name="allowedMethods" value="createCustomer"/>
+      <parameter name="allowedMethods" value="getUsername"/>
 
-      <typeMapping
-        xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:Customer"
-        type="java:soar.assessment.Y3853992.Customer"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
   </service>
 </deployment>
