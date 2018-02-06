@@ -44,16 +44,16 @@ public class RestaurantsProxy implements soar.assessment.Y3853992.Restaurants {
     return restaurants;
   }
   
-  public void deleteMenu(int restaurantID) throws java.rmi.RemoteException{
-    if (restaurants == null)
-      _initRestaurantsProxy();
-    restaurants.deleteMenu(restaurantID);
-  }
-  
   public void addMenuItem(int restaurantID, java.lang.String title, float price) throws java.rmi.RemoteException{
     if (restaurants == null)
       _initRestaurantsProxy();
     restaurants.addMenuItem(restaurantID, title, price);
+  }
+  
+  public void deleteMenu(int restaurantID) throws java.rmi.RemoteException{
+    if (restaurants == null)
+      _initRestaurantsProxy();
+    restaurants.deleteMenu(restaurantID);
   }
   
   

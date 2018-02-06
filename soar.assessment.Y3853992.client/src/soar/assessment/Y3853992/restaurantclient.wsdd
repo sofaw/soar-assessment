@@ -8,7 +8,6 @@
 
     <handler type="java:org.apache.ws.axis.security.WSDoAllSender" >
      <parameter name="action" value="UsernameToken"/>
-     <parameter name="passwordCallbackClass" value="soar.assessment.Y3853992.RestaurantPasswordCallbackHandler"/>
      <parameter name="passwordType" value="PasswordDigest"/>
     </handler>
 

@@ -7,8 +7,8 @@
   <ns1:parameter name="dotNetSoapEncFix" value="true"/>
   <ns1:parameter name="enableNamespacePrefixOptimization" value="false"/>
   <ns1:parameter name="sendXMLDeclaration" value="true"/>
-  <ns1:parameter name="sendXsiTypes" value="true"/>
   <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+  <ns1:parameter name="sendXsiTypes" value="true"/>
   <ns1:requestFlow>
    <ns1:handler type="java:org.apache.axis.handlers.JWSHandler">
     <ns1:parameter name="scope" value="session"/>
@@ -37,17 +37,17 @@
    <ns2:parameter qname="ns1:customerID" type="xsd:int"/>
   </ns2:operation>
   <ns1:requestFlow>
-    <ns1:handler type="java:org.apache.ws.axis.security.WSDoAllReceiver">
-      <ns1:parameter name="passwordCallbackClass" value="soar.assessment.Y3853992.CustomerPasswordCallbackHandler"/>
-      <ns1:parameter name="action" value="UsernameToken"/>
-    </ns1:handler>
+   <ns1:handler type="java:org.apache.ws.axis.security.WSDoAllReceiver">
+    <ns1:parameter name="passwordCallbackClass" value="soar.assessment.Y3853992.CustomerPasswordCallbackHandler"/>
+    <ns1:parameter name="action" value="UsernameToken"/>
+   </ns1:handler>
   </ns1:requestFlow>
   <ns1:parameter name="allowedMethods" value="getUsername"/>
-  <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="wsdlPortType" value="Customers"/>
-  <ns1:parameter name="className" value="soar.assessment.Y3853992.Customers"/>
-  <ns1:parameter name="wsdlServicePort" value="Customers"/>
+  <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
+  <ns1:parameter name="wsdlServicePort" value="Customers"/>
+  <ns1:parameter name="className" value="soar.assessment.Y3853992.Customers"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlServiceElement" value="CustomersService"/>
  </ns1:service>
@@ -66,22 +66,22 @@
    <ns1:parameter qname="ns3:password" type="xsd:string"/>
   </ns1:operation>
   <ns1:parameter name="allowedMethods" value="registerRestaurant registerCustomer"/>
-  <ns1:parameter name="wsdlPortType" value="Registration"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
-  <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
-  <ns1:parameter name="wsdlServicePort" value="Registration"/>
+  <ns1:parameter name="wsdlPortType" value="Registration"/>
   <ns1:parameter name="className" value="soar.assessment.Y3853992.Registration"/>
+  <ns1:parameter name="wsdlServicePort" value="Registration"/>
+  <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlServiceElement" value="RegistrationService"/>
  </ns1:service>
  <ns1:service name="Restaurants" provider="java:RPC" style="wrapped" use="literal">
-  <ns1:operation name="deleteMenu" qname="ns4:deleteMenu" soapAction="" xmlns:ns4="http://Y3853992.assessment.soar">
+  <ns1:operation name="addMenuItem" qname="ns4:addMenuItem" soapAction="" xmlns:ns4="http://Y3853992.assessment.soar">
    <ns1:parameter qname="ns4:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns4:title" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns4:price" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="addMenuItem" qname="ns5:addMenuItem" soapAction="" xmlns:ns5="http://Y3853992.assessment.soar">
+  <ns1:operation name="deleteMenu" qname="ns5:deleteMenu" soapAction="" xmlns:ns5="http://Y3853992.assessment.soar">
    <ns1:parameter qname="ns5:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns5:title" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns5:price" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
   <ns1:requestFlow>
    <ns1:handler type="java:org.apache.ws.axis.security.WSDoAllReceiver">

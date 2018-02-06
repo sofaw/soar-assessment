@@ -17,7 +17,7 @@ public class Restaurants {
         		+ "RESTAURANT_ID  INT, "
         		+ "TITLE VARCHAR(35), "
         		+ "PRICE FLOAT, "
-        		+ "foreign key (RESTAURANT_ID) references RESTAURANTS(RESTAURANT_ID))");
+        		+ "FOREIGN KEY (RESTAURANT_ID) REFERENCES RESTAURANTS(RESTAURANT_ID) ON DELETE CASCADE)");
 
         stmt.executeUpdate("INSERT INTO ITEMS (RESTAURANT_ID, TITLE, PRICE) VALUES ("
         		+ "\'" + restaurantID + "\', "
