@@ -24,10 +24,10 @@ import java.awt.Color;
 public class GraphicalClient extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_2;
-	private JPasswordField passwordField;
-	private JPasswordField passwordField_1;
+	private JTextField customer_login_username;
+	private JTextField restaurant_login_username;
+	private JPasswordField customer_login_password;
+	private JPasswordField restaurant_login_password;
 	private JTextField textField_1;
 	private JTextField textField_3;
 	private JTextField textField_4;
@@ -90,14 +90,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblUsername.gridy = 1;
 		home_panel.add(lblUsername, gbc_lblUsername);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 1;
-		home_panel.add(textField, gbc_textField);
-		textField.setColumns(10);
+		customer_login_username = new JTextField();
+		GridBagConstraints gbc_customer_login_username = new GridBagConstraints();
+		gbc_customer_login_username.insets = new Insets(0, 0, 5, 5);
+		gbc_customer_login_username.fill = GridBagConstraints.HORIZONTAL;
+		gbc_customer_login_username.gridx = 3;
+		gbc_customer_login_username.gridy = 1;
+		home_panel.add(customer_login_username, gbc_customer_login_username);
+		customer_login_username.setColumns(10);
 		
 		JButton btnCustomerLogin = new JButton("Customer login");
 		btnCustomerLogin.addMouseListener(new MouseAdapter() {
@@ -105,8 +105,12 @@ public class GraphicalClient extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				// Open customer logged in window
 				// TODO: add password/username checks
+				String username = customer_login_username.getText();
+				String password = customer_login_password.getText();
+				System.out.println(username);
+				System.out.println(password);
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-				cardLayout.show(contentPane, "tabbedPane");
+				cardLayout.show(contentPane, "customer_panel");
 			}
 		});
 		GridBagConstraints gbc_btnCustomerLogin = new GridBagConstraints();
@@ -125,13 +129,13 @@ public class GraphicalClient extends JFrame {
 		gbc_lblPassword.gridy = 2;
 		home_panel.add(lblPassword, gbc_lblPassword);
 		
-		passwordField = new JPasswordField();
-		GridBagConstraints gbc_passwordField = new GridBagConstraints();
-		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
-		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField.gridx = 3;
-		gbc_passwordField.gridy = 2;
-		home_panel.add(passwordField, gbc_passwordField);
+		customer_login_password = new JPasswordField();
+		GridBagConstraints gbc_customer_login_password = new GridBagConstraints();
+		gbc_customer_login_password.insets = new Insets(0, 0, 5, 5);
+		gbc_customer_login_password.fill = GridBagConstraints.HORIZONTAL;
+		gbc_customer_login_password.gridx = 3;
+		gbc_customer_login_password.gridy = 2;
+		home_panel.add(customer_login_password, gbc_customer_login_password);
 		
 		JLabel lblUsername_1 = new JLabel("Username:");
 		GridBagConstraints gbc_lblUsername_1 = new GridBagConstraints();
@@ -141,16 +145,26 @@ public class GraphicalClient extends JFrame {
 		gbc_lblUsername_1.gridy = 4;
 		home_panel.add(lblUsername_1, gbc_lblUsername_1);
 		
-		textField_2 = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 3;
-		gbc_textField_2.gridy = 4;
-		home_panel.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		restaurant_login_username = new JTextField();
+		GridBagConstraints gbc_restaurant_login_username = new GridBagConstraints();
+		gbc_restaurant_login_username.insets = new Insets(0, 0, 5, 5);
+		gbc_restaurant_login_username.fill = GridBagConstraints.HORIZONTAL;
+		gbc_restaurant_login_username.gridx = 3;
+		gbc_restaurant_login_username.gridy = 4;
+		home_panel.add(restaurant_login_username, gbc_restaurant_login_username);
+		restaurant_login_username.setColumns(10);
 		
 		JButton btnRestaurantLogin = new JButton("Restaurant Login");
+		btnRestaurantLogin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO: add password/username checks
+				String username = restaurant_login_username.getText();
+				String password = restaurant_login_password.getText();
+				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+				cardLayout.show(contentPane, "restaurant_panel");
+			}
+		});
 		GridBagConstraints gbc_btnRestaurantLogin = new GridBagConstraints();
 		gbc_btnRestaurantLogin.anchor = GridBagConstraints.WEST;
 		gbc_btnRestaurantLogin.gridheight = 2;
@@ -167,15 +181,22 @@ public class GraphicalClient extends JFrame {
 		gbc_lblPassword_1.gridy = 5;
 		home_panel.add(lblPassword_1, gbc_lblPassword_1);
 		
-		passwordField_1 = new JPasswordField();
-		GridBagConstraints gbc_passwordField_1 = new GridBagConstraints();
-		gbc_passwordField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_passwordField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField_1.gridx = 3;
-		gbc_passwordField_1.gridy = 5;
-		home_panel.add(passwordField_1, gbc_passwordField_1);
+		restaurant_login_password = new JPasswordField();
+		GridBagConstraints gbc_restaurant_login_password = new GridBagConstraints();
+		gbc_restaurant_login_password.insets = new Insets(0, 0, 5, 5);
+		gbc_restaurant_login_password.fill = GridBagConstraints.HORIZONTAL;
+		gbc_restaurant_login_password.gridx = 3;
+		gbc_restaurant_login_password.gridy = 5;
+		home_panel.add(restaurant_login_password, gbc_restaurant_login_password);
 		
 		JButton btnCustomerRegistration = new JButton("Customer Registration");
+		btnCustomerRegistration.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+				cardLayout.show(contentPane, "customer_reg_panel");
+			}
+		});
 		GridBagConstraints gbc_btnCustomerRegistration = new GridBagConstraints();
 		gbc_btnCustomerRegistration.gridwidth = 2;
 		gbc_btnCustomerRegistration.insets = new Insets(0, 0, 5, 5);
@@ -184,6 +205,13 @@ public class GraphicalClient extends JFrame {
 		home_panel.add(btnCustomerRegistration, gbc_btnCustomerRegistration);
 		
 		JButton btnRestaurantRegistration = new JButton("Restaurant Registration");
+		btnRestaurantRegistration.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+				cardLayout.show(contentPane, "restaurant_reg_panel");
+			}
+		});
 		GridBagConstraints gbc_btnRestaurantRegistration = new GridBagConstraints();
 		gbc_btnRestaurantRegistration.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRestaurantRegistration.gridx = 4;
@@ -191,7 +219,7 @@ public class GraphicalClient extends JFrame {
 		home_panel.add(btnRestaurantRegistration, gbc_btnRestaurantRegistration);
 		
 		JTabbedPane customer_panel = new JTabbedPane(JTabbedPane.TOP);
-		contentPane.add(customer_panel, "tabbedPane");
+		contentPane.add(customer_panel, "customer_panel");
 		
 		JPanel customer_panel_search_tab = new JPanel();
 		customer_panel.addTab("Search", null, customer_panel_search_tab, null);
@@ -439,7 +467,7 @@ public class GraphicalClient extends JFrame {
 		customer_panel_order_status_tab.add(customer_tab_2_orders_panel, gbc_customer_tab_2_orders_panel);
 		
 		JTabbedPane restaurant_panel = new JTabbedPane(JTabbedPane.TOP);
-		contentPane.add(restaurant_panel, "name_138999272006941");
+		contentPane.add(restaurant_panel, "restaurant_panel");
 		
 		JPanel restaurant_panel_orders_tab = new JPanel();
 		restaurant_panel.addTab("Orders", null, restaurant_panel_orders_tab, null);
@@ -614,7 +642,7 @@ public class GraphicalClient extends JFrame {
 		rp_mt_update_menu.add(button, gbc_button);
 		
 		JPanel customer_reg_panel = new JPanel();
-		contentPane.add(customer_reg_panel, "name_140163132070444");
+		contentPane.add(customer_reg_panel, "customer_reg_panel");
 		GridBagLayout gbl_customer_reg_panel = new GridBagLayout();
 		gbl_customer_reg_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_customer_reg_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -740,7 +768,7 @@ public class GraphicalClient extends JFrame {
 		customer_reg_panel.add(btnSubmit, gbc_btnSubmit);
 		
 		JPanel restaurant_reg_panel = new JPanel();
-		contentPane.add(restaurant_reg_panel, "name_140403118838776");
+		contentPane.add(restaurant_reg_panel, "restaurant_reg_panel");
 		GridBagLayout gbl_restaurant_reg_panel = new GridBagLayout();
 		gbl_restaurant_reg_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_restaurant_reg_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
