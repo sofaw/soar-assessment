@@ -32,6 +32,8 @@ public class GraphicalClient extends JFrame {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private GridBagLayout gbl_basket_panel;
+	private JTextField textField_5;
+	private JTextField textField_6;
 
 	/**
 	 * Launch the application.
@@ -180,12 +182,12 @@ public class GraphicalClient extends JFrame {
 		JTabbedPane customer_panel = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(customer_panel, "tabbedPane");
 		
-		JPanel customer_tab_1 = new JPanel();
-		customer_panel.addTab("Search", null, customer_tab_1, null);
-		customer_tab_1.setLayout(new CardLayout(0, 0));
+		JPanel customer_panel_search_tab = new JPanel();
+		customer_panel.addTab("Search", null, customer_panel_search_tab, null);
+		customer_panel_search_tab.setLayout(new CardLayout(0, 0));
 		
 		JPanel customer_tab_1_search = new JPanel();
-		customer_tab_1.add(customer_tab_1_search, "name_136881280955797");
+		customer_panel_search_tab.add(customer_tab_1_search, "name_136881280955797");
 		GridBagLayout gbl_customer_tab_1_search = new GridBagLayout();
 		gbl_customer_tab_1_search.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_customer_tab_1_search.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
@@ -218,7 +220,7 @@ public class GraphicalClient extends JFrame {
 		customer_tab_1_search.add(btnGo, gbc_btnGo);
 		
 		JPanel customer_tab_1_results = new JPanel();
-		customer_tab_1.add(customer_tab_1_results, "name_136915680923230");
+		customer_panel_search_tab.add(customer_tab_1_results, "name_136915680923230");
 		GridBagLayout gbl_customer_tab_1_results = new GridBagLayout();
 		gbl_customer_tab_1_results.columnWidths = new int[]{0, 78, 60, 0, 0, 0, 0};
 		gbl_customer_tab_1_results.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -278,7 +280,7 @@ public class GraphicalClient extends JFrame {
 		customer_tab_1_results.add(btnGo_1, gbc_btnGo_1);
 		
 		JPanel customer_tab_1_place_order = new JPanel();
-		customer_tab_1.add(customer_tab_1_place_order, "name_136936962547985");
+		customer_panel_search_tab.add(customer_tab_1_place_order, "name_136936962547985");
 		GridBagLayout gbl_customer_tab_1_place_order = new GridBagLayout();
 		gbl_customer_tab_1_place_order.columnWidths = new int[]{0, 210, 0, 185, 0, 0};
 		gbl_customer_tab_1_place_order.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -368,7 +370,7 @@ public class GraphicalClient extends JFrame {
 		customer_tab_1_place_order.add(btnPlaceOrder, gbc_btnPlaceOrder);
 		
 		JPanel customer_tab_1_order_placed = new JPanel();
-		customer_tab_1.add(customer_tab_1_order_placed, "name_136959918189771");
+		customer_panel_search_tab.add(customer_tab_1_order_placed, "name_136959918189771");
 		GridBagLayout gbl_customer_tab_1_order_placed = new GridBagLayout();
 		gbl_customer_tab_1_order_placed.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_customer_tab_1_order_placed.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
@@ -390,14 +392,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblPleaseCheckThe.gridy = 3;
 		customer_tab_1_order_placed.add(lblPleaseCheckThe, gbc_lblPleaseCheckThe);
 		
-		JPanel customer_tab_2 = new JPanel();
-		customer_panel.addTab("Order Status", null, customer_tab_2, null);
-		GridBagLayout gbl_customer_tab_2 = new GridBagLayout();
-		gbl_customer_tab_2.columnWidths = new int[]{0, 0, 0, 222, 0, 0};
-		gbl_customer_tab_2.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gbl_customer_tab_2.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_customer_tab_2.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		customer_tab_2.setLayout(gbl_customer_tab_2);
+		JPanel customer_panel_order_status_tab = new JPanel();
+		customer_panel.addTab("Order Status", null, customer_panel_order_status_tab, null);
+		GridBagLayout gbl_customer_panel_order_status_tab = new GridBagLayout();
+		gbl_customer_panel_order_status_tab.columnWidths = new int[]{0, 0, 0, 222, 0, 0};
+		gbl_customer_panel_order_status_tab.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_customer_panel_order_status_tab.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_customer_panel_order_status_tab.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		customer_panel_order_status_tab.setLayout(gbl_customer_panel_order_status_tab);
 		
 		JLabel lblYourOrders = new JLabel("Your orders:");
 		GridBagConstraints gbc_lblYourOrders = new GridBagConstraints();
@@ -405,7 +407,7 @@ public class GraphicalClient extends JFrame {
 		gbc_lblYourOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_lblYourOrders.gridx = 1;
 		gbc_lblYourOrders.gridy = 1;
-		customer_tab_2.add(lblYourOrders, gbc_lblYourOrders);
+		customer_panel_order_status_tab.add(lblYourOrders, gbc_lblYourOrders);
 		
 		JButton btnRefresh = new JButton("Refresh");
 		GridBagConstraints gbc_btnRefresh = new GridBagConstraints();
@@ -413,7 +415,7 @@ public class GraphicalClient extends JFrame {
 		gbc_btnRefresh.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRefresh.gridx = 3;
 		gbc_btnRefresh.gridy = 1;
-		customer_tab_2.add(btnRefresh, gbc_btnRefresh);
+		customer_panel_order_status_tab.add(btnRefresh, gbc_btnRefresh);
 		
 		JPanel customer_tab_2_orders_panel = new JPanel();
 		customer_tab_2_orders_panel.setBackground(Color.WHITE);
@@ -423,16 +425,182 @@ public class GraphicalClient extends JFrame {
 		gbc_customer_tab_2_orders_panel.fill = GridBagConstraints.BOTH;
 		gbc_customer_tab_2_orders_panel.gridx = 1;
 		gbc_customer_tab_2_orders_panel.gridy = 2;
-		customer_tab_2.add(customer_tab_2_orders_panel, gbc_customer_tab_2_orders_panel);
+		customer_panel_order_status_tab.add(customer_tab_2_orders_panel, gbc_customer_tab_2_orders_panel);
 		
 		JTabbedPane restaurant_panel = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(restaurant_panel, "name_138999272006941");
 		
-		JPanel restaurant_panel_tab_1 = new JPanel();
-		restaurant_panel.addTab("Orders", null, restaurant_panel_tab_1, null);
+		JPanel restaurant_panel_orders_tab = new JPanel();
+		restaurant_panel.addTab("Orders", null, restaurant_panel_orders_tab, null);
+		GridBagLayout gbl_restaurant_panel_orders_tab = new GridBagLayout();
+		gbl_restaurant_panel_orders_tab.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_restaurant_panel_orders_tab.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_restaurant_panel_orders_tab.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_restaurant_panel_orders_tab.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		restaurant_panel_orders_tab.setLayout(gbl_restaurant_panel_orders_tab);
 		
-		JPanel restaurant_panel_tab_2 = new JPanel();
-		restaurant_panel.addTab("Menu", null, restaurant_panel_tab_2, null);
+		JLabel lblQueued = new JLabel("Queued:");
+		GridBagConstraints gbc_lblQueued = new GridBagConstraints();
+		gbc_lblQueued.anchor = GridBagConstraints.WEST;
+		gbc_lblQueued.insets = new Insets(0, 0, 5, 5);
+		gbc_lblQueued.gridx = 1;
+		gbc_lblQueued.gridy = 1;
+		restaurant_panel_orders_tab.add(lblQueued, gbc_lblQueued);
+		
+		JPanel rp_ot_queued_panel = new JPanel();
+		rp_ot_queued_panel.setBackground(Color.WHITE);
+		GridBagConstraints gbc_rp_ot_queued_panel = new GridBagConstraints();
+		gbc_rp_ot_queued_panel.insets = new Insets(0, 0, 5, 5);
+		gbc_rp_ot_queued_panel.fill = GridBagConstraints.BOTH;
+		gbc_rp_ot_queued_panel.gridx = 1;
+		gbc_rp_ot_queued_panel.gridy = 2;
+		restaurant_panel_orders_tab.add(rp_ot_queued_panel, gbc_rp_ot_queued_panel);
+		
+		JSeparator separator_3 = new JSeparator();
+		GridBagConstraints gbc_separator_3 = new GridBagConstraints();
+		gbc_separator_3.gridwidth = 3;
+		gbc_separator_3.insets = new Insets(0, 0, 5, 0);
+		gbc_separator_3.gridx = 0;
+		gbc_separator_3.gridy = 3;
+		restaurant_panel_orders_tab.add(separator_3, gbc_separator_3);
+		
+		JLabel lblAccepted = new JLabel("Accepted:");
+		GridBagConstraints gbc_lblAccepted = new GridBagConstraints();
+		gbc_lblAccepted.anchor = GridBagConstraints.WEST;
+		gbc_lblAccepted.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAccepted.gridx = 1;
+		gbc_lblAccepted.gridy = 4;
+		restaurant_panel_orders_tab.add(lblAccepted, gbc_lblAccepted);
+		
+		JPanel rp_ot_accepted_panel = new JPanel();
+		rp_ot_accepted_panel.setBackground(Color.WHITE);
+		GridBagConstraints gbc_rp_ot_accepted_panel = new GridBagConstraints();
+		gbc_rp_ot_accepted_panel.insets = new Insets(0, 0, 5, 5);
+		gbc_rp_ot_accepted_panel.fill = GridBagConstraints.BOTH;
+		gbc_rp_ot_accepted_panel.gridx = 1;
+		gbc_rp_ot_accepted_panel.gridy = 5;
+		restaurant_panel_orders_tab.add(rp_ot_accepted_panel, gbc_rp_ot_accepted_panel);
+		
+		JPanel restaurant_panel_menu_tab = new JPanel();
+		restaurant_panel.addTab("Menu", null, restaurant_panel_menu_tab, null);
+		restaurant_panel_menu_tab.setLayout(new CardLayout(0, 0));
+		
+		JPanel rp_mt_current_menu = new JPanel();
+		restaurant_panel_menu_tab.add(rp_mt_current_menu, "name_139444151858240");
+		GridBagLayout gbl_rp_mt_current_menu = new GridBagLayout();
+		gbl_rp_mt_current_menu.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_rp_mt_current_menu.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_rp_mt_current_menu.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_rp_mt_current_menu.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		rp_mt_current_menu.setLayout(gbl_rp_mt_current_menu);
+		
+		JLabel lblMenu_1 = new JLabel("Menu:");
+		GridBagConstraints gbc_lblMenu_1 = new GridBagConstraints();
+		gbc_lblMenu_1.anchor = GridBagConstraints.WEST;
+		gbc_lblMenu_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblMenu_1.gridx = 1;
+		gbc_lblMenu_1.gridy = 1;
+		rp_mt_current_menu.add(lblMenu_1, gbc_lblMenu_1);
+		
+		JPanel current_menu_panel = new JPanel();
+		current_menu_panel.setBackground(Color.WHITE);
+		GridBagConstraints gbc_current_menu_panel = new GridBagConstraints();
+		gbc_current_menu_panel.insets = new Insets(0, 0, 5, 5);
+		gbc_current_menu_panel.fill = GridBagConstraints.BOTH;
+		gbc_current_menu_panel.gridx = 1;
+		gbc_current_menu_panel.gridy = 2;
+		rp_mt_current_menu.add(current_menu_panel, gbc_current_menu_panel);
+		
+		JButton btnUpdateMenu = new JButton("Update menu");
+		GridBagConstraints gbc_btnUpdateMenu = new GridBagConstraints();
+		gbc_btnUpdateMenu.anchor = GridBagConstraints.WEST;
+		gbc_btnUpdateMenu.insets = new Insets(0, 0, 5, 5);
+		gbc_btnUpdateMenu.gridx = 2;
+		gbc_btnUpdateMenu.gridy = 2;
+		rp_mt_current_menu.add(btnUpdateMenu, gbc_btnUpdateMenu);
+		
+		JPanel rp_mt_update_menu = new JPanel();
+		restaurant_panel_menu_tab.add(rp_mt_update_menu, "name_139473809524786");
+		GridBagLayout gbl_rp_mt_update_menu = new GridBagLayout();
+		gbl_rp_mt_update_menu.columnWidths = new int[]{0, 49, 0, 0, 0, 60, 0, 0, 0};
+		gbl_rp_mt_update_menu.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_rp_mt_update_menu.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_rp_mt_update_menu.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		rp_mt_update_menu.setLayout(gbl_rp_mt_update_menu);
+		
+		JLabel lblSummary = new JLabel("Summary:");
+		GridBagConstraints gbc_lblSummary = new GridBagConstraints();
+		gbc_lblSummary.anchor = GridBagConstraints.WEST;
+		gbc_lblSummary.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSummary.gridx = 1;
+		gbc_lblSummary.gridy = 1;
+		rp_mt_update_menu.add(lblSummary, gbc_lblSummary);
+		
+		JPanel menu_summary_panel = new JPanel();
+		menu_summary_panel.setBackground(Color.WHITE);
+		GridBagConstraints gbc_menu_summary_panel = new GridBagConstraints();
+		gbc_menu_summary_panel.gridwidth = 5;
+		gbc_menu_summary_panel.insets = new Insets(0, 0, 5, 5);
+		gbc_menu_summary_panel.fill = GridBagConstraints.BOTH;
+		gbc_menu_summary_panel.gridx = 1;
+		gbc_menu_summary_panel.gridy = 2;
+		rp_mt_update_menu.add(menu_summary_panel, gbc_menu_summary_panel);
+		
+		JButton btnUpdate = new JButton("Update");
+		GridBagConstraints gbc_btnUpdate = new GridBagConstraints();
+		gbc_btnUpdate.insets = new Insets(0, 0, 5, 5);
+		gbc_btnUpdate.gridx = 6;
+		gbc_btnUpdate.gridy = 2;
+		rp_mt_update_menu.add(btnUpdate, gbc_btnUpdate);
+		
+		JLabel lblAddItem = new JLabel("Add Item:");
+		GridBagConstraints gbc_lblAddItem = new GridBagConstraints();
+		gbc_lblAddItem.anchor = GridBagConstraints.EAST;
+		gbc_lblAddItem.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAddItem.gridx = 1;
+		gbc_lblAddItem.gridy = 3;
+		rp_mt_update_menu.add(lblAddItem, gbc_lblAddItem);
+		
+		JLabel lblTitle = new JLabel("Title:");
+		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
+		gbc_lblTitle.anchor = GridBagConstraints.EAST;
+		gbc_lblTitle.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTitle.gridx = 1;
+		gbc_lblTitle.gridy = 4;
+		rp_mt_update_menu.add(lblTitle, gbc_lblTitle);
+		
+		textField_5 = new JTextField();
+		GridBagConstraints gbc_textField_5 = new GridBagConstraints();
+		gbc_textField_5.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_5.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_5.gridx = 2;
+		gbc_textField_5.gridy = 4;
+		rp_mt_update_menu.add(textField_5, gbc_textField_5);
+		textField_5.setColumns(10);
+		
+		JLabel lblPrice = new JLabel("Price:");
+		GridBagConstraints gbc_lblPrice = new GridBagConstraints();
+		gbc_lblPrice.anchor = GridBagConstraints.EAST;
+		gbc_lblPrice.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPrice.gridx = 3;
+		gbc_lblPrice.gridy = 4;
+		rp_mt_update_menu.add(lblPrice, gbc_lblPrice);
+		
+		textField_6 = new JTextField();
+		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
+		gbc_textField_6.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_6.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_6.gridx = 4;
+		gbc_textField_6.gridy = 4;
+		rp_mt_update_menu.add(textField_6, gbc_textField_6);
+		textField_6.setColumns(10);
+		
+		JButton button = new JButton("+");
+		GridBagConstraints gbc_button = new GridBagConstraints();
+		gbc_button.insets = new Insets(0, 0, 5, 5);
+		gbc_button.gridx = 5;
+		gbc_button.gridy = 4;
+		rp_mt_update_menu.add(button, gbc_button);
 	}
 
 }
