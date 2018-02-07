@@ -56,5 +56,17 @@ public class RestaurantsProxy implements soar.assessment.Y3853992.Restaurants {
     restaurants.deleteMenu(restaurantID);
   }
   
+  public void doCustomException() throws java.rmi.RemoteException, soar.assessment.Y3853992.MyCustomException{
+    if (restaurants == null)
+      _initRestaurantsProxy();
+    restaurants.doCustomException();
+  }
+  
+  public java.lang.String doUseMyCustomEntity(soar.assessment.Y3853992.MyCustomEntity mce) throws java.rmi.RemoteException{
+    if (restaurants == null)
+      _initRestaurantsProxy();
+    return restaurants.doUseMyCustomEntity(mce);
+  }
+  
   
 }

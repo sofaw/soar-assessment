@@ -58,6 +58,21 @@ public class ClientApp {
 			System.out.println("Incorrect username/password");
 		}
 		
+		try {
+			restaurants.setUsername("richiebn");
+			restaurants.setPassword("supersecret");
+			restaurants.doCustomException();
+		} catch (MyCustomException e) {
+			System.out.println(e);
+		}
+		
+		restaurants.setUsername("richiebn");
+		restaurants.setPassword("supersecret");
+		MyCustomEntity mce = new MyCustomEntity();
+		mce.setPrice(0.7f);
+		mce.setTitle("sophie_title");
+		System.out.println(restaurants.doUseMyCustomEntity(mce));
+		
 		
 		customers.setUsername("sophie");
 		customers.setPassword("secret");
