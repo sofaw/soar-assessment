@@ -8,6 +8,6 @@
 package soar.assessment.Y3853992;
 
 public interface Registration extends java.rmi.Remote {
-    public int registerRestaurant(java.lang.String username, java.lang.String name, java.lang.String address, java.lang.String email, java.lang.String password) throws java.rmi.RemoteException;
-    public int registerCustomer(java.lang.String username, java.lang.String name, java.lang.String cardNumber, java.lang.String password) throws java.rmi.RemoteException;
+    public int registerRestaurant(soar.assessment.Y3853992.Restaurant restaurant) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.UsernameAlreadyTakenException;
+    public int registerCustomer(soar.assessment.Y3853992.Customer customer) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.UsernameAlreadyTakenException;
 }

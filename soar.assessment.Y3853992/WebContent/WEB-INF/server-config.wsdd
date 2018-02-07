@@ -7,8 +7,8 @@
   <ns1:parameter name="dotNetSoapEncFix" value="true"/>
   <ns1:parameter name="enableNamespacePrefixOptimization" value="false"/>
   <ns1:parameter name="sendXMLDeclaration" value="true"/>
-  <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
   <ns1:parameter name="sendXsiTypes" value="true"/>
+  <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
   <ns1:requestFlow>
    <ns1:handler type="java:org.apache.axis.handlers.JWSHandler">
     <ns1:parameter name="scope" value="session"/>
@@ -43,27 +43,24 @@
    </ns1:handler>
   </ns1:requestFlow>
   <ns1:parameter name="allowedMethods" value="getUsername"/>
-  <ns1:parameter name="wsdlPortType" value="Customers"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
-  <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
-  <ns1:parameter name="wsdlServicePort" value="Customers"/>
+  <ns1:parameter name="wsdlPortType" value="Customers"/>
   <ns1:parameter name="className" value="soar.assessment.Y3853992.Customers"/>
+  <ns1:parameter name="wsdlServicePort" value="Customers"/>
+  <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlServiceElement" value="CustomersService"/>
  </ns1:service>
  <ns1:service name="Registration" provider="java:RPC" style="wrapped" use="literal">
   <ns1:operation name="registerRestaurant" qname="ns2:registerRestaurant" returnQName="ns2:registerRestaurantReturn" returnType="xsd:int" soapAction="" xmlns:ns2="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns2:username" type="xsd:string"/>
-   <ns1:parameter qname="ns2:name" type="xsd:string"/>
-   <ns1:parameter qname="ns2:address" type="xsd:string"/>
-   <ns1:parameter qname="ns2:email" type="xsd:string"/>
-   <ns1:parameter qname="ns2:password" type="xsd:string"/>
+   <ns1:parameter qname="ns2:restaurant" type="ns2:Restaurant"/>
+   <ns1:fault class="soar.assessment.Y3853992.NullFieldException" qname="ns2:fault1" type="ns2:NullFieldException"/>
+   <ns1:fault class="soar.assessment.Y3853992.UsernameAlreadyTakenException" qname="ns2:fault" type="ns2:UsernameAlreadyTakenException"/>
   </ns1:operation>
   <ns1:operation name="registerCustomer" qname="ns3:registerCustomer" returnQName="ns3:registerCustomerReturn" returnType="xsd:int" soapAction="" xmlns:ns3="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns3:username" type="xsd:string"/>
-   <ns1:parameter qname="ns3:name" type="xsd:string"/>
-   <ns1:parameter qname="ns3:cardNumber" type="xsd:string"/>
-   <ns1:parameter qname="ns3:password" type="xsd:string"/>
+   <ns1:parameter qname="ns3:customer" type="ns3:Customer"/>
+   <ns1:fault class="soar.assessment.Y3853992.NullFieldException" qname="ns3:fault1" type="ns3:NullFieldException"/>
+   <ns1:fault class="soar.assessment.Y3853992.UsernameAlreadyTakenException" qname="ns3:fault" type="ns3:UsernameAlreadyTakenException"/>
   </ns1:operation>
   <ns1:parameter name="allowedMethods" value="registerRestaurant registerCustomer"/>
   <ns1:parameter name="typeMappingVersion" value="1.2"/>
@@ -73,15 +70,19 @@
   <ns1:parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
   <ns1:parameter name="wsdlServiceElement" value="RegistrationService"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns4:Customer" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:soar.assessment.Y3853992.Customer" xmlns:ns4="http://Y3853992.assessment.soar"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns5:Restaurant" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:soar.assessment.Y3853992.Restaurant" xmlns:ns5="http://Y3853992.assessment.soar"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns6:UsernameAlreadyTakenException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:soar.assessment.Y3853992.UsernameAlreadyTakenException" xmlns:ns6="http://Y3853992.assessment.soar"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns7:NullFieldException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:soar.assessment.Y3853992.NullFieldException" xmlns:ns7="http://Y3853992.assessment.soar"/>
  </ns1:service>
  <ns1:service name="Restaurants" provider="java:RPC" style="wrapped" use="literal">
-  <ns1:operation name="addMenuItem" qname="ns4:addMenuItem" soapAction="" xmlns:ns4="http://Y3853992.assessment.soar">
-   <ns1:parameter qname="ns4:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns4:title" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns4:price" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="addMenuItem" qname="ns8:addMenuItem" soapAction="" xmlns:ns8="http://Y3853992.assessment.soar">
+   <ns1:parameter qname="ns8:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns8:title" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns8:price" type="xsd:float" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="deleteMenu" qname="ns5:deleteMenu" soapAction="" xmlns:ns5="http://Y3853992.assessment.soar">
-   <ns1:parameter qname="ns5:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="deleteMenu" qname="ns9:deleteMenu" soapAction="" xmlns:ns9="http://Y3853992.assessment.soar">
+   <ns1:parameter qname="ns9:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
   <ns1:requestFlow>
    <ns1:handler type="java:org.apache.ws.axis.security.WSDoAllReceiver">

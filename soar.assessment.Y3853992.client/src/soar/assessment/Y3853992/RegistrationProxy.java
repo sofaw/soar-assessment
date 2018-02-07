@@ -44,16 +44,16 @@ public class RegistrationProxy implements soar.assessment.Y3853992.Registration 
     return registration;
   }
   
-  public int registerRestaurant(java.lang.String username, java.lang.String name, java.lang.String address, java.lang.String email, java.lang.String password) throws java.rmi.RemoteException{
+  public int registerRestaurant(soar.assessment.Y3853992.Restaurant restaurant) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.UsernameAlreadyTakenException{
     if (registration == null)
       _initRegistrationProxy();
-    return registration.registerRestaurant(username, name, address, email, password);
+    return registration.registerRestaurant(restaurant);
   }
   
-  public int registerCustomer(java.lang.String username, java.lang.String name, java.lang.String cardNumber, java.lang.String password) throws java.rmi.RemoteException{
+  public int registerCustomer(soar.assessment.Y3853992.Customer customer) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.UsernameAlreadyTakenException{
     if (registration == null)
       _initRegistrationProxy();
-    return registration.registerCustomer(username, name, cardNumber, password);
+    return registration.registerCustomer(customer);
   }
   
   

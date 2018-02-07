@@ -11,19 +11,20 @@
       <parameter name="wsdlPortType" value="Registration"/>
       <parameter name="typeMappingVersion" value="1.2"/>
       <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="registerRestaurant" qname="operNS:registerRestaurant" returnQName="retNS:registerRestaurantReturn" returnType="rtns:int" soapAction="">
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:name" type="tns:string"/>
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:address" type="tns:string"/>
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:email" type="tns:string"/>
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:password" type="tns:string"/>
+        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" qname="pns:restaurant" type="tns:Restaurant"/>
+        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="NullFieldException" qname="fns:fault1" class="soar.assessment.Y3853992.NullFieldException" type="tns:NullFieldException"/>
+        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="UsernameAlreadyTakenException" qname="fns:fault" class="soar.assessment.Y3853992.UsernameAlreadyTakenException" type="tns:UsernameAlreadyTakenException"/>
       </operation>
       <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="registerCustomer" qname="operNS:registerCustomer" returnQName="retNS:registerCustomerReturn" returnType="rtns:int" soapAction="">
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:name" type="tns:string"/>
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:cardNumber" type="tns:string"/>
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:password" type="tns:string"/>
+        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" qname="pns:customer" type="tns:Customer"/>
+        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="NullFieldException" qname="fns:fault1" class="soar.assessment.Y3853992.NullFieldException" type="tns:NullFieldException"/>
+        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="UsernameAlreadyTakenException" qname="fns:fault" class="soar.assessment.Y3853992.UsernameAlreadyTakenException" type="tns:UsernameAlreadyTakenException"/>
       </operation>
       <parameter name="allowedMethods" value="registerRestaurant registerCustomer"/>
 
+      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:Customer" type="java:soar.assessment.Y3853992.Customer" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:Restaurant" type="java:soar.assessment.Y3853992.Restaurant" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:UsernameAlreadyTakenException" type="java:soar.assessment.Y3853992.UsernameAlreadyTakenException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:NullFieldException" type="java:soar.assessment.Y3853992.NullFieldException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
   </service>
 </deployment>

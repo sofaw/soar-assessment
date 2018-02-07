@@ -9,6 +9,7 @@ import java.sql.Statement;
 
 import javax.xml.rpc.ServiceException;
 
+import org.apache.axis.AxisFault;
 import org.apache.axis.EngineConfiguration;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.ws.security.WSConstants;
@@ -36,26 +37,79 @@ public class ClientApp {
 				new FileProvider(ClientApp.class.getResourceAsStream("customerclient.wsdd"));
 		CustomersSoapBindingStub customers = (CustomersSoapBindingStub) 
 				new CustomersServiceLocator(customersConfig).getCustomers();
-				
-		int restaurantID = registration.registerRestaurant(
-				"soph_rest", 
-				"coolRestaurant", 
-				"37 lawrence st", 
-				"sof@gmail.com", 
-				"secret");
+		
+		int restaurantID = 1;
+		try {
+			Restaurant restaurant = new Restaurant();
+			restaurant.setUsername("cs");
+			restaurant.setRestaurantName("chicken shop");
+			restaurant.setAddress("123 chicken road");
+			restaurant.setEmail("chick@chicken.com");
+			restaurant.setPassword("welovechicken");
+			restaurantID = registration.registerRestaurant(restaurant);
+		} catch (UsernameAlreadyTakenException e) {
+			System.out.println(e);
+		}
 		
 		System.out.println(restaurantID);
 		
-		restaurants.setUsername("richiebn");
-		restaurants.setPassword("supersecret");
+		// try incomplete
+		restaurantID = 1;
+		try {
+			Restaurant restaurant = new Restaurant();
+			restaurant.setUsername("abc");
+			restaurantID = registration.registerRestaurant(restaurant);
+		} catch (UsernameAlreadyTakenException e) {
+			System.out.println(e);
+		} catch (NullFieldException e) {
+			System.out.println(e);
+		}
+		
+		int customerID = 1;
+		try {
+			Customer customer = new Customer();
+			customer.setUsername("rb");
+			customer.setFullname("richard tynan");
+			customer.setEmail("rb@gmail.com");
+			customer.setPassword("secret");
+			customerID = registration.registerCustomer(customer);
+		} catch (UsernameAlreadyTakenException e) {
+			System.out.println(e);
+		} catch (NullFieldException e) {
+			System.out.println(e);
+		}
+		
+		System.out.println(restaurantID);
+		
+		// Try incomplete 
+		try {
+			Customer customer = new Customer();
+			customer.setUsername("onlyusername");
+			customerID = registration.registerCustomer(customer);
+		} catch (UsernameAlreadyTakenException e) {
+			System.out.println(e);
+		} catch (NullFieldException e) {
+			System.out.println(e);
+		}
+		
+		
+		restaurants.setUsername("cs");
+		restaurants.setPassword("welovechicken");
 		restaurants.addMenuItem(restaurantID, "pizza", 9.5f);
 		
 		try {
-			restaurants.setUsername("richiebn");
+			restaurants.setUsername("cs");
 			restaurants.setPassword("wrongpassword");
 			restaurants.addMenuItem(restaurantID, "pizza", 9.5f);
-		} catch(Exception e) {
-			System.out.println("Incorrect username/password");
+		} catch(RemoteException e) {
+			if(e instanceof AxisFault) {
+				AxisFault af = (AxisFault) e;
+				if(af.getFaultString().contains("WSSecurityException")) {
+					System.out.println("Security exception: incorrect username/password");
+				}
+			} else {
+				System.out.println("Issues with server");
+			}
 		}
 		
 		/*try {
@@ -74,15 +128,15 @@ public class ClientApp {
 		System.out.println(restaurants.doUseMyCustomEntity(mce));*/
 		
 		
-		customers.setUsername("sophie");
+		customers.setUsername("rb");
 		customers.setPassword("secret");
 		
 		String username = customers.getUsername(1);
 		System.out.println(username);
 		
 		try {
-			customers.setUsername("richiebn");
-			customers.setPassword("shhhhh");
+			customers.setUsername("rb");
+			customers.setPassword("wrongpassword");
 		
 			username = customers.getUsername(1);
 			System.out.println(username);

@@ -32,4 +32,5 @@ public class Restaurants {
 		
 		stmt.executeUpdate("DELETE FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
 	}
+
 }

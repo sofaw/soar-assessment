@@ -5,8 +5,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.xml.rpc.ServiceException;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -16,6 +19,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
@@ -34,17 +39,15 @@ public class GraphicalClient extends JFrame {
 	private GridBagLayout gbl_basket_panel;
 	private JTextField textField_5;
 	private JTextField textField_6;
-	private JPasswordField passwordField_2;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_15;
-	private JPasswordField passwordField_3;
+	private JPasswordField creg_password;
+	private JTextField creg_email;
+	private JTextField creg_fullname;
+	private JTextField creg_username;
+	private JTextField rreg_username;
+	private JTextField rreg_restaurantname;
+	private JTextField rreg_address;
+	private JTextField rreg_email;
+	private JPasswordField rreg_password;
 
 	/**
 	 * Launch the application.
@@ -74,7 +77,7 @@ public class GraphicalClient extends JFrame {
 		contentPane.setLayout(new CardLayout(0, 0));
 		
 		JPanel home_panel = new JPanel();
-		contentPane.add(home_panel, "panel");
+		contentPane.add(home_panel, "home_panel");
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 40, 95, 65, 0, 40, -60, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -645,9 +648,9 @@ public class GraphicalClient extends JFrame {
 		contentPane.add(customer_reg_panel, "customer_reg_panel");
 		GridBagLayout gbl_customer_reg_panel = new GridBagLayout();
 		gbl_customer_reg_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_customer_reg_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_customer_reg_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_customer_reg_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_customer_reg_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_customer_reg_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		customer_reg_panel.setLayout(gbl_customer_reg_panel);
 		
 		JLabel lblCustomerRegistration = new JLabel("Customer registration:");
@@ -666,14 +669,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblUsername_2.gridy = 2;
 		customer_reg_panel.add(lblUsername_2, gbc_lblUsername_2);
 		
-		textField_11 = new JTextField();
-		GridBagConstraints gbc_textField_11 = new GridBagConstraints();
-		gbc_textField_11.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_11.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_11.gridx = 2;
-		gbc_textField_11.gridy = 2;
-		customer_reg_panel.add(textField_11, gbc_textField_11);
-		textField_11.setColumns(10);
+		creg_username = new JTextField();
+		GridBagConstraints gbc_creg_username = new GridBagConstraints();
+		gbc_creg_username.insets = new Insets(0, 0, 5, 5);
+		gbc_creg_username.fill = GridBagConstraints.HORIZONTAL;
+		gbc_creg_username.gridx = 2;
+		gbc_creg_username.gridy = 2;
+		customer_reg_panel.add(creg_username, gbc_creg_username);
+		creg_username.setColumns(10);
 		
 		JLabel lblFullName = new JLabel("Full Name:");
 		GridBagConstraints gbc_lblFullName = new GridBagConstraints();
@@ -683,14 +686,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblFullName.gridy = 3;
 		customer_reg_panel.add(lblFullName, gbc_lblFullName);
 		
-		textField_10 = new JTextField();
-		GridBagConstraints gbc_textField_10 = new GridBagConstraints();
-		gbc_textField_10.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_10.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_10.gridx = 2;
-		gbc_textField_10.gridy = 3;
-		customer_reg_panel.add(textField_10, gbc_textField_10);
-		textField_10.setColumns(10);
+		creg_fullname = new JTextField();
+		GridBagConstraints gbc_creg_fullname = new GridBagConstraints();
+		gbc_creg_fullname.insets = new Insets(0, 0, 5, 5);
+		gbc_creg_fullname.fill = GridBagConstraints.HORIZONTAL;
+		gbc_creg_fullname.gridx = 2;
+		gbc_creg_fullname.gridy = 3;
+		customer_reg_panel.add(creg_fullname, gbc_creg_fullname);
+		creg_fullname.setColumns(10);
 		
 		JLabel lblEmail = new JLabel("Email:");
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
@@ -700,71 +703,68 @@ public class GraphicalClient extends JFrame {
 		gbc_lblEmail.gridy = 4;
 		customer_reg_panel.add(lblEmail, gbc_lblEmail);
 		
-		textField_9 = new JTextField();
-		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
-		gbc_textField_9.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_9.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_9.gridx = 2;
-		gbc_textField_9.gridy = 4;
-		customer_reg_panel.add(textField_9, gbc_textField_9);
-		textField_9.setColumns(10);
-		
-		JLabel lblCardNumber = new JLabel("Card Number:");
-		GridBagConstraints gbc_lblCardNumber = new GridBagConstraints();
-		gbc_lblCardNumber.anchor = GridBagConstraints.EAST;
-		gbc_lblCardNumber.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCardNumber.gridx = 1;
-		gbc_lblCardNumber.gridy = 5;
-		customer_reg_panel.add(lblCardNumber, gbc_lblCardNumber);
-		
-		textField_8 = new JTextField();
-		GridBagConstraints gbc_textField_8 = new GridBagConstraints();
-		gbc_textField_8.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_8.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_8.gridx = 2;
-		gbc_textField_8.gridy = 5;
-		customer_reg_panel.add(textField_8, gbc_textField_8);
-		textField_8.setColumns(10);
-		
-		JLabel lblDeliveryAddress = new JLabel("Delivery Address:");
-		GridBagConstraints gbc_lblDeliveryAddress = new GridBagConstraints();
-		gbc_lblDeliveryAddress.anchor = GridBagConstraints.EAST;
-		gbc_lblDeliveryAddress.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDeliveryAddress.gridx = 1;
-		gbc_lblDeliveryAddress.gridy = 6;
-		customer_reg_panel.add(lblDeliveryAddress, gbc_lblDeliveryAddress);
-		
-		textField_7 = new JTextField();
-		GridBagConstraints gbc_textField_7 = new GridBagConstraints();
-		gbc_textField_7.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_7.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_7.gridx = 2;
-		gbc_textField_7.gridy = 6;
-		customer_reg_panel.add(textField_7, gbc_textField_7);
-		textField_7.setColumns(10);
+		creg_email = new JTextField();
+		GridBagConstraints gbc_creg_email = new GridBagConstraints();
+		gbc_creg_email.insets = new Insets(0, 0, 5, 5);
+		gbc_creg_email.fill = GridBagConstraints.HORIZONTAL;
+		gbc_creg_email.gridx = 2;
+		gbc_creg_email.gridy = 4;
+		customer_reg_panel.add(creg_email, gbc_creg_email);
+		creg_email.setColumns(10);
 		
 		JLabel lblPassword_2 = new JLabel("Password:");
 		GridBagConstraints gbc_lblPassword_2 = new GridBagConstraints();
 		gbc_lblPassword_2.anchor = GridBagConstraints.EAST;
 		gbc_lblPassword_2.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPassword_2.gridx = 1;
-		gbc_lblPassword_2.gridy = 7;
+		gbc_lblPassword_2.gridy = 5;
 		customer_reg_panel.add(lblPassword_2, gbc_lblPassword_2);
 		
-		passwordField_2 = new JPasswordField();
-		GridBagConstraints gbc_passwordField_2 = new GridBagConstraints();
-		gbc_passwordField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_passwordField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField_2.gridx = 2;
-		gbc_passwordField_2.gridy = 7;
-		customer_reg_panel.add(passwordField_2, gbc_passwordField_2);
+		creg_password = new JPasswordField();
+		GridBagConstraints gbc_creg_password = new GridBagConstraints();
+		gbc_creg_password.insets = new Insets(0, 0, 5, 5);
+		gbc_creg_password.fill = GridBagConstraints.HORIZONTAL;
+		gbc_creg_password.gridx = 2;
+		gbc_creg_password.gridy = 5;
+		customer_reg_panel.add(creg_password, gbc_creg_password);
 		
 		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Customer customer = new Customer();
+				customer.setUsername(creg_username.getText());
+				customer.setFullname(creg_fullname.getText());
+				customer.setEmail(creg_email.getText());
+				customer.setPassword(creg_password.getText());
+				
+				try {
+					Registration registration = new RegistrationServiceLocator().getRegistration();
+					registration.registerCustomer(customer);
+					
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "home_panel");
+					JOptionPane.showMessageDialog(home_panel, "Customer registration successful! Please login.");
+					
+					// Clear text
+					creg_username.setText("");
+					creg_fullname.setText("");
+					creg_email.setText("");
+					creg_password.setText("");
+				} catch (NullFieldException ex) {
+					JOptionPane.showMessageDialog(customer_reg_panel, "Please fill in all required fields.");
+				} catch (UsernameAlreadyTakenException ex) {
+					JOptionPane.showMessageDialog(customer_reg_panel, "That username is already taken. Please pick a new username.");
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(customer_reg_panel, "An exception has occurred. Please try again.");
+				}
+			}
+		});
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
 		gbc_btnSubmit.anchor = GridBagConstraints.EAST;
 		gbc_btnSubmit.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSubmit.gridx = 2;
-		gbc_btnSubmit.gridy = 8;
+		gbc_btnSubmit.gridy = 6;
 		customer_reg_panel.add(btnSubmit, gbc_btnSubmit);
 		
 		JPanel restaurant_reg_panel = new JPanel();
@@ -792,14 +792,14 @@ public class GraphicalClient extends JFrame {
 		gbc_label_1.gridy = 2;
 		restaurant_reg_panel.add(label_1, gbc_label_1);
 		
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		GridBagConstraints gbc_textField_12 = new GridBagConstraints();
-		gbc_textField_12.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_12.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_12.gridx = 2;
-		gbc_textField_12.gridy = 2;
-		restaurant_reg_panel.add(textField_12, gbc_textField_12);
+		rreg_username = new JTextField();
+		rreg_username.setColumns(10);
+		GridBagConstraints gbc_rreg_username = new GridBagConstraints();
+		gbc_rreg_username.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rreg_username.insets = new Insets(0, 0, 5, 5);
+		gbc_rreg_username.gridx = 2;
+		gbc_rreg_username.gridy = 2;
+		restaurant_reg_panel.add(rreg_username, gbc_rreg_username);
 		
 		JLabel lblRestaurantName = new JLabel("Restaurant Name:");
 		GridBagConstraints gbc_lblRestaurantName = new GridBagConstraints();
@@ -809,14 +809,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblRestaurantName.gridy = 3;
 		restaurant_reg_panel.add(lblRestaurantName, gbc_lblRestaurantName);
 		
-		textField_13 = new JTextField();
-		textField_13.setColumns(10);
-		GridBagConstraints gbc_textField_13 = new GridBagConstraints();
-		gbc_textField_13.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_13.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_13.gridx = 2;
-		gbc_textField_13.gridy = 3;
-		restaurant_reg_panel.add(textField_13, gbc_textField_13);
+		rreg_restaurantname = new JTextField();
+		rreg_restaurantname.setColumns(10);
+		GridBagConstraints gbc_rreg_restaurantname = new GridBagConstraints();
+		gbc_rreg_restaurantname.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rreg_restaurantname.insets = new Insets(0, 0, 5, 5);
+		gbc_rreg_restaurantname.gridx = 2;
+		gbc_rreg_restaurantname.gridy = 3;
+		restaurant_reg_panel.add(rreg_restaurantname, gbc_rreg_restaurantname);
 		
 		JLabel lblRestaurantAddress = new JLabel("Restaurant Address:");
 		GridBagConstraints gbc_lblRestaurantAddress = new GridBagConstraints();
@@ -826,14 +826,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblRestaurantAddress.gridy = 4;
 		restaurant_reg_panel.add(lblRestaurantAddress, gbc_lblRestaurantAddress);
 		
-		textField_14 = new JTextField();
-		textField_14.setColumns(10);
-		GridBagConstraints gbc_textField_14 = new GridBagConstraints();
-		gbc_textField_14.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_14.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_14.gridx = 2;
-		gbc_textField_14.gridy = 4;
-		restaurant_reg_panel.add(textField_14, gbc_textField_14);
+		rreg_address = new JTextField();
+		rreg_address.setColumns(10);
+		GridBagConstraints gbc_rreg_address = new GridBagConstraints();
+		gbc_rreg_address.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rreg_address.insets = new Insets(0, 0, 5, 5);
+		gbc_rreg_address.gridx = 2;
+		gbc_rreg_address.gridy = 4;
+		restaurant_reg_panel.add(rreg_address, gbc_rreg_address);
 		
 		JLabel lblEmail_1 = new JLabel("Email:");
 		GridBagConstraints gbc_lblEmail_1 = new GridBagConstraints();
@@ -843,14 +843,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblEmail_1.gridy = 5;
 		restaurant_reg_panel.add(lblEmail_1, gbc_lblEmail_1);
 		
-		textField_15 = new JTextField();
-		textField_15.setColumns(10);
-		GridBagConstraints gbc_textField_15 = new GridBagConstraints();
-		gbc_textField_15.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_15.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_15.gridx = 2;
-		gbc_textField_15.gridy = 5;
-		restaurant_reg_panel.add(textField_15, gbc_textField_15);
+		rreg_email = new JTextField();
+		rreg_email.setColumns(10);
+		GridBagConstraints gbc_rreg_email = new GridBagConstraints();
+		gbc_rreg_email.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rreg_email.insets = new Insets(0, 0, 5, 5);
+		gbc_rreg_email.gridx = 2;
+		gbc_rreg_email.gridy = 5;
+		restaurant_reg_panel.add(rreg_email, gbc_rreg_email);
 		
 		JLabel label_6 = new JLabel("Password:");
 		GridBagConstraints gbc_label_6 = new GridBagConstraints();
@@ -860,15 +860,48 @@ public class GraphicalClient extends JFrame {
 		gbc_label_6.gridy = 6;
 		restaurant_reg_panel.add(label_6, gbc_label_6);
 		
-		passwordField_3 = new JPasswordField();
-		GridBagConstraints gbc_passwordField_3 = new GridBagConstraints();
-		gbc_passwordField_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField_3.insets = new Insets(0, 0, 5, 5);
-		gbc_passwordField_3.gridx = 2;
-		gbc_passwordField_3.gridy = 6;
-		restaurant_reg_panel.add(passwordField_3, gbc_passwordField_3);
+		rreg_password = new JPasswordField();
+		GridBagConstraints gbc_rreg_password = new GridBagConstraints();
+		gbc_rreg_password.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rreg_password.insets = new Insets(0, 0, 5, 5);
+		gbc_rreg_password.gridx = 2;
+		gbc_rreg_password.gridy = 6;
+		restaurant_reg_panel.add(rreg_password, gbc_rreg_password);
 		
 		JButton button_1 = new JButton("Submit");
+		button_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Restaurant restaurant = new Restaurant();
+				restaurant.setUsername(rreg_username.getText());
+				restaurant.setRestaurantName(rreg_restaurantname.getText());
+				restaurant.setEmail(rreg_email.getText());
+				restaurant.setAddress(rreg_address.getText());
+				restaurant.setPassword(rreg_password.getText());
+				
+				try {
+					Registration registration = new RegistrationServiceLocator().getRegistration();
+					registration.registerRestaurant(restaurant);
+					
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "home_panel");
+					JOptionPane.showMessageDialog(home_panel, "Restaurant registration successful! Please login.");
+					
+					// Clear text
+					rreg_username.setText("");
+					rreg_restaurantname.setText("");
+					rreg_email.setText("");
+					rreg_address.setText("");
+					rreg_password.setText("");
+				} catch (NullFieldException ex) {
+					JOptionPane.showMessageDialog(customer_reg_panel, "Please fill in all required fields.");
+				} catch (UsernameAlreadyTakenException ex) {
+					JOptionPane.showMessageDialog(customer_reg_panel, "That username is already taken. Please pick a new username.");
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(customer_reg_panel, "An exception has occurred. Please try again.");
+				}
+			}
+		});
 		GridBagConstraints gbc_button_1 = new GridBagConstraints();
 		gbc_button_1.anchor = GridBagConstraints.EAST;
 		gbc_button_1.insets = new Insets(0, 0, 5, 5);
