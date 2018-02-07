@@ -58,7 +58,7 @@ public class ClientApp {
 			System.out.println("Incorrect username/password");
 		}
 		
-		try {
+		/*try {
 			restaurants.setUsername("richiebn");
 			restaurants.setPassword("supersecret");
 			restaurants.doCustomException();
@@ -71,7 +71,7 @@ public class ClientApp {
 		MyCustomEntity mce = new MyCustomEntity();
 		mce.setPrice(0.7f);
 		mce.setTitle("sophie_title");
-		System.out.println(restaurants.doUseMyCustomEntity(mce));
+		System.out.println(restaurants.doUseMyCustomEntity(mce));*/
 		
 		
 		customers.setUsername("sophie");

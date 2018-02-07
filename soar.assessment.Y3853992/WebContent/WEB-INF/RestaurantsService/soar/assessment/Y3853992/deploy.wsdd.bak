@@ -20,37 +20,15 @@
       <parameter name="className" value="soar.assessment.Y3853992.RestaurantsSoapBindingImpl"/>
       <parameter name="wsdlPortType" value="Restaurants"/>
       <parameter name="typeMappingVersion" value="1.2"/>
-      <operation name="doCustomException" qname="operNS:doCustomException" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
-        <fault name="MyCustomException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.MyCustomException" type="tns:MyCustomException" xmlns:tns="http://Y3853992.assessment.soar"/>
-      </operation>
       <operation name="addMenuItem" qname="operNS:addMenuItem" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
         <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:title" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:price" xmlns:pns="http://Y3853992.assessment.soar" type="tns:float" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <operation name="doUseMyCustomEntity" qname="operNS:doUseMyCustomEntity" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:doUseMyCustomEntityReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
-        <parameter qname="pns:mce" xmlns:pns="http://Y3853992.assessment.soar" type="tns:MyCustomEntity" xmlns:tns="http://Y3853992.assessment.soar"/>
-      </operation>
       <operation name="deleteMenu" qname="operNS:deleteMenu" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
         <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <parameter name="allowedMethods" value="deleteMenu addMenuItem doCustomException doUseMyCustomEntity"/>
+      <parameter name="allowedMethods" value="deleteMenu addMenuItem"/>
 
-      <typeMapping
-        xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:MyCustomEntity"
-        type="java:soar.assessment.Y3853992.MyCustomEntity"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:MyCustomException"
-        type="java:soar.assessment.Y3853992.MyCustomException"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
   </service>
 </deployment>

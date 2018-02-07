@@ -32,19 +32,4 @@ public class Restaurants {
 		
 		stmt.executeUpdate("DELETE FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
 	}
-	
-	public void doCustomException() throws MyCustomException {
-		throw new MyCustomException("error message for exception");
-	}
-	
-	public String doUseMyCustomEntity(MyCustomEntity mce) {
-		return mce.title;
-	}
-	
-	// TODO
-	/*public void changeOrderStatus(int orderID, String status) throws ClassNotFoundException, SQLException {
-		Class.forName("org.h2.Driver");
-		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
-        Statement stmt = con.createStatement();
-	}*/
 }

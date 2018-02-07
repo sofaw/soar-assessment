@@ -4,16 +4,6 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
-   <element name="doCustomException">
-    <complexType/>
-   </element>
-   <element name="doCustomExceptionResponse">
-    <complexType/>
-   </element>
-   <complexType name="MyCustomException">
-    <sequence/>
-   </complexType>
-   <element name="fault" type="impl:MyCustomException"/>
    <element name="addMenuItem">
     <complexType>
      <sequence>
@@ -25,26 +15,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    </element>
    <element name="addMenuItemResponse">
     <complexType/>
-   </element>
-   <element name="doUseMyCustomEntity">
-    <complexType>
-     <sequence>
-      <element name="mce" type="impl:MyCustomEntity"/>
-     </sequence>
-    </complexType>
-   </element>
-   <complexType name="MyCustomEntity">
-    <sequence>
-     <element name="price" type="xsd:float"/>
-     <element name="title" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
-   <element name="doUseMyCustomEntityResponse">
-    <complexType>
-     <sequence>
-      <element name="doUseMyCustomEntityReturn" type="xsd:string"/>
-     </sequence>
-    </complexType>
    </element>
    <element name="deleteMenu">
     <complexType>
@@ -65,39 +35,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="doCustomExceptionResponse">
-
-      <wsdl:part element="impl:doCustomExceptionResponse" name="parameters"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="doUseMyCustomEntityRequest">
-
-      <wsdl:part element="impl:doUseMyCustomEntity" name="parameters"/>
-
-   </wsdl:message>
-
    <wsdl:message name="addMenuItemRequest">
 
       <wsdl:part element="impl:addMenuItem" name="parameters"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="MyCustomException">
-
-      <wsdl:part element="impl:fault" name="fault"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="doUseMyCustomEntityResponse">
-
-      <wsdl:part element="impl:doUseMyCustomEntityResponse" name="parameters"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="doCustomExceptionRequest">
-
-      <wsdl:part element="impl:doCustomException" name="parameters"/>
 
    </wsdl:message>
 
@@ -115,29 +55,11 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    <wsdl:portType name="Restaurants">
 
-      <wsdl:operation name="doCustomException">
-
-         <wsdl:input message="impl:doCustomExceptionRequest" name="doCustomExceptionRequest"/>
-
-         <wsdl:output message="impl:doCustomExceptionResponse" name="doCustomExceptionResponse"/>
-
-         <wsdl:fault message="impl:MyCustomException" name="MyCustomException"/>
-
-      </wsdl:operation>
-
       <wsdl:operation name="addMenuItem">
 
          <wsdl:input message="impl:addMenuItemRequest" name="addMenuItemRequest"/>
 
          <wsdl:output message="impl:addMenuItemResponse" name="addMenuItemResponse"/>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="doUseMyCustomEntity">
-
-         <wsdl:input message="impl:doUseMyCustomEntityRequest" name="doUseMyCustomEntityRequest"/>
-
-         <wsdl:output message="impl:doUseMyCustomEntityResponse" name="doUseMyCustomEntityResponse"/>
 
       </wsdl:operation>
 
@@ -155,30 +77,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 
-      <wsdl:operation name="doCustomException">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="doCustomExceptionRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="doCustomExceptionResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-         <wsdl:fault name="MyCustomException">
-
-            <wsdlsoap:fault name="MyCustomException" use="literal"/>
-
-         </wsdl:fault>
-
-      </wsdl:operation>
-
       <wsdl:operation name="addMenuItem">
 
          <wsdlsoap:operation soapAction=""/>
@@ -190,24 +88,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="addMenuItemResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="doUseMyCustomEntity">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="doUseMyCustomEntityRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="doUseMyCustomEntityResponse">
 
             <wsdlsoap:body use="literal"/>
 
