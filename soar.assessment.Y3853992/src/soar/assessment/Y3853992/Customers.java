@@ -7,17 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Customers {
-	// TODO: delete
-	public String getUsername(int customerID) throws ClassNotFoundException, SQLException {
+	public int getCustomerID(String username) throws NoValidEntryException, ClassNotFoundException, SQLException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
-        Statement stmt = con.createStatement();
-        
-		ResultSet rs = stmt.executeQuery("SELECT * FROM CUSTOMERS WHERE CUSTOMER_ID=" + customerID);
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM CUSTOMERS WHERE USERNAME=" + "\'" + username + "\'");
 		if(rs.next()) {
-			return rs.getString("USERNAME");
+			return rs.getInt("CUSTOMER_ID");
 		} else {
-			return "customer ID does not exist";
+			throw new NoValidEntryException("Unable to find a valid ID for the given username.");
 		}
 	}
 }

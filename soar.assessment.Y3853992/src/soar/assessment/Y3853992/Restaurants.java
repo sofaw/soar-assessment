@@ -7,6 +7,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Restaurants {
+	public int getRestaurantID(String username) throws NoValidEntryException, ClassNotFoundException, SQLException {
+		Class.forName("org.h2.Driver");
+		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE USERNAME=" + "\'" + username + "\'");
+		if(rs.next()) {
+			return rs.getInt("RESTAURANT_ID");
+		} else {
+			throw new NoValidEntryException("Unable to find a valid ID for the given username.");
+		}
+	}
+	
 	public void addMenuItem(int restaurantID, String title, float price) throws ClassNotFoundException, SQLException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );

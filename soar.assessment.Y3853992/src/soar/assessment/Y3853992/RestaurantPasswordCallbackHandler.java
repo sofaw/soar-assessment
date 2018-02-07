@@ -26,6 +26,7 @@ public class RestaurantPasswordCallbackHandler implements CallbackHandler {
 				con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE USERNAME=" + "\'" + wspc.getIdentifer() + "\'");
+
 				if(rs.next()) {
 					wspc.setPassword(rs.getString("PASSWORD"));
 				} else {

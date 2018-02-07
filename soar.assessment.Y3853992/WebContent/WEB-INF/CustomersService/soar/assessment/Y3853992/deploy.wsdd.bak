@@ -20,10 +20,19 @@
       <parameter name="className" value="soar.assessment.Y3853992.CustomersSoapBindingImpl"/>
       <parameter name="wsdlPortType" value="Customers"/>
       <parameter name="typeMappingVersion" value="1.2"/>
-      <operation name="getUsername" qname="operNS:getUsername" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getUsernameReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
-        <parameter qname="pns:customerID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      <operation name="getCustomerID" qname="operNS:getCustomerID" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getCustomerIDReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:username" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="NoValidEntryException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
-      <parameter name="allowedMethods" value="getUsername"/>
+      <parameter name="allowedMethods" value="getCustomerID"/>
 
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:NoValidEntryException"
+        type="java:soar.assessment.Y3853992.NoValidEntryException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
   </service>
 </deployment>

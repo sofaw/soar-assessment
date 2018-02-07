@@ -44,10 +44,10 @@ public class CustomersProxy implements soar.assessment.Y3853992.Customers {
     return customers;
   }
   
-  public java.lang.String getUsername(int customerID) throws java.rmi.RemoteException{
+  public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException{
     if (customers == null)
       _initCustomersProxy();
-    return customers.getUsername(customerID);
+    return customers.getCustomerID(username);
   }
   
   

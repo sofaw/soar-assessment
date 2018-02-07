@@ -71,7 +71,7 @@ public class Registration {
         		customer.getFullname() == null || customer.getFullname().isEmpty() ||
         		customer.getEmail() == null || customer.getEmail().isEmpty() ||
         		customer.getPassword() == null || customer.getPassword().isEmpty()) {
-        	throw new NullFieldException("customer");
+        	throw new NullFieldException("All registration fields must be provided.");
         }
         
         stmt.executeUpdate("INSERT INTO CUSTOMERS (USERNAME, FULLNAME, EMAIL, PASSWORD) VALUES ("

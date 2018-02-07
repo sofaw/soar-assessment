@@ -131,7 +131,7 @@ public class ClientApp {
 		customers.setUsername("rb");
 		customers.setPassword("secret");
 		
-		String username = customers.getUsername(1);
+		/*String username = customers.getUsername(1);
 		System.out.println(username);
 		
 		try {
@@ -142,7 +142,7 @@ public class ClientApp {
 			System.out.println(username);
 		} catch (Exception e) {
 			System.out.println("Incorrect username/password");
-		}
+		}*/
 	}
 
 }

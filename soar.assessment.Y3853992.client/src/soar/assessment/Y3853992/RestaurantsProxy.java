@@ -56,5 +56,11 @@ public class RestaurantsProxy implements soar.assessment.Y3853992.Restaurants {
     restaurants.deleteMenu(restaurantID);
   }
   
+  public int getRestaurantID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException{
+    if (restaurants == null)
+      _initRestaurantsProxy();
+    return restaurants.getRestaurantID(username);
+  }
+  
   
 }

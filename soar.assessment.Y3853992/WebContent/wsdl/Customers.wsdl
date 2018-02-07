@@ -4,42 +4,54 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
-   <element name="getUsername">
+   <element name="getCustomerID">
     <complexType>
      <sequence>
-      <element name="customerID" type="xsd:int"/>
+      <element name="username" type="xsd:string"/>
      </sequence>
     </complexType>
    </element>
-   <element name="getUsernameResponse">
+   <element name="getCustomerIDResponse">
     <complexType>
      <sequence>
-      <element name="getUsernameReturn" type="xsd:string"/>
+      <element name="getCustomerIDReturn" type="xsd:int"/>
      </sequence>
     </complexType>
    </element>
+   <complexType name="NoValidEntryException">
+    <sequence/>
+   </complexType>
+   <element name="fault" type="impl:NoValidEntryException"/>
   </schema>
  </wsdl:types>
 
-   <wsdl:message name="getUsernameRequest">
+   <wsdl:message name="getCustomerIDResponse">
 
-      <wsdl:part element="impl:getUsername" name="parameters"/>
+      <wsdl:part element="impl:getCustomerIDResponse" name="parameters"/>
 
    </wsdl:message>
 
-   <wsdl:message name="getUsernameResponse">
+   <wsdl:message name="getCustomerIDRequest">
 
-      <wsdl:part element="impl:getUsernameResponse" name="parameters"/>
+      <wsdl:part element="impl:getCustomerID" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="NoValidEntryException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
 
    </wsdl:message>
 
    <wsdl:portType name="Customers">
 
-      <wsdl:operation name="getUsername">
+      <wsdl:operation name="getCustomerID">
 
-         <wsdl:input message="impl:getUsernameRequest" name="getUsernameRequest"/>
+         <wsdl:input message="impl:getCustomerIDRequest" name="getCustomerIDRequest"/>
 
-         <wsdl:output message="impl:getUsernameResponse" name="getUsernameResponse"/>
+         <wsdl:output message="impl:getCustomerIDResponse" name="getCustomerIDResponse"/>
+
+         <wsdl:fault message="impl:NoValidEntryException" name="NoValidEntryException"/>
 
       </wsdl:operation>
 
@@ -49,21 +61,27 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 
-      <wsdl:operation name="getUsername">
+      <wsdl:operation name="getCustomerID">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="getUsernameRequest">
+         <wsdl:input name="getCustomerIDRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="getUsernameResponse">
+         <wsdl:output name="getCustomerIDResponse">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:output>
+
+         <wsdl:fault name="NoValidEntryException">
+
+            <wsdlsoap:fault name="NoValidEntryException" use="literal"/>
+
+         </wsdl:fault>
 
       </wsdl:operation>
 

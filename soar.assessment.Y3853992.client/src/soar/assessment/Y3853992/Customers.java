@@ -8,5 +8,5 @@
 package soar.assessment.Y3853992;
 
 public interface Customers extends java.rmi.Remote {
-    public java.lang.String getUsername(int customerID) throws java.rmi.RemoteException;
+    public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException;
 }

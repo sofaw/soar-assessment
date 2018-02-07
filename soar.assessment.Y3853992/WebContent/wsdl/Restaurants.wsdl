@@ -4,6 +4,24 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="getRestaurantID">
+    <complexType>
+     <sequence>
+      <element name="username" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getRestaurantIDResponse">
+    <complexType>
+     <sequence>
+      <element name="getRestaurantIDReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="NoValidEntryException">
+    <sequence/>
+   </complexType>
+   <element name="fault" type="impl:NoValidEntryException"/>
    <element name="addMenuItem">
     <complexType>
      <sequence>
@@ -35,15 +53,33 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="getRestaurantIDRequest">
+
+      <wsdl:part element="impl:getRestaurantID" name="parameters"/>
+
+   </wsdl:message>
+
    <wsdl:message name="addMenuItemRequest">
 
       <wsdl:part element="impl:addMenuItem" name="parameters"/>
 
    </wsdl:message>
 
+   <wsdl:message name="getRestaurantIDResponse">
+
+      <wsdl:part element="impl:getRestaurantIDResponse" name="parameters"/>
+
+   </wsdl:message>
+
    <wsdl:message name="deleteMenuRequest">
 
       <wsdl:part element="impl:deleteMenu" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="NoValidEntryException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
 
    </wsdl:message>
 
@@ -54,6 +90,16 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    </wsdl:message>
 
    <wsdl:portType name="Restaurants">
+
+      <wsdl:operation name="getRestaurantID">
+
+         <wsdl:input message="impl:getRestaurantIDRequest" name="getRestaurantIDRequest"/>
+
+         <wsdl:output message="impl:getRestaurantIDResponse" name="getRestaurantIDResponse"/>
+
+         <wsdl:fault message="impl:NoValidEntryException" name="NoValidEntryException"/>
+
+      </wsdl:operation>
 
       <wsdl:operation name="addMenuItem">
 
@@ -76,6 +122,30 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:binding name="RestaurantsSoapBinding" type="impl:Restaurants">
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getRestaurantID">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getRestaurantIDRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getRestaurantIDResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="NoValidEntryException">
+
+            <wsdlsoap:fault name="NoValidEntryException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
 
       <wsdl:operation name="addMenuItem">
 

@@ -6,6 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.xml.rpc.ServiceException;
+
+import org.apache.axis.AxisFault;
+import org.apache.axis.EngineConfiguration;
+import org.apache.axis.configuration.FileProvider;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,10 +34,10 @@ import java.awt.Color;
 public class GraphicalClient extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField customer_login_username;
-	private JTextField restaurant_login_username;
-	private JPasswordField customer_login_password;
-	private JPasswordField restaurant_login_password;
+	private JTextField clogin_username;
+	private JTextField rlogin_username;
+	private JPasswordField clogin_password;
+	private JPasswordField rlogin_password;
 	private JTextField textField_1;
 	private JTextField textField_3;
 	private JTextField textField_4;
@@ -48,6 +53,14 @@ public class GraphicalClient extends JFrame {
 	private JTextField rreg_address;
 	private JTextField rreg_email;
 	private JPasswordField rreg_password;
+	
+	private int restaurantID = -1;
+	private int customerID = -1;
+	
+	private EngineConfiguration restaurantsConfig;		
+	private RestaurantsSoapBindingStub restaurants;
+	EngineConfiguration customersConfig;
+	CustomersSoapBindingStub customers;
 
 	/**
 	 * Launch the application.
@@ -69,6 +82,16 @@ public class GraphicalClient extends JFrame {
 	 * Create the frame.
 	 */
 	public GraphicalClient() {
+		// Setup stubs
+		try {
+			restaurantsConfig = new FileProvider(ClientApp.class.getResourceAsStream("restaurantclient.wsdd"));
+			restaurants = (RestaurantsSoapBindingStub) new RestaurantsServiceLocator(restaurantsConfig).getRestaurants();
+			customersConfig = new FileProvider(ClientApp.class.getResourceAsStream("customerclient.wsdd"));
+			customers = (CustomersSoapBindingStub) new CustomersServiceLocator(customersConfig).getCustomers();
+		} catch (ServiceException ex) {
+			ex.printStackTrace();
+		}
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -93,27 +116,38 @@ public class GraphicalClient extends JFrame {
 		gbc_lblUsername.gridy = 1;
 		home_panel.add(lblUsername, gbc_lblUsername);
 		
-		customer_login_username = new JTextField();
-		GridBagConstraints gbc_customer_login_username = new GridBagConstraints();
-		gbc_customer_login_username.insets = new Insets(0, 0, 5, 5);
-		gbc_customer_login_username.fill = GridBagConstraints.HORIZONTAL;
-		gbc_customer_login_username.gridx = 3;
-		gbc_customer_login_username.gridy = 1;
-		home_panel.add(customer_login_username, gbc_customer_login_username);
-		customer_login_username.setColumns(10);
+		clogin_username = new JTextField();
+		GridBagConstraints gbc_clogin_username = new GridBagConstraints();
+		gbc_clogin_username.insets = new Insets(0, 0, 5, 5);
+		gbc_clogin_username.fill = GridBagConstraints.HORIZONTAL;
+		gbc_clogin_username.gridx = 3;
+		gbc_clogin_username.gridy = 1;
+		home_panel.add(clogin_username, gbc_clogin_username);
+		clogin_username.setColumns(10);
 		
 		JButton btnCustomerLogin = new JButton("Customer login");
 		btnCustomerLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// Open customer logged in window
-				// TODO: add password/username checks
-				String username = customer_login_username.getText();
-				String password = customer_login_password.getText();
-				System.out.println(username);
-				System.out.println(password);
-				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-				cardLayout.show(contentPane, "customer_panel");
+				String username = clogin_username.getText();
+				String password = clogin_password.getText();
+
+				try {
+					customers.setUsername(username);
+					customers.setPassword(password);
+					customerID = customers.getCustomerID(username);
+					
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "customer_panel");
+				} catch(NoValidEntryException ex) {
+					JOptionPane.showMessageDialog(home_panel, "Could not get ID for given username.");
+				} catch (Exception ex) {
+					if(ex instanceof AxisFault) {
+						JOptionPane.showMessageDialog(home_panel, "Incorrect username/password.");
+					} else {
+						JOptionPane.showMessageDialog(home_panel, "An error occurred. Please try again.");
+					}
+				}
 			}
 		});
 		GridBagConstraints gbc_btnCustomerLogin = new GridBagConstraints();
@@ -132,13 +166,13 @@ public class GraphicalClient extends JFrame {
 		gbc_lblPassword.gridy = 2;
 		home_panel.add(lblPassword, gbc_lblPassword);
 		
-		customer_login_password = new JPasswordField();
-		GridBagConstraints gbc_customer_login_password = new GridBagConstraints();
-		gbc_customer_login_password.insets = new Insets(0, 0, 5, 5);
-		gbc_customer_login_password.fill = GridBagConstraints.HORIZONTAL;
-		gbc_customer_login_password.gridx = 3;
-		gbc_customer_login_password.gridy = 2;
-		home_panel.add(customer_login_password, gbc_customer_login_password);
+		clogin_password = new JPasswordField();
+		GridBagConstraints gbc_clogin_password = new GridBagConstraints();
+		gbc_clogin_password.insets = new Insets(0, 0, 5, 5);
+		gbc_clogin_password.fill = GridBagConstraints.HORIZONTAL;
+		gbc_clogin_password.gridx = 3;
+		gbc_clogin_password.gridy = 2;
+		home_panel.add(clogin_password, gbc_clogin_password);
 		
 		JLabel lblUsername_1 = new JLabel("Username:");
 		GridBagConstraints gbc_lblUsername_1 = new GridBagConstraints();
@@ -148,24 +182,37 @@ public class GraphicalClient extends JFrame {
 		gbc_lblUsername_1.gridy = 4;
 		home_panel.add(lblUsername_1, gbc_lblUsername_1);
 		
-		restaurant_login_username = new JTextField();
-		GridBagConstraints gbc_restaurant_login_username = new GridBagConstraints();
-		gbc_restaurant_login_username.insets = new Insets(0, 0, 5, 5);
-		gbc_restaurant_login_username.fill = GridBagConstraints.HORIZONTAL;
-		gbc_restaurant_login_username.gridx = 3;
-		gbc_restaurant_login_username.gridy = 4;
-		home_panel.add(restaurant_login_username, gbc_restaurant_login_username);
-		restaurant_login_username.setColumns(10);
+		rlogin_username = new JTextField();
+		GridBagConstraints gbc_rlogin_username = new GridBagConstraints();
+		gbc_rlogin_username.insets = new Insets(0, 0, 5, 5);
+		gbc_rlogin_username.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rlogin_username.gridx = 3;
+		gbc_rlogin_username.gridy = 4;
+		home_panel.add(rlogin_username, gbc_rlogin_username);
+		rlogin_username.setColumns(10);
 		
 		JButton btnRestaurantLogin = new JButton("Restaurant Login");
 		btnRestaurantLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO: add password/username checks
-				String username = restaurant_login_username.getText();
-				String password = restaurant_login_password.getText();
-				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-				cardLayout.show(contentPane, "restaurant_panel");
+				String username = rlogin_username.getText();
+				String password = rlogin_password.getText();
+				try {
+					restaurants.setUsername(username);
+					restaurants.setPassword(password);
+					restaurantID = restaurants.getRestaurantID(username);
+					
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "restaurant_panel");
+				} catch(NoValidEntryException ex) {
+					JOptionPane.showMessageDialog(home_panel, "Could not get ID for given username.");
+				} catch (Exception ex) {
+					if(ex instanceof AxisFault) {
+						JOptionPane.showMessageDialog(home_panel, "Incorrect username/password.");
+					} else {
+						JOptionPane.showMessageDialog(home_panel, "An error occurred. Please try again.");
+					}
+				}
 			}
 		});
 		GridBagConstraints gbc_btnRestaurantLogin = new GridBagConstraints();
@@ -184,13 +231,13 @@ public class GraphicalClient extends JFrame {
 		gbc_lblPassword_1.gridy = 5;
 		home_panel.add(lblPassword_1, gbc_lblPassword_1);
 		
-		restaurant_login_password = new JPasswordField();
-		GridBagConstraints gbc_restaurant_login_password = new GridBagConstraints();
-		gbc_restaurant_login_password.insets = new Insets(0, 0, 5, 5);
-		gbc_restaurant_login_password.fill = GridBagConstraints.HORIZONTAL;
-		gbc_restaurant_login_password.gridx = 3;
-		gbc_restaurant_login_password.gridy = 5;
-		home_panel.add(restaurant_login_password, gbc_restaurant_login_password);
+		rlogin_password = new JPasswordField();
+		GridBagConstraints gbc_rlogin_password = new GridBagConstraints();
+		gbc_rlogin_password.insets = new Insets(0, 0, 5, 5);
+		gbc_rlogin_password.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rlogin_password.gridx = 3;
+		gbc_rlogin_password.gridy = 5;
+		home_panel.add(rlogin_password, gbc_rlogin_password);
 		
 		JButton btnCustomerRegistration = new JButton("Customer Registration");
 		btnCustomerRegistration.addMouseListener(new MouseAdapter() {
