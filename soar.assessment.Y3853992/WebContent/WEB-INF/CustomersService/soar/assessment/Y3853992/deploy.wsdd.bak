@@ -20,16 +20,28 @@
       <parameter name="className" value="soar.assessment.Y3853992.CustomersSoapBindingImpl"/>
       <parameter name="wsdlPortType" value="Customers"/>
       <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="getMenu" qname="operNS:getMenu" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getMenuReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Item" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="NoResultsException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoResultsException" type="tns:NoResultsException" xmlns:tns="http://Y3853992.assessment.soar"/>
+      </operation>
       <operation name="getCustomerID" qname="operNS:getCustomerID" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getCustomerIDReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:username" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <fault name="NoValidEntryException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException" xmlns:tns="http://Y3853992.assessment.soar"/>
+        <fault name="NoValidEntryException" qname="fns:fault1" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
       <operation name="searchForRestaurants" qname="operNS:searchForRestaurants" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:searchForRestaurantsReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Restaurant" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
         <parameter qname="pns:searchTerm" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <fault name="NoResultsException" qname="fns:fault1" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoResultsException" type="tns:NoResultsException" xmlns:tns="http://Y3853992.assessment.soar"/>
+        <fault name="NoResultsException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoResultsException" type="tns:NoResultsException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
-      <parameter name="allowedMethods" value="searchForRestaurants getCustomerID"/>
+      <parameter name="allowedMethods" value="getMenu searchForRestaurants getCustomerID"/>
 
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:Item"
+        type="java:soar.assessment.Y3853992.Item"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
       <typeMapping
         xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:Restaurant"
@@ -40,16 +52,16 @@
       />
       <typeMapping
         xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:NoResultsException"
-        type="java:soar.assessment.Y3853992.NoResultsException"
+        qname="ns:NoValidEntryException"
+        type="java:soar.assessment.Y3853992.NoValidEntryException"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
       <typeMapping
         xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:NoValidEntryException"
-        type="java:soar.assessment.Y3853992.NoValidEntryException"
+        qname="ns:NoResultsException"
+        type="java:soar.assessment.Y3853992.NoResultsException"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

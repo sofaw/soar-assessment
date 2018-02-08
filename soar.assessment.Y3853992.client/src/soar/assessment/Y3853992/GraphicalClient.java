@@ -70,6 +70,7 @@ public class GraphicalClient extends JFrame {
 	private JTextField rreg_email;
 	private JPasswordField rreg_password;
 	private JList<Restaurant> c_search_list;
+	private JList<Item> c_menu_list;
 	
 	private int restaurantID = -1;
 	private int customerID = -1;
@@ -396,7 +397,6 @@ public class GraphicalClient extends JFrame {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				// TODO: launch menu page for selected restaurant
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if(!lsm.getValueIsAdjusting()) {
 					int indexA = e.getFirstIndex();
@@ -407,6 +407,28 @@ public class GraphicalClient extends JFrame {
 					} else {
 						restaurantId = c_search_list.getModel().getElementAt(indexB).getRestaurantID();
 					}
+					try {
+						Item[] items = customers.getMenu(restaurantId);
+						
+						// Populate menu list
+						DefaultListModel<Item> dlm = new DefaultListModel<Item>();
+						for(int i = 0; i < items.length; i++) {
+							dlm.addElement(items[i]);
+						}
+						c_menu_list.setModel(dlm);
+						
+						CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
+						cardLayout.show(customer_panel_search_tab, "customer_tab_1_place_order");
+					} catch (NoResultsException ex) {
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "No menu for given restaurant. Please try again.");
+					} catch (RemoteException ex) {
+						if(ex instanceof AxisFault) {
+							JOptionPane.showMessageDialog(customer_panel_search_tab, "Incorrect username/password.");
+						} else {
+							JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
+						}
+					}
+					
 				}
 			}
 	    	
@@ -523,15 +545,34 @@ public class GraphicalClient extends JFrame {
 		gbc_lblBasket.gridy = 2;
 		customer_tab_1_place_order.add(lblBasket, gbc_lblBasket);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.gridheight = 3;
-		gbc_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 1;
-		gbc_panel.gridy = 3;
-		customer_tab_1_place_order.add(panel, gbc_panel);
+		c_menu_list = new JList<Item>();
+		c_menu_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		c_menu_list.setCellRenderer(new ListCellRenderer<Item>() {
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				String text = value.getTitle() + ": " + value.getPrice();
+				JLabel component = new JLabel();
+				component.setText(text);
+				component.setOpaque(true);
+				if (isSelected) {
+				    component.setBackground(list.getSelectionBackground());
+				    component.setForeground(list.getSelectionForeground());
+				} else {
+				    component.setBackground(list.getBackground());
+				    component.setForeground(list.getForeground());
+				}
+				return component;
+			}
+			
+		});
+		GridBagConstraints gbc_c_menu_list = new GridBagConstraints();
+		gbc_c_menu_list.gridheight = 3;
+		gbc_c_menu_list.insets = new Insets(0, 0, 5, 5);
+		gbc_c_menu_list.fill = GridBagConstraints.BOTH;
+		gbc_c_menu_list.gridx = 1;
+		gbc_c_menu_list.gridy = 3;
+		customer_tab_1_place_order.add(c_menu_list, gbc_c_menu_list);
 		
 		JPanel basket_panel = new JPanel();
 		basket_panel.setBackground(Color.WHITE);

@@ -4,6 +4,32 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="getMenu">
+    <complexType>
+     <sequence>
+      <element name="restaurantID" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getMenuResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getMenuReturn" type="impl:Item"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Item">
+    <sequence>
+     <element name="itemID" type="xsd:int"/>
+     <element name="price" type="xsd:float"/>
+     <element name="restaurantID" type="xsd:int"/>
+     <element name="title" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="NoResultsException">
+    <sequence/>
+   </complexType>
+   <element name="fault" type="impl:NoResultsException"/>
    <element name="getCustomerID">
     <complexType>
      <sequence>
@@ -21,7 +47,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <complexType name="NoValidEntryException">
     <sequence/>
    </complexType>
-   <element name="fault" type="impl:NoValidEntryException"/>
+   <element name="fault1" type="impl:NoValidEntryException"/>
    <element name="searchForRestaurants">
     <complexType>
      <sequence>
@@ -46,16 +72,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="username" nillable="true" type="xsd:string"/>
     </sequence>
    </complexType>
-   <complexType name="NoResultsException">
-    <sequence/>
-   </complexType>
-   <element name="fault1" type="impl:NoResultsException"/>
   </schema>
  </wsdl:types>
 
+   <wsdl:message name="getMenuRequest">
+
+      <wsdl:part element="impl:getMenu" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getMenuResponse">
+
+      <wsdl:part element="impl:getMenuResponse" name="parameters"/>
+
+   </wsdl:message>
+
    <wsdl:message name="NoResultsException">
 
-      <wsdl:part element="impl:fault1" name="fault"/>
+      <wsdl:part element="impl:fault" name="fault"/>
 
    </wsdl:message>
 
@@ -85,11 +119,21 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    <wsdl:message name="NoValidEntryException">
 
-      <wsdl:part element="impl:fault" name="fault"/>
+      <wsdl:part element="impl:fault1" name="fault"/>
 
    </wsdl:message>
 
    <wsdl:portType name="Customers">
+
+      <wsdl:operation name="getMenu">
+
+         <wsdl:input message="impl:getMenuRequest" name="getMenuRequest"/>
+
+         <wsdl:output message="impl:getMenuResponse" name="getMenuResponse"/>
+
+         <wsdl:fault message="impl:NoResultsException" name="NoResultsException"/>
+
+      </wsdl:operation>
 
       <wsdl:operation name="getCustomerID">
 
@@ -116,6 +160,30 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:binding name="CustomersSoapBinding" type="impl:Customers">
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getMenu">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getMenuRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getMenuResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="NoResultsException">
+
+            <wsdlsoap:fault name="NoResultsException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
 
       <wsdl:operation name="getCustomerID">
 

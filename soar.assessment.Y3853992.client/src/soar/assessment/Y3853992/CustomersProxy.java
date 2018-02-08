@@ -56,5 +56,11 @@ public class CustomersProxy implements soar.assessment.Y3853992.Customers {
     return customers.searchForRestaurants(searchTerm);
   }
   
+  public soar.assessment.Y3853992.Item[] getMenu(int restaurantID) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoResultsException{
+    if (customers == null)
+      _initCustomersProxy();
+    return customers.getMenu(restaurantID);
+  }
+  
   
 }

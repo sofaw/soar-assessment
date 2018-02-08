@@ -42,4 +42,27 @@ public class Customers {
 		
 		return results.toArray(new Restaurant[results.size()]);
 	}
+	
+	public Item[] getMenu(int restaurantID) throws ClassNotFoundException, SQLException, NoResultsException {
+		Class.forName("org.h2.Driver");
+		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
+		
+		ArrayList<Item> results = new ArrayList<Item>();
+		while(rs.next()) {
+			Item item = new Item();
+			item.setItemID(rs.getInt("ITEM_ID"));
+			item.setRestaurantID(restaurantID);
+			item.setTitle(rs.getString("TITLE"));
+			item.setPrice(rs.getFloat("PRICE"));
+			results.add(item);
+		}
+		
+		if(results.size() == 0) {
+			throw new NoResultsException("No results for given restaurantID.");
+		}
+		
+		return results.toArray(new Item[results.size()]);
+	}
 }
