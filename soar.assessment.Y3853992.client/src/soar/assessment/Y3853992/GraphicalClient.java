@@ -75,7 +75,10 @@ public class GraphicalClient extends JFrame {
 	private JTextField rreg_email;
 	private JPasswordField rreg_password;
 	private JList<Restaurant> c_search_list;
-	private JList<Item> c_menu_list;
+	private JPanel c_menu_panel;
+	private JList<Item> basket_list;
+	private DefaultListModel<Item> basket_contents;
+	private JLabel order_total_label;
 	
 	private int restaurantID = -1;
 	private int customerID = -1;
@@ -415,12 +418,42 @@ public class GraphicalClient extends JFrame {
 					try {
 						Item[] items = customers.getMenu(restaurantId);
 						
-						// Populate menu list
-						DefaultListModel<Item> dlm = new DefaultListModel<Item>();
 						for(int i = 0; i < items.length; i++) {
-							dlm.addElement(items[i]);
-						}
-						c_menu_list.setModel(dlm);
+							Item currentItem = items[i];
+							JLabel item_label = new JLabel(currentItem.getTitle() + ": £" + currentItem.getPrice());
+							GridBagConstraints gbc_item_label = new GridBagConstraints();
+							gbc_item_label.anchor = GridBagConstraints.WEST;
+							gbc_item_label.insets = new Insets(0, 0, 5, 5);
+							gbc_item_label.gridx = 0;
+							gbc_item_label.gridy = i+1;
+							c_menu_panel.add(item_label, gbc_item_label);
+							
+							JButton add_to_basket = new JButton("+");
+							add_to_basket.addMouseListener(new MouseAdapter() {
+								@Override
+								public void mouseClicked(MouseEvent e) {
+									// Add title to basket
+									if(basket_contents == null) {
+										basket_contents = new DefaultListModel<Item>();
+									}
+									basket_contents.addElement(currentItem);
+									basket_list.setModel(basket_contents);
+									
+									// Update order total
+									float total = 0;
+									for(int x = 0; x < basket_contents.getSize(); x++) {
+										total += basket_contents.getElementAt(x).getPrice();
+									}
+									order_total_label.setText("Order total: £" + total);
+								}
+							});
+							GridBagConstraints gbc_add_to_basket = new GridBagConstraints();
+							gbc_add_to_basket.anchor = GridBagConstraints.WEST;
+							gbc_add_to_basket.insets = new Insets(0, 0, 5, 5);
+							gbc_add_to_basket.gridx = 1;
+							gbc_add_to_basket.gridy = i+1;
+							c_menu_panel.add(add_to_basket, gbc_add_to_basket);
+						}	
 						
 						CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 						cardLayout.show(customer_panel_search_tab, "customer_tab_1_place_order");
@@ -513,9 +546,9 @@ public class GraphicalClient extends JFrame {
 		customer_panel_search_tab.add(customer_tab_1_place_order, "customer_tab_1_place_order");
 		GridBagLayout gbl_customer_tab_1_place_order = new GridBagLayout();
 		gbl_customer_tab_1_place_order.columnWidths = new int[]{0, 210, 0, 185, 0, 0};
-		gbl_customer_tab_1_place_order.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_customer_tab_1_place_order.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_customer_tab_1_place_order.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_customer_tab_1_place_order.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_customer_tab_1_place_order.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		customer_tab_1_place_order.setLayout(gbl_customer_tab_1_place_order);
 		
 		JLabel customer_tab_1_place_order_restaurant_name_label = new JLabel("");
@@ -537,7 +570,7 @@ public class GraphicalClient extends JFrame {
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setOrientation(SwingConstants.VERTICAL);
 		GridBagConstraints gbc_separator_2 = new GridBagConstraints();
-		gbc_separator_2.gridheight = 6;
+		gbc_separator_2.gridheight = 7;
 		gbc_separator_2.insets = new Insets(0, 0, 0, 5);
 		gbc_separator_2.gridx = 2;
 		gbc_separator_2.gridy = 1;
@@ -551,110 +584,58 @@ public class GraphicalClient extends JFrame {
 		gbc_lblBasket.gridy = 2;
 		customer_tab_1_place_order.add(lblBasket, gbc_lblBasket);
 		
-		c_menu_list = new JList<Item>();
-		c_menu_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	    
-		c_menu_list.setCellRenderer(new ListCellRenderer<Item>() {
-			@Override
-			public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
-					boolean isSelected, boolean cellHasFocus) {
-				String text = value.getTitle() + ": £" + value.getPrice();
-				JPanel panel = new JPanel();
-				panel.setOpaque(true);
-				JLabel itemLabel = new JLabel();
-				itemLabel.setText(text);
-				panel.add(itemLabel);
-				JButton addButton = new JButton();
-				addButton.setText("+");
-				
-				addButton.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						Color prev = addButton.getForeground();
-						addButton.setForeground(list.getSelectionBackground());
-						System.out.println(value.getTitle());
-						addButton.setForeground(prev);
-					}
-					
-				});
-				
-				panel.add(addButton);
-				// TODO: make this so clicking item adds it to basket
-				if (isSelected) {
-				    panel.setBackground(list.getSelectionBackground());
-				    panel.setForeground(list.getSelectionForeground());
-				} else {
-					panel.setBackground(list.getBackground());
-				    panel.setForeground(list.getForeground());
-				}
-				return panel;
-			}
-			
-		});
-	    c_menu_list.addMouseListener(new MouseAdapter() {
-	    	@Override
-	    	public void mouseClicked(MouseEvent event) {
-	    		Point p = event.getPoint();
-	    	  	int index = c_menu_list.locationToIndex(p);
-	    	  	
-	    	  	Item value = c_menu_list.getModel().getElementAt(index);
-	    	  	JPanel panel = (JPanel) c_menu_list.getCellRenderer()
-	    	  			.getListCellRendererComponent(c_menu_list, value, index, true, true);
-	    	  	Component[] children = panel.getComponents();
-	    	  	for(int i = 0; i < children.length; i++) {
-	    	  		if(children[i] instanceof JButton) {
-	    	  			JButton btn = (JButton) children[i];
-	    	  			btn.doClick();
-	    	  		}
-	    	  	}
-	        }
-	    });
-		JScrollPane menu_scroll_pane = new JScrollPane(c_menu_list);
+		c_menu_panel = new JPanel();
+		c_menu_panel.setBackground(Color.WHITE);
+		GridBagLayout gbl_c_menu_panel = new GridBagLayout();
+		gbl_c_menu_panel.columnWidths = new int[]{0};
+		gbl_c_menu_panel.rowHeights = new int[]{0};
+		gbl_c_menu_panel.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_c_menu_panel.rowWeights = new double[]{Double.MIN_VALUE};
+		c_menu_panel.setLayout(gbl_c_menu_panel);
+		
+		JScrollPane menu_scroll_pane = new JScrollPane(c_menu_panel);
 		GridBagConstraints gbc_menu_scroll_pane = new GridBagConstraints();
-		gbc_menu_scroll_pane.gridheight = 3;
+		gbc_menu_scroll_pane.gridheight = 4;
 		gbc_menu_scroll_pane.insets = new Insets(0, 0, 5, 5);
 		gbc_menu_scroll_pane.fill = GridBagConstraints.BOTH;
 		gbc_menu_scroll_pane.gridx = 1;
 		gbc_menu_scroll_pane.gridy = 3;
 		customer_tab_1_place_order.add(menu_scroll_pane, gbc_menu_scroll_pane);
 		
-		JPanel basket_panel = new JPanel();
-		basket_panel.setBackground(Color.WHITE);
-		GridBagConstraints gbc_basket_panel = new GridBagConstraints();
-		gbc_basket_panel.gridheight = 2;
-		gbc_basket_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_basket_panel.fill = GridBagConstraints.BOTH;
-		gbc_basket_panel.gridx = 3;
-		gbc_basket_panel.gridy = 3;
-		customer_tab_1_place_order.add(basket_panel, gbc_basket_panel);
+		JScrollPane basket_scroll_pane = new JScrollPane();
+		GridBagConstraints gbc_basket_scroll_pane = new GridBagConstraints();
+		gbc_basket_scroll_pane.gridheight = 2;
+		gbc_basket_scroll_pane.insets = new Insets(0, 0, 5, 5);
+		gbc_basket_scroll_pane.fill = GridBagConstraints.BOTH;
+		gbc_basket_scroll_pane.gridx = 3;
+		gbc_basket_scroll_pane.gridy = 3;
+		customer_tab_1_place_order.add(basket_scroll_pane, gbc_basket_scroll_pane);
 		
-		GridBagLayout gbl_basket_panel;
-		gbl_basket_panel = new GridBagLayout();
-		gbl_basket_panel.columnWidths = new int[]{0, 0};
-		gbl_basket_panel.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_basket_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_basket_panel.rowWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
-		basket_panel.setLayout(gbl_basket_panel);
+		basket_list = new JList<Item>();
+		basket_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		basket_scroll_pane.setViewportView(basket_list);
+		basket_list.setCellRenderer(new ListCellRenderer<Item>() {
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				return new JLabel(value.getTitle());
+			}
+			
+		});
 		
-		JSeparator separator_1 = new JSeparator();
-		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
-		gbc_separator_1.insets = new Insets(0, 0, 5, 0);
-		gbc_separator_1.gridx = 0;
-		gbc_separator_1.gridy = 1;
-		basket_panel.add(separator_1, gbc_separator_1);
-		
-		JLabel lblOrderTotal = new JLabel("Order Total:");
-		GridBagConstraints gbc_lblOrderTotal = new GridBagConstraints();
-		gbc_lblOrderTotal.anchor = GridBagConstraints.WEST;
-		gbc_lblOrderTotal.gridx = 0;
-		gbc_lblOrderTotal.gridy = 2;
-		basket_panel.add(lblOrderTotal, gbc_lblOrderTotal);
+		order_total_label = new JLabel("Order Total:");
+		GridBagConstraints gbc_order_total_label = new GridBagConstraints();
+		gbc_order_total_label.anchor = GridBagConstraints.WEST;
+		gbc_order_total_label.insets = new Insets(0, 0, 5, 5);
+		gbc_order_total_label.gridx = 3;
+		gbc_order_total_label.gridy = 5;
+		customer_tab_1_place_order.add(order_total_label, gbc_order_total_label);
 		
 		JButton btnPlaceOrder = new JButton("Place Order");
 		GridBagConstraints gbc_btnPlaceOrder = new GridBagConstraints();
 		gbc_btnPlaceOrder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnPlaceOrder.gridx = 3;
-		gbc_btnPlaceOrder.gridy = 5;
+		gbc_btnPlaceOrder.gridy = 6;
 		customer_tab_1_place_order.add(btnPlaceOrder, gbc_btnPlaceOrder);
 		
 		JPanel customer_tab_1_order_placed = new JPanel();
