@@ -18,6 +18,9 @@ import javax.swing.JOptionPane;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.CardLayout;
 import javax.swing.JPasswordField;
@@ -25,11 +28,19 @@ import javax.swing.JSeparator;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import java.awt.Color;
+import javax.swing.JTextPane;
+import javax.swing.ListModel;
+import javax.swing.JTable;
+import java.awt.FlowLayout;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.AbstractListModel;
 
 public class GraphicalClient extends JFrame {
 
@@ -39,8 +50,8 @@ public class GraphicalClient extends JFrame {
 	private JPasswordField clogin_password;
 	private JPasswordField rlogin_password;
 	private JTextField textField_1;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField c_search;
+	private JTextField c_search_2;
 	private GridBagLayout gbl_basket_panel;
 	private JTextField textField_5;
 	private JTextField textField_6;
@@ -53,6 +64,7 @@ public class GraphicalClient extends JFrame {
 	private JTextField rreg_address;
 	private JTextField rreg_email;
 	private JPasswordField rreg_password;
+	private JList<String> c_search_list;
 	
 	private int restaurantID = -1;
 	private int customerID = -1;
@@ -276,7 +288,7 @@ public class GraphicalClient extends JFrame {
 		customer_panel_search_tab.setLayout(new CardLayout(0, 0));
 		
 		JPanel customer_tab_1_search = new JPanel();
-		customer_panel_search_tab.add(customer_tab_1_search, "name_136881280955797");
+		customer_panel_search_tab.add(customer_tab_1_search, "customer_tab_1_search");
 		GridBagLayout gbl_customer_tab_1_search = new GridBagLayout();
 		gbl_customer_tab_1_search.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_customer_tab_1_search.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
@@ -291,17 +303,45 @@ public class GraphicalClient extends JFrame {
 		gbc_lblSearch.gridy = 1;
 		customer_tab_1_search.add(lblSearch, gbc_lblSearch);
 		
-		textField_3 = new JTextField();
-		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
-		gbc_textField_3.gridwidth = 3;
-		gbc_textField_3.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_3.gridx = 1;
-		gbc_textField_3.gridy = 2;
-		customer_tab_1_search.add(textField_3, gbc_textField_3);
-		textField_3.setColumns(10);
+		c_search = new JTextField();
+		GridBagConstraints gbc_c_search = new GridBagConstraints();
+		gbc_c_search.gridwidth = 3;
+		gbc_c_search.insets = new Insets(0, 0, 5, 5);
+		gbc_c_search.fill = GridBagConstraints.HORIZONTAL;
+		gbc_c_search.gridx = 1;
+		gbc_c_search.gridy = 2;
+		customer_tab_1_search.add(c_search, gbc_c_search);
+		c_search.setColumns(10);
 		
 		JButton btnGo = new JButton("Go");
+		btnGo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String searchTerm = c_search.getText();
+				try {
+					Restaurant[] searchResults = customers.searchForRestaurants(searchTerm);
+					
+					// Display each of the search results in the results panel
+					DefaultListModel<String> dlm = new DefaultListModel<String>();
+					for(int i = 0; i < searchResults.length; i++) {
+						String element = "<html>" + searchResults[i].getRestaurantName()
+								+ "<br>" + searchResults[i].getEmail() + "</html>";
+						dlm.addElement(element);
+					}
+					
+					c_search_list.setModel(dlm);
+					
+					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
+					cardLayout.show(customer_panel_search_tab, "customer_tab_1_results");
+				} catch (Exception ex) {
+					if(ex instanceof AxisFault) {
+						JOptionPane.showMessageDialog(home_panel, "Incorrect username/password.");
+					} else {
+						JOptionPane.showMessageDialog(home_panel, "An error occurred. Please try again.");
+					}
+				}
+			}
+		});
 		GridBagConstraints gbc_btnGo = new GridBagConstraints();
 		gbc_btnGo.insets = new Insets(0, 0, 5, 5);
 		gbc_btnGo.gridx = 3;
@@ -309,12 +349,12 @@ public class GraphicalClient extends JFrame {
 		customer_tab_1_search.add(btnGo, gbc_btnGo);
 		
 		JPanel customer_tab_1_results = new JPanel();
-		customer_panel_search_tab.add(customer_tab_1_results, "name_136915680923230");
+		customer_panel_search_tab.add(customer_tab_1_results, "customer_tab_1_results");
 		GridBagLayout gbl_customer_tab_1_results = new GridBagLayout();
 		gbl_customer_tab_1_results.columnWidths = new int[]{0, 78, 60, 0, 0, 0, 0};
-		gbl_customer_tab_1_results.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_customer_tab_1_results.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_customer_tab_1_results.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_customer_tab_1_results.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_customer_tab_1_results.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		customer_tab_1_results.setLayout(gbl_customer_tab_1_results);
 		
 		JLabel lblResults = new JLabel("Results:");
@@ -325,51 +365,80 @@ public class GraphicalClient extends JFrame {
 		gbc_lblResults.gridy = 1;
 		customer_tab_1_results.add(lblResults, gbc_lblResults);
 		
+		c_search_list = new JList<String>();
+		c_search_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		GridBagConstraints gbc_c_search_list = new GridBagConstraints();
+		gbc_c_search_list.gridheight = 5;
+		gbc_c_search_list.insets = new Insets(0, 0, 5, 5);
+		gbc_c_search_list.fill = GridBagConstraints.BOTH;
+		gbc_c_search_list.gridx = 4;
+		gbc_c_search_list.gridy = 2;
+		customer_tab_1_results.add(c_search_list, gbc_c_search_list);
+		
 		JLabel lblSearch_1 = new JLabel("Search:");
 		GridBagConstraints gbc_lblSearch_1 = new GridBagConstraints();
 		gbc_lblSearch_1.anchor = GridBagConstraints.WEST;
 		gbc_lblSearch_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSearch_1.gridx = 1;
-		gbc_lblSearch_1.gridy = 2;
+		gbc_lblSearch_1.gridy = 3;
 		customer_tab_1_results.add(lblSearch_1, gbc_lblSearch_1);
 		
-		JScrollPane customer_tab_1_results_pane = new JScrollPane();
-		GridBagConstraints gbc_customer_tab_1_results_pane = new GridBagConstraints();
-		gbc_customer_tab_1_results_pane.gridheight = 4;
-		gbc_customer_tab_1_results_pane.insets = new Insets(0, 0, 5, 5);
-		gbc_customer_tab_1_results_pane.fill = GridBagConstraints.BOTH;
-		gbc_customer_tab_1_results_pane.gridx = 4;
-		gbc_customer_tab_1_results_pane.gridy = 2;
-		customer_tab_1_results.add(customer_tab_1_results_pane, gbc_customer_tab_1_results_pane);
-		
-		textField_4 = new JTextField();
-		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
-		gbc_textField_4.gridwidth = 2;
-		gbc_textField_4.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_4.gridx = 1;
-		gbc_textField_4.gridy = 3;
-		customer_tab_1_results.add(textField_4, gbc_textField_4);
-		textField_4.setColumns(10);
+		c_search_2 = new JTextField();
+		GridBagConstraints gbc_c_search_2 = new GridBagConstraints();
+		gbc_c_search_2.gridwidth = 2;
+		gbc_c_search_2.insets = new Insets(0, 0, 5, 5);
+		gbc_c_search_2.fill = GridBagConstraints.HORIZONTAL;
+		gbc_c_search_2.gridx = 1;
+		gbc_c_search_2.gridy = 4;
+		customer_tab_1_results.add(c_search_2, gbc_c_search_2);
+		c_search_2.setColumns(10);
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		GridBagConstraints gbc_separator = new GridBagConstraints();
-		gbc_separator.gridheight = 5;
+		gbc_separator.gridheight = 6;
 		gbc_separator.insets = new Insets(0, 0, 5, 5);
 		gbc_separator.gridx = 3;
 		gbc_separator.gridy = 1;
 		customer_tab_1_results.add(separator, gbc_separator);
 		
 		JButton btnGo_1 = new JButton("Go");
+		btnGo_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String searchTerm = c_search_2.getText();
+				try {
+					Restaurant[] searchResults = customers.searchForRestaurants(searchTerm);
+					
+					// Display each of the search results in the results panel
+					DefaultListModel<String> dlm = new DefaultListModel<String>();
+					for(int i = 0; i < searchResults.length; i++) {
+						String element = "<html>" + searchResults[i].getRestaurantName()
+								+ "<br>" + searchResults[i].getEmail() + "</html>";
+						dlm.addElement(element);
+					}
+					
+					c_search_list.setModel(dlm);
+					
+					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
+					cardLayout.show(customer_panel_search_tab, "customer_tab_1_results");
+				} catch (Exception ex) {
+					if(ex instanceof AxisFault) {
+						JOptionPane.showMessageDialog(home_panel, "Incorrect username/password.");
+					} else {
+						JOptionPane.showMessageDialog(home_panel, "An error occurred. Please try again.");
+					}
+				}
+			}
+		});
 		GridBagConstraints gbc_btnGo_1 = new GridBagConstraints();
 		gbc_btnGo_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnGo_1.gridx = 2;
-		gbc_btnGo_1.gridy = 4;
+		gbc_btnGo_1.gridy = 5;
 		customer_tab_1_results.add(btnGo_1, gbc_btnGo_1);
 		
 		JPanel customer_tab_1_place_order = new JPanel();
-		customer_panel_search_tab.add(customer_tab_1_place_order, "name_136936962547985");
+		customer_panel_search_tab.add(customer_tab_1_place_order, "customer_tab_1_place_order");
 		GridBagLayout gbl_customer_tab_1_place_order = new GridBagLayout();
 		gbl_customer_tab_1_place_order.columnWidths = new int[]{0, 210, 0, 185, 0, 0};
 		gbl_customer_tab_1_place_order.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -459,7 +528,7 @@ public class GraphicalClient extends JFrame {
 		customer_tab_1_place_order.add(btnPlaceOrder, gbc_btnPlaceOrder);
 		
 		JPanel customer_tab_1_order_placed = new JPanel();
-		customer_panel_search_tab.add(customer_tab_1_order_placed, "name_136959918189771");
+		customer_panel_search_tab.add(customer_tab_1_order_placed, "customer_tab_1_order_placed");
 		GridBagLayout gbl_customer_tab_1_order_placed = new GridBagLayout();
 		gbl_customer_tab_1_order_placed.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_customer_tab_1_order_placed.rowHeights = new int[]{0, 0, 0, 0, 0, 0};

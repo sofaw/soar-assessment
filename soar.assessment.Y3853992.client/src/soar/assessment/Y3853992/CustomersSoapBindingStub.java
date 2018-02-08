@@ -16,7 +16,7 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[1];
+        _operations = new org.apache.axis.description.OperationDesc[2];
         _initOperationDesc1();
     }
 
@@ -39,6 +39,17 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
                       true
                      ));
         _operations[0] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("searchForRestaurants");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "searchTerm"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        oper.addParameter(param);
+        oper.setReturnType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Restaurant"));
+        oper.setReturnClass(soar.assessment.Y3853992.Restaurant[].class);
+        oper.setReturnQName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "searchForRestaurantsReturn"));
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[1] = oper;
 
     }
 
@@ -74,6 +85,13 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
             qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoValidEntryException");
             cachedSerQNames.add(qName);
             cls = soar.assessment.Y3853992.NoValidEntryException.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Restaurant");
+            cachedSerQNames.add(qName);
+            cls = soar.assessment.Y3853992.Restaurant.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -182,6 +200,40 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
               throw (soar.assessment.Y3853992.NoValidEntryException) axisFaultException.detail;
          }
    }
+  throw axisFaultException;
+}
+    }
+
+    public soar.assessment.Y3853992.Restaurant[] searchForRestaurants(java.lang.String searchTerm) throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[1]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "searchForRestaurants"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {searchTerm});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return (soar.assessment.Y3853992.Restaurant[]) _resp;
+            } catch (java.lang.Exception _exception) {
+                return (soar.assessment.Y3853992.Restaurant[]) org.apache.axis.utils.JavaUtils.convert(_resp, soar.assessment.Y3853992.Restaurant[].class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
   throw axisFaultException;
 }
     }

@@ -14,8 +14,12 @@
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
         <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="NoValidEntryException" qname="fns:fault" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException"/>
       </operation>
-      <parameter name="allowedMethods" value="getCustomerID"/>
+      <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://Y3853992.assessment.soar" name="searchForRestaurants" qname="operNS:searchForRestaurants" returnQName="retNS:searchForRestaurantsReturn" returnType="rtns:Restaurant" soapAction="">
+        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:searchTerm" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="searchForRestaurants getCustomerID"/>
 
+      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:Restaurant" type="java:soar.assessment.Y3853992.Restaurant" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:NoValidEntryException" type="java:soar.assessment.Y3853992.NoValidEntryException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
   </service>
 </deployment>

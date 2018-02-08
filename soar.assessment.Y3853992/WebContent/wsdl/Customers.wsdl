@@ -22,6 +22,29 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <sequence/>
    </complexType>
    <element name="fault" type="impl:NoValidEntryException"/>
+   <element name="searchForRestaurants">
+    <complexType>
+     <sequence>
+      <element name="searchTerm" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchForRestaurantsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="searchForRestaurantsReturn" type="impl:Restaurant"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Restaurant">
+    <sequence>
+     <element name="address" nillable="true" type="xsd:string"/>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="restaurantName" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
   </schema>
  </wsdl:types>
 
@@ -34,6 +57,18 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="getCustomerIDRequest">
 
       <wsdl:part element="impl:getCustomerID" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchForRestaurantsRequest">
+
+      <wsdl:part element="impl:searchForRestaurants" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchForRestaurantsResponse">
+
+      <wsdl:part element="impl:searchForRestaurantsResponse" name="parameters"/>
 
    </wsdl:message>
 
@@ -52,6 +87,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          <wsdl:output message="impl:getCustomerIDResponse" name="getCustomerIDResponse"/>
 
          <wsdl:fault message="impl:NoValidEntryException" name="NoValidEntryException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchForRestaurants">
+
+         <wsdl:input message="impl:searchForRestaurantsRequest" name="searchForRestaurantsRequest"/>
+
+         <wsdl:output message="impl:searchForRestaurantsResponse" name="searchForRestaurantsResponse"/>
 
       </wsdl:operation>
 
@@ -82,6 +125,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
             <wsdlsoap:fault name="NoValidEntryException" use="literal"/>
 
          </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchForRestaurants">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchForRestaurantsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchForRestaurantsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
 
       </wsdl:operation>
 
