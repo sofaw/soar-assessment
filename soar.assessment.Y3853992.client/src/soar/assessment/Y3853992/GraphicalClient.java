@@ -87,6 +87,8 @@ public class GraphicalClient extends JFrame {
 	private RestaurantsSoapBindingStub restaurants;
 	EngineConfiguration customersConfig;
 	CustomersSoapBindingStub customers;
+	private JTextField textField;
+	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
@@ -631,12 +633,19 @@ public class GraphicalClient extends JFrame {
 		gbc_order_total_label.gridy = 5;
 		customer_tab_1_place_order.add(order_total_label, gbc_order_total_label);
 		
-		JButton btnPlaceOrder = new JButton("Place Order");
-		GridBagConstraints gbc_btnPlaceOrder = new GridBagConstraints();
-		gbc_btnPlaceOrder.insets = new Insets(0, 0, 5, 5);
-		gbc_btnPlaceOrder.gridx = 3;
-		gbc_btnPlaceOrder.gridy = 6;
-		customer_tab_1_place_order.add(btnPlaceOrder, gbc_btnPlaceOrder);
+		JButton btnCheckout = new JButton("Checkout");
+		btnCheckout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
+				cardLayout.show(customer_panel_search_tab, "customer_tab_1_details");
+			}
+		});
+		GridBagConstraints gbc_btnCheckout = new GridBagConstraints();
+		gbc_btnCheckout.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCheckout.gridx = 3;
+		gbc_btnCheckout.gridy = 6;
+		customer_tab_1_place_order.add(btnCheckout, gbc_btnCheckout);
 		
 		JPanel customer_tab_1_order_placed = new JPanel();
 		customer_panel_search_tab.add(customer_tab_1_order_placed, "customer_tab_1_order_placed");
@@ -660,6 +669,55 @@ public class GraphicalClient extends JFrame {
 		gbc_lblPleaseCheckThe.gridx = 1;
 		gbc_lblPleaseCheckThe.gridy = 3;
 		customer_tab_1_order_placed.add(lblPleaseCheckThe, gbc_lblPleaseCheckThe);
+		
+		JPanel customer_tab_1_details = new JPanel();
+		customer_panel_search_tab.add(customer_tab_1_details, "customer_tab_1_details");
+		GridBagLayout gbl_customer_tab_1_details = new GridBagLayout();
+		gbl_customer_tab_1_details.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_customer_tab_1_details.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_customer_tab_1_details.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_customer_tab_1_details.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		customer_tab_1_details.setLayout(gbl_customer_tab_1_details);
+		
+		JLabel lblCardNumber = new JLabel("Card Number:");
+		GridBagConstraints gbc_lblCardNumber = new GridBagConstraints();
+		gbc_lblCardNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCardNumber.gridx = 1;
+		gbc_lblCardNumber.gridy = 1;
+		customer_tab_1_details.add(lblCardNumber, gbc_lblCardNumber);
+		
+		textField = new JTextField();
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.gridx = 2;
+		gbc_textField.gridy = 1;
+		customer_tab_1_details.add(textField, gbc_textField);
+		textField.setColumns(10);
+		
+		JLabel lblDeliveryAddress = new JLabel("Delivery Address:");
+		GridBagConstraints gbc_lblDeliveryAddress = new GridBagConstraints();
+		gbc_lblDeliveryAddress.anchor = GridBagConstraints.EAST;
+		gbc_lblDeliveryAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDeliveryAddress.gridx = 1;
+		gbc_lblDeliveryAddress.gridy = 2;
+		customer_tab_1_details.add(lblDeliveryAddress, gbc_lblDeliveryAddress);
+		
+		textField_2 = new JTextField();
+		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
+		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_2.gridx = 2;
+		gbc_textField_2.gridy = 2;
+		customer_tab_1_details.add(textField_2, gbc_textField_2);
+		textField_2.setColumns(10);
+		
+		JButton place_order = new JButton("Place Order");
+		GridBagConstraints gbc_place_order = new GridBagConstraints();
+		gbc_place_order.insets = new Insets(0, 0, 0, 5);
+		gbc_place_order.gridx = 2;
+		gbc_place_order.gridy = 4;
+		customer_tab_1_details.add(place_order, gbc_place_order);
 		
 		JPanel customer_panel_order_status_tab = new JPanel();
 		customer_panel.addTab("Order Status", null, customer_panel_order_status_tab, null);
