@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Point;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -27,6 +28,9 @@ import javax.swing.JButton;
 import java.awt.CardLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
@@ -34,6 +38,7 @@ import java.util.Arrays;
 
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.awt.Component;
@@ -433,13 +438,14 @@ public class GraphicalClient extends JFrame {
 			}
 	    	
 	    });
-		GridBagConstraints gbc_c_search_list = new GridBagConstraints();
-		gbc_c_search_list.gridheight = 5;
-		gbc_c_search_list.insets = new Insets(0, 0, 5, 5);
-		gbc_c_search_list.fill = GridBagConstraints.BOTH;
-		gbc_c_search_list.gridx = 4;
-		gbc_c_search_list.gridy = 2;
-		customer_tab_1_results.add(c_search_list, gbc_c_search_list);
+	    JScrollPane scroll_search_list = new JScrollPane(c_search_list);
+		GridBagConstraints gbc_scroll_search_list = new GridBagConstraints();
+		gbc_scroll_search_list.gridheight = 5;
+		gbc_scroll_search_list.insets = new Insets(0, 0, 5, 5);
+		gbc_scroll_search_list.fill = GridBagConstraints.BOTH;
+		gbc_scroll_search_list.gridx = 4;
+		gbc_scroll_search_list.gridy = 2;
+		customer_tab_1_results.add(scroll_search_list, gbc_scroll_search_list);
 		
 		JLabel lblSearch_1 = new JLabel("Search:");
 		GridBagConstraints gbc_lblSearch_1 = new GridBagConstraints();
@@ -546,33 +552,71 @@ public class GraphicalClient extends JFrame {
 		customer_tab_1_place_order.add(lblBasket, gbc_lblBasket);
 		
 		c_menu_list = new JList<Item>();
-		c_menu_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		c_menu_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	    
 		c_menu_list.setCellRenderer(new ListCellRenderer<Item>() {
 			@Override
 			public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
 					boolean isSelected, boolean cellHasFocus) {
-				String text = value.getTitle() + ": " + value.getPrice();
-				JLabel component = new JLabel();
-				component.setText(text);
-				component.setOpaque(true);
+				String text = value.getTitle() + ": £" + value.getPrice();
+				JPanel panel = new JPanel();
+				panel.setOpaque(true);
+				JLabel itemLabel = new JLabel();
+				itemLabel.setText(text);
+				panel.add(itemLabel);
+				JButton addButton = new JButton();
+				addButton.setText("+");
+				
+				addButton.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						Color prev = addButton.getForeground();
+						addButton.setForeground(list.getSelectionBackground());
+						System.out.println(value.getTitle());
+						addButton.setForeground(prev);
+					}
+					
+				});
+				
+				panel.add(addButton);
+				// TODO: make this so clicking item adds it to basket
 				if (isSelected) {
-				    component.setBackground(list.getSelectionBackground());
-				    component.setForeground(list.getSelectionForeground());
+				    panel.setBackground(list.getSelectionBackground());
+				    panel.setForeground(list.getSelectionForeground());
 				} else {
-				    component.setBackground(list.getBackground());
-				    component.setForeground(list.getForeground());
+					panel.setBackground(list.getBackground());
+				    panel.setForeground(list.getForeground());
 				}
-				return component;
+				return panel;
 			}
 			
 		});
-		GridBagConstraints gbc_c_menu_list = new GridBagConstraints();
-		gbc_c_menu_list.gridheight = 3;
-		gbc_c_menu_list.insets = new Insets(0, 0, 5, 5);
-		gbc_c_menu_list.fill = GridBagConstraints.BOTH;
-		gbc_c_menu_list.gridx = 1;
-		gbc_c_menu_list.gridy = 3;
-		customer_tab_1_place_order.add(c_menu_list, gbc_c_menu_list);
+	    c_menu_list.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseClicked(MouseEvent event) {
+	    		Point p = event.getPoint();
+	    	  	int index = c_menu_list.locationToIndex(p);
+	    	  	
+	    	  	Item value = c_menu_list.getModel().getElementAt(index);
+	    	  	JPanel panel = (JPanel) c_menu_list.getCellRenderer()
+	    	  			.getListCellRendererComponent(c_menu_list, value, index, true, true);
+	    	  	Component[] children = panel.getComponents();
+	    	  	for(int i = 0; i < children.length; i++) {
+	    	  		if(children[i] instanceof JButton) {
+	    	  			JButton btn = (JButton) children[i];
+	    	  			btn.doClick();
+	    	  		}
+	    	  	}
+	        }
+	    });
+		JScrollPane menu_scroll_pane = new JScrollPane(c_menu_list);
+		GridBagConstraints gbc_menu_scroll_pane = new GridBagConstraints();
+		gbc_menu_scroll_pane.gridheight = 3;
+		gbc_menu_scroll_pane.insets = new Insets(0, 0, 5, 5);
+		gbc_menu_scroll_pane.fill = GridBagConstraints.BOTH;
+		gbc_menu_scroll_pane.gridx = 1;
+		gbc_menu_scroll_pane.gridy = 3;
+		customer_tab_1_place_order.add(menu_scroll_pane, gbc_menu_scroll_pane);
 		
 		JPanel basket_panel = new JPanel();
 		basket_panel.setBackground(Color.WHITE);
@@ -583,6 +627,7 @@ public class GraphicalClient extends JFrame {
 		gbc_basket_panel.gridx = 3;
 		gbc_basket_panel.gridy = 3;
 		customer_tab_1_place_order.add(basket_panel, gbc_basket_panel);
+		
 		GridBagLayout gbl_basket_panel;
 		gbl_basket_panel = new GridBagLayout();
 		gbl_basket_panel.columnWidths = new int[]{0, 0};
