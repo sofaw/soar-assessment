@@ -1,12 +1,19 @@
 package soar.assessment.Y3853992;
 
 public class Restaurant {
+	protected int restaurantID;
 	protected String username;
 	protected String restaurantName;
 	protected String address;
 	protected String email;
 	protected String password;
 	
+	public int getRestaurantID() {
+		return restaurantID;
+	}
+	public void setRestaurantID(int restaurantID) {
+		this.restaurantID = restaurantID;
+	}
 	public String getUsername() {
 		return username;
 	}

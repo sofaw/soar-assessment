@@ -41,12 +41,23 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="address" nillable="true" type="xsd:string"/>
      <element name="email" nillable="true" type="xsd:string"/>
      <element name="password" nillable="true" type="xsd:string"/>
+     <element name="restaurantID" type="xsd:int"/>
      <element name="restaurantName" nillable="true" type="xsd:string"/>
      <element name="username" nillable="true" type="xsd:string"/>
     </sequence>
    </complexType>
+   <complexType name="NoResultsException">
+    <sequence/>
+   </complexType>
+   <element name="fault1" type="impl:NoResultsException"/>
   </schema>
  </wsdl:types>
+
+   <wsdl:message name="NoResultsException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
+
+   </wsdl:message>
 
    <wsdl:message name="getCustomerIDResponse">
 
@@ -96,6 +107,8 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output message="impl:searchForRestaurantsResponse" name="searchForRestaurantsResponse"/>
 
+         <wsdl:fault message="impl:NoResultsException" name="NoResultsException"/>
+
       </wsdl:operation>
 
    </wsdl:portType>
@@ -143,6 +156,12 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
             <wsdlsoap:body use="literal"/>
 
          </wsdl:output>
+
+         <wsdl:fault name="NoResultsException">
+
+            <wsdlsoap:fault name="NoResultsException" use="literal"/>
+
+         </wsdl:fault>
 
       </wsdl:operation>
 

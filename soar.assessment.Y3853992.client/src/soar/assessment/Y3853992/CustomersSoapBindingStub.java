@@ -49,6 +49,12 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
         oper.setReturnQName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "searchForRestaurantsReturn"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        oper.addFault(new org.apache.axis.description.FaultDesc(
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault1"),
+                      "soar.assessment.Y3853992.NoResultsException",
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoResultsException"), 
+                      true
+                     ));
         _operations[1] = oper;
 
     }
@@ -82,6 +88,13 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoResultsException");
+            cachedSerQNames.add(qName);
+            cls = soar.assessment.Y3853992.NoResultsException.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoValidEntryException");
             cachedSerQNames.add(qName);
             cls = soar.assessment.Y3853992.NoValidEntryException.class;
@@ -204,7 +217,7 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
 }
     }
 
-    public soar.assessment.Y3853992.Restaurant[] searchForRestaurants(java.lang.String searchTerm) throws java.rmi.RemoteException {
+    public soar.assessment.Y3853992.Restaurant[] searchForRestaurants(java.lang.String searchTerm) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoResultsException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -234,6 +247,14 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
+    if (axisFaultException.detail != null) {
+        if (axisFaultException.detail instanceof java.rmi.RemoteException) {
+              throw (java.rmi.RemoteException) axisFaultException.detail;
+         }
+        if (axisFaultException.detail instanceof soar.assessment.Y3853992.NoResultsException) {
+              throw (soar.assessment.Y3853992.NoResultsException) axisFaultException.detail;
+         }
+   }
   throw axisFaultException;
 }
     }

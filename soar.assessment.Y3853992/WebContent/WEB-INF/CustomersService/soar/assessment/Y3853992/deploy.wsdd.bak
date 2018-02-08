@@ -26,6 +26,7 @@
       </operation>
       <operation name="searchForRestaurants" qname="operNS:searchForRestaurants" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:searchForRestaurantsReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Restaurant" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
         <parameter qname="pns:searchTerm" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="NoResultsException" qname="fns:fault1" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoResultsException" type="tns:NoResultsException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
       <parameter name="allowedMethods" value="searchForRestaurants getCustomerID"/>
 
@@ -33,6 +34,14 @@
         xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:Restaurant"
         type="java:soar.assessment.Y3853992.Restaurant"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:NoResultsException"
+        type="java:soar.assessment.Y3853992.NoResultsException"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

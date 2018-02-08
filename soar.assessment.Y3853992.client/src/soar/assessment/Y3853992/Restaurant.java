@@ -14,6 +14,8 @@ public class Restaurant  implements java.io.Serializable {
 
     private java.lang.String password;
 
+    private int restaurantID;
+
     private java.lang.String restaurantName;
 
     private java.lang.String username;
@@ -25,11 +27,13 @@ public class Restaurant  implements java.io.Serializable {
            java.lang.String address,
            java.lang.String email,
            java.lang.String password,
+           int restaurantID,
            java.lang.String restaurantName,
            java.lang.String username) {
            this.address = address;
            this.email = email;
            this.password = password;
+           this.restaurantID = restaurantID;
            this.restaurantName = restaurantName;
            this.username = username;
     }
@@ -96,6 +100,26 @@ public class Restaurant  implements java.io.Serializable {
 
 
     /**
+     * Gets the restaurantID value for this Restaurant.
+     * 
+     * @return restaurantID
+     */
+    public int getRestaurantID() {
+        return restaurantID;
+    }
+
+
+    /**
+     * Sets the restaurantID value for this Restaurant.
+     * 
+     * @param restaurantID
+     */
+    public void setRestaurantID(int restaurantID) {
+        this.restaurantID = restaurantID;
+    }
+
+
+    /**
      * Gets the restaurantName value for this Restaurant.
      * 
      * @return restaurantName
@@ -155,6 +179,7 @@ public class Restaurant  implements java.io.Serializable {
             ((this.password==null && other.getPassword()==null) || 
              (this.password!=null &&
               this.password.equals(other.getPassword()))) &&
+            this.restaurantID == other.getRestaurantID() &&
             ((this.restaurantName==null && other.getRestaurantName()==null) || 
              (this.restaurantName!=null &&
               this.restaurantName.equals(other.getRestaurantName()))) &&
@@ -181,6 +206,7 @@ public class Restaurant  implements java.io.Serializable {
         if (getPassword() != null) {
             _hashCode += getPassword().hashCode();
         }
+        _hashCode += getRestaurantID();
         if (getRestaurantName() != null) {
             _hashCode += getRestaurantName().hashCode();
         }
@@ -214,6 +240,12 @@ public class Restaurant  implements java.io.Serializable {
         elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "password"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("restaurantID");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "restaurantID"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
+        elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("restaurantName");

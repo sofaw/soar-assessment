@@ -20,7 +20,7 @@ public class Customers {
 		}
 	}
 	
-	public Restaurant[] searchForRestaurants(String searchTerm) throws ClassNotFoundException, SQLException {
+	public Restaurant[] searchForRestaurants(String searchTerm) throws ClassNotFoundException, SQLException, NoResultsException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
 		Statement stmt = con.createStatement();
@@ -29,9 +29,15 @@ public class Customers {
 		ArrayList<Restaurant> results = new ArrayList<Restaurant>();
 		while(rs.next()) {
 			Restaurant r = new Restaurant();
+			r.setRestaurantID(rs.getInt("RESTAURANT_ID"));
 			r.setRestaurantName(rs.getString("RESTAURANT_NAME"));
 			r.setEmail(rs.getString("EMAIL"));
+			r.setAddress(rs.getString("ADDRESS"));
 			results.add(r);
+		}
+		
+		if(results.size() == 0) {
+			throw new NoResultsException("No results for given search term.");
 		}
 		
 		return results.toArray(new Restaurant[results.size()]);

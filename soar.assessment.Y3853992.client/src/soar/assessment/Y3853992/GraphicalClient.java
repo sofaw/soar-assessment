@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.AxisFault;
@@ -34,7 +36,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JTextPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.JTable;
 import java.awt.FlowLayout;
@@ -64,7 +69,7 @@ public class GraphicalClient extends JFrame {
 	private JTextField rreg_address;
 	private JTextField rreg_email;
 	private JPasswordField rreg_password;
-	private JList<String> c_search_list;
+	private JList<Restaurant> c_search_list;
 	
 	private int restaurantID = -1;
 	private int customerID = -1;
@@ -322,22 +327,22 @@ public class GraphicalClient extends JFrame {
 					Restaurant[] searchResults = customers.searchForRestaurants(searchTerm);
 					
 					// Display each of the search results in the results panel
-					DefaultListModel<String> dlm = new DefaultListModel<String>();
+					DefaultListModel<Restaurant> dlm = new DefaultListModel<Restaurant>();
 					for(int i = 0; i < searchResults.length; i++) {
-						String element = "<html>" + searchResults[i].getRestaurantName()
-								+ "<br>" + searchResults[i].getEmail() + "</html>";
-						dlm.addElement(element);
+						dlm.addElement(searchResults[i]);
 					}
 					
 					c_search_list.setModel(dlm);
 					
 					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 					cardLayout.show(customer_panel_search_tab, "customer_tab_1_results");
+				} catch(NoResultsException ex) {
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "No results for given search term. Please try again.");
 				} catch (Exception ex) {
 					if(ex instanceof AxisFault) {
-						JOptionPane.showMessageDialog(home_panel, "Incorrect username/password.");
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "Incorrect username/password.");
 					} else {
-						JOptionPane.showMessageDialog(home_panel, "An error occurred. Please try again.");
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
 					}
 				}
 			}
@@ -365,8 +370,47 @@ public class GraphicalClient extends JFrame {
 		gbc_lblResults.gridy = 1;
 		customer_tab_1_results.add(lblResults, gbc_lblResults);
 		
-		c_search_list = new JList<String>();
+		c_search_list = new JList<Restaurant>();
 		c_search_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		c_search_list.setCellRenderer(new ListCellRenderer<Restaurant>() {
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Restaurant> list, Restaurant value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				String text = "<html>" + value.getRestaurantName() + "<br>" + value.getAddress() + "</html>";
+				JLabel component = new JLabel();
+				component.setText(text);
+				component.setOpaque(true);
+				if (isSelected) {
+				    component.setBackground(list.getSelectionBackground());
+				    component.setForeground(list.getSelectionForeground());
+				} else {
+				    component.setBackground(list.getBackground());
+				    component.setForeground(list.getForeground());
+				}
+				return component;
+			}
+			
+		});
+	    ListSelectionModel listSelectionModel = c_search_list.getSelectionModel();
+	    listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO: launch menu page for selected restaurant
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if(!lsm.getValueIsAdjusting()) {
+					int indexA = e.getFirstIndex();
+					int indexB = e.getLastIndex();
+					int restaurantId;
+					if(lsm.isSelectedIndex(indexA)) {
+						restaurantId = c_search_list.getModel().getElementAt(indexA).getRestaurantID();
+					} else {
+						restaurantId = c_search_list.getModel().getElementAt(indexB).getRestaurantID();
+					}
+				}
+			}
+	    	
+	    });
 		GridBagConstraints gbc_c_search_list = new GridBagConstraints();
 		gbc_c_search_list.gridheight = 5;
 		gbc_c_search_list.insets = new Insets(0, 0, 5, 5);
@@ -411,22 +455,22 @@ public class GraphicalClient extends JFrame {
 					Restaurant[] searchResults = customers.searchForRestaurants(searchTerm);
 					
 					// Display each of the search results in the results panel
-					DefaultListModel<String> dlm = new DefaultListModel<String>();
+					DefaultListModel<Restaurant> dlm = new DefaultListModel<Restaurant>();
 					for(int i = 0; i < searchResults.length; i++) {
-						String element = "<html>" + searchResults[i].getRestaurantName()
-								+ "<br>" + searchResults[i].getEmail() + "</html>";
-						dlm.addElement(element);
+						dlm.addElement(searchResults[i]);
 					}
 					
 					c_search_list.setModel(dlm);
 					
 					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 					cardLayout.show(customer_panel_search_tab, "customer_tab_1_results");
+				} catch(NoResultsException ex) {
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "No results for given search term. Please try again.");
 				} catch (Exception ex) {
 					if(ex instanceof AxisFault) {
-						JOptionPane.showMessageDialog(home_panel, "Incorrect username/password.");
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "Incorrect username/password.");
 					} else {
-						JOptionPane.showMessageDialog(home_panel, "An error occurred. Please try again.");
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
 					}
 				}
 			}
