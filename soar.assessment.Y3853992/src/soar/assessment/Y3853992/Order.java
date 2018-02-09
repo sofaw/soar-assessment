@@ -6,7 +6,6 @@ public class Order {
 	protected String status;
 	protected int deliveryTime;
 	protected Item[] items;
-	protected Integer[] quantities;
 	public int getOrderID() {
 		return orderID;
 	}
@@ -37,10 +36,4 @@ public class Order {
 	public void setItems(Item[] items) {
 		this.items = items;
 	}
-	public Integer[] getQuantities() {
-		return quantities;
-	}
-	public void setQuantities(Integer[] quantities) {
-		this.quantities = quantities;
-	}	
 }

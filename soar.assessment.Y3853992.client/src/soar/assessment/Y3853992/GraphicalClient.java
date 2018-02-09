@@ -440,13 +440,31 @@ public class GraphicalClient extends JFrame {
 									if(basket_contents == null) {
 										basket_contents = new DefaultListModel<Item>();
 									}
-									basket_contents.addElement(currentItem);
+									
+									int basketIndex = -1;
+									for(int i = 0; i < basket_contents.getSize(); i++) {
+										if(basket_contents.getElementAt(i).getItemID() == currentItem.getItemID()) {
+											basketIndex = i;
+										}
+									}
+									
+									if(basketIndex == -1) {
+										currentItem.setQuantity(1);
+										basket_contents.addElement(currentItem);
+									} else {
+										Item currItem = basket_contents.getElementAt(basketIndex);
+										int currQuantity = currItem.getQuantity();
+										currItem.setQuantity(currQuantity + 1);
+										basket_contents.setElementAt(currItem, basketIndex);
+									}
+									
 									basket_list.setModel(basket_contents);
 									
 									// Update order total
 									float total = 0;
 									for(int x = 0; x < basket_contents.getSize(); x++) {
-										total += basket_contents.getElementAt(x).getPrice();
+										total += (basket_contents.getElementAt(x).getPrice() 
+												* basket_contents.getElementAt(x).getQuantity());
 									}
 									order_total_label.setText("Order total: £" + total);
 								}
@@ -622,7 +640,7 @@ public class GraphicalClient extends JFrame {
 			@Override
 			public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
 					boolean isSelected, boolean cellHasFocus) {
-				return new JLabel(value.getTitle());
+				return new JLabel("(x" + value.getQuantity() + ") " + value.getTitle() + ": £" + value.getPrice());
 			}
 			
 		});
@@ -801,12 +819,29 @@ public class GraphicalClient extends JFrame {
 			public Component getListCellRendererComponent(JList<? extends Order> list, Order value, int index,
 					boolean isSelected, boolean cellHasFocus) {
 				JPanel panel = new JPanel();
+				String deliveryEstimate;
+				if(value.getDeliveryTime() < 0) {
+					deliveryEstimate = "N/A"; // No estimate provided
+				} else {
+					int hours = value.getDeliveryTime() / 60;
+					int minutes = value.getDeliveryTime() % 60;
+					String hoursString = "" + hours;
+					String minutesString = "" + minutes;
+					if(hoursString.length() == 1) {
+						hoursString = "0" + hoursString;
+					}
+					if(minutesString.length() == 1) {
+						minutesString = "0" + minutesString;
+					}
+					deliveryEstimate = hoursString + ":" + minutesString;
+				}
+				
 				JLabel orderLabel = new JLabel("<html>OrderID: " + value.getOrderID() 
-													+"<br>Status: " + value.getStatus()
-													+"<br>Total Cost: £" + value.getTotalPrice()
-													+"<br>Delivery Estimate: " + value.getDeliveryTime());
+													+ "<br>Status: " + value.getStatus()
+													+ "<br>Total Cost: £" + value.getTotalPrice()
+													+ "<br>Delivery Estimate: " + deliveryEstimate
+													+ "</html>");
 				panel.add(orderLabel);
-				// TODO: add quantity info to Item class
 				JScrollPane itemSummaryPane = new JScrollPane();
 				JList<Item> itemSummary = new JList<Item>();
 				itemSummaryPane.setViewportView(itemSummary);
@@ -815,7 +850,8 @@ public class GraphicalClient extends JFrame {
 					@Override
 					public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
 							boolean isSelected, boolean cellHasFocus) {
-						return new JLabel(value.getTitle() + ": £" + value.getPrice());
+						return new JLabel("(x" + value.getQuantity() + ") " 
+							+ value.getTitle() + ": £" + value.getPrice());
 					}
 					
 				});
@@ -825,6 +861,7 @@ public class GraphicalClient extends JFrame {
 				for(int i = 0; i < items.length; i++) {
 					dlm.addElement(items[i]);
 				}
+				
 				itemSummary.setModel(dlm);
 				
 				panel.add(itemSummaryPane);

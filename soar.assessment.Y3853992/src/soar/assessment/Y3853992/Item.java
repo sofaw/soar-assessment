@@ -5,6 +5,7 @@ public class Item {
 	protected int restaurantID;
 	protected String title;
 	protected float price;
+	protected int quantity;
 	public int getItemID() {
 		return itemID;
 	}
@@ -28,5 +29,11 @@ public class Item {
 	}
 	public void setPrice(float price) {
 		this.price = price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }

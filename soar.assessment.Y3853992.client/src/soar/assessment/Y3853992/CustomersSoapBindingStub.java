@@ -137,15 +137,6 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
-            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "ArrayOf_xsd_int");
-            cachedSerQNames.add(qName);
-            cls = int[].class;
-            cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int");
-            qName2 = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "item");
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
-
             qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "ArrayOfItem");
             cachedSerQNames.add(qName);
             cls = soar.assessment.Y3853992.Item[].class;

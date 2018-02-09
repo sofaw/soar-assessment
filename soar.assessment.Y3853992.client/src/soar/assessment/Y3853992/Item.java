@@ -12,6 +12,8 @@ public class Item  implements java.io.Serializable {
 
     private float price;
 
+    private int quantity;
+
     private int restaurantID;
 
     private java.lang.String title;
@@ -22,10 +24,12 @@ public class Item  implements java.io.Serializable {
     public Item(
            int itemID,
            float price,
+           int quantity,
            int restaurantID,
            java.lang.String title) {
            this.itemID = itemID;
            this.price = price;
+           this.quantity = quantity;
            this.restaurantID = restaurantID;
            this.title = title;
     }
@@ -68,6 +72,26 @@ public class Item  implements java.io.Serializable {
      */
     public void setPrice(float price) {
         this.price = price;
+    }
+
+
+    /**
+     * Gets the quantity value for this Item.
+     * 
+     * @return quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
+
+    /**
+     * Sets the quantity value for this Item.
+     * 
+     * @param quantity
+     */
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
 
@@ -124,6 +148,7 @@ public class Item  implements java.io.Serializable {
         _equals = true && 
             this.itemID == other.getItemID() &&
             this.price == other.getPrice() &&
+            this.quantity == other.getQuantity() &&
             this.restaurantID == other.getRestaurantID() &&
             ((this.title==null && other.getTitle()==null) || 
              (this.title!=null &&
@@ -141,6 +166,7 @@ public class Item  implements java.io.Serializable {
         int _hashCode = 1;
         _hashCode += getItemID();
         _hashCode += new Float(getPrice()).hashCode();
+        _hashCode += getQuantity();
         _hashCode += getRestaurantID();
         if (getTitle() != null) {
             _hashCode += getTitle().hashCode();
@@ -165,6 +191,12 @@ public class Item  implements java.io.Serializable {
         elemField.setFieldName("price");
         elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "price"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "float"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("quantity");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "quantity"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();

@@ -52,6 +52,14 @@
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:Restaurant"
+        type="java:soar.assessment.Y3853992.Restaurant"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
       <arrayMapping
         xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:ArrayOfItem"
@@ -73,21 +81,6 @@
         type="java:soar.assessment.Y3853992.NoResultsException"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:Restaurant"
-        type="java:soar.assessment.Y3853992.Restaurant"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <arrayMapping
-        xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:ArrayOf_xsd_int"
-        type="java:int[]"
-        innerType="cmp-ns:int" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
         encodingStyle=""
       />
       <typeMapping

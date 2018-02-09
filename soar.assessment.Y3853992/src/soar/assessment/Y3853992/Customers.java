@@ -74,27 +74,6 @@ public class Customers {
 			throw new NullFieldException("Card number and delivery address must be provided.");
 		}
 		
-		// Get item counts
-		Map<Item, Integer> itemCounts = new HashMap<Item, Integer>();
-		for(int i = 0; i < items.length; i++) {
-			// Check if there is existing entry for given itemID
-			boolean existingKey = false;
-			Item key = null;
-			for(Item it : itemCounts.keySet()) {
-				if(it.getItemID() == items[i].getItemID()) {
-					existingKey = true;
-					key = it;
-				}
-			}
-			
-			if(existingKey) {
-				int count = itemCounts.get(key);
-				itemCounts.put(key, count+1);	
-			} else {
-				itemCounts.put(items[i], 1);
-			}
-		}
-		
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
 		Statement stmt = con.createStatement();
@@ -123,8 +102,8 @@ public class Customers {
         
         // Calculate total price
         float totalPrice = 0;
-        for(Item item : itemCounts.keySet()) {
-        	totalPrice += (item.getPrice() * itemCounts.get(item));
+        for(int i = 0; i < items.length; i++) {
+        	totalPrice += (items[i].getPrice() * items[i].getQuantity());
         }
         
         // Add order to orders table
@@ -135,7 +114,7 @@ public class Customers {
         		+ "\'QUEUED\', "
         		+ "\'" + cardNumber + "\', "
         		+ "\'" + deliveryAddress + "\', "
-        		+ "null"
+        		+ "-1"
         		+ ")" );
         
         ResultSet rs = stmt.getGeneratedKeys();
@@ -143,11 +122,11 @@ public class Customers {
         rs.next();
         orderID = rs.getInt(1);
         
-        for(Item item : itemCounts.keySet()) {
+        for(int i = 0; i < items.length; i++) {
             stmt.executeUpdate("INSERT INTO ORDERITEMS (ORDER_ID, ITEM_ID, QUANTITY) VALUES ("
             		+ "\'" + orderID + "\', "
-            		+ "\'" + item.getItemID() + "\', "
-            		+ "\'" + itemCounts.get(item) + "\'"
+            		+ "\'" + items[i].getItemID() + "\', "
+            		+ "\'" + items[i].getQuantity() + "\'"
             		+ ")" );
         }
 	}
@@ -173,12 +152,11 @@ public class Customers {
 		for(Order order : orders) {
 			rs = stmt.executeQuery("SELECT * FROM ORDERITEMS WHERE ORDER_ID=" + order.getOrderID());
 			ArrayList<Item> items = new ArrayList<Item>();
-			ArrayList<Integer> quantities = new ArrayList<Integer>();
 			while(rs.next()) {
 				Item item = new Item();
 				item.setItemID(rs.getInt("ITEM_ID"));
 				items.add(item);
-				quantities.add(rs.getInt("QUANTITY"));
+				item.setQuantity(rs.getInt("QUANTITY"));
 			}
 			
 			for(Item item : items) {
@@ -190,9 +168,7 @@ public class Customers {
 			}
 			
 			Item[] itemArr = items.toArray(new Item[items.size()]);
-			Integer[] quantitiesArr = quantities.toArray(new Integer[quantities.size()]);
 			order.setItems(itemArr);
-			order.setQuantities(quantitiesArr);
 		}
 		
 		return orders.toArray(new Order[orders.size()]);

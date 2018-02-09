@@ -22,6 +22,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <sequence>
      <element name="itemID" type="xsd:int"/>
      <element name="price" type="xsd:float"/>
+     <element name="quantity" type="xsd:int"/>
      <element name="restaurantID" type="xsd:int"/>
      <element name="title" nillable="true" type="xsd:string"/>
     </sequence>
@@ -108,17 +109,11 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:Item"/>
     </sequence>
    </complexType>
-   <complexType name="ArrayOf_xsd_int">
-    <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:int"/>
-    </sequence>
-   </complexType>
    <complexType name="Order">
     <sequence>
      <element name="deliveryTime" type="xsd:int"/>
      <element name="items" nillable="true" type="impl:ArrayOfItem"/>
      <element name="orderID" type="xsd:int"/>
-     <element name="quantities" nillable="true" type="impl:ArrayOf_xsd_int"/>
      <element name="status" nillable="true" type="xsd:string"/>
      <element name="totalPrice" type="xsd:float"/>
     </sequence>

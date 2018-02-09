@@ -14,8 +14,6 @@ public class Order  implements java.io.Serializable {
 
     private int orderID;
 
-    private int[] quantities;
-
     private java.lang.String status;
 
     private float totalPrice;
@@ -27,13 +25,11 @@ public class Order  implements java.io.Serializable {
            int deliveryTime,
            soar.assessment.Y3853992.Item[] items,
            int orderID,
-           int[] quantities,
            java.lang.String status,
            float totalPrice) {
            this.deliveryTime = deliveryTime;
            this.items = items;
            this.orderID = orderID;
-           this.quantities = quantities;
            this.status = status;
            this.totalPrice = totalPrice;
     }
@@ -100,26 +96,6 @@ public class Order  implements java.io.Serializable {
 
 
     /**
-     * Gets the quantities value for this Order.
-     * 
-     * @return quantities
-     */
-    public int[] getQuantities() {
-        return quantities;
-    }
-
-
-    /**
-     * Sets the quantities value for this Order.
-     * 
-     * @param quantities
-     */
-    public void setQuantities(int[] quantities) {
-        this.quantities = quantities;
-    }
-
-
-    /**
      * Gets the status value for this Order.
      * 
      * @return status
@@ -175,9 +151,6 @@ public class Order  implements java.io.Serializable {
              (this.items!=null &&
               java.util.Arrays.equals(this.items, other.getItems()))) &&
             this.orderID == other.getOrderID() &&
-            ((this.quantities==null && other.getQuantities()==null) || 
-             (this.quantities!=null &&
-              java.util.Arrays.equals(this.quantities, other.getQuantities()))) &&
             ((this.status==null && other.getStatus()==null) || 
              (this.status!=null &&
               this.status.equals(other.getStatus()))) &&
@@ -206,17 +179,6 @@ public class Order  implements java.io.Serializable {
             }
         }
         _hashCode += getOrderID();
-        if (getQuantities() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getQuantities());
-                 i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(getQuantities(), i);
-                if (obj != null &&
-                    !obj.getClass().isArray()) {
-                    _hashCode += obj.hashCode();
-                }
-            }
-        }
         if (getStatus() != null) {
             _hashCode += getStatus().hashCode();
         }
@@ -249,13 +211,6 @@ public class Order  implements java.io.Serializable {
         elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "orderID"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
         elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("quantities");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "quantities"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(true);
-        elemField.setItemQName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "item"));
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("status");
