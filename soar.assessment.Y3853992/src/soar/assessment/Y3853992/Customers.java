@@ -163,30 +163,32 @@ public class Customers {
 		
 		while(rs.next()) {
 			Order order = new Order();
-			int orderID = rs.getInt("ORDER_ID");
-			order.setOrderID(orderID);
+			order.setOrderID(rs.getInt("ORDER_ID"));
 			order.setTotalPrice(rs.getFloat("TOTAL_PRICE"));
 			order.setStatus(rs.getString("STATUS"));
 			order.setDeliveryTime(rs.getInt("DELIVERY_TIME"));
-			
-			ResultSet rs_orderItems = stmt.executeQuery("SELECT * FROM ORDERITEMS WHERE ORDER_ID=" + orderID);
+			orders.add(order);
+		}
+		
+		for(Order order : orders) {
+			rs = stmt.executeQuery("SELECT * FROM ORDERITEMS WHERE ORDER_ID=" + order.getOrderID());
 			ArrayList<Item> items = new ArrayList<Item>();
 			ArrayList<Integer> quantities = new ArrayList<Integer>();
-			while(rs_orderItems.next()) {
-				int quantity = rs_orderItems.getInt("QUANTITY");
-				int itemID = rs_orderItems.getInt("ITEM_ID");
-				ResultSet rs_item = stmt.executeQuery("SELECT * FROM ITEMS WHERE ITEM_ID=" + itemID);
-				rs_item.next();
-				
+			while(rs.next()) {
 				Item item = new Item();
-				item.setItemID(itemID);
-				item.setPrice(rs_item.getFloat("PRICE"));
-				item.setTitle(rs_item.getString("TITLE"));
-				item.setRestaurantID(rs_item.getInt("RESTAURANT_ID"));
-				
+				item.setItemID(rs.getInt("ITEM_ID"));
 				items.add(item);
-				quantities.add(quantity);
+				quantities.add(rs.getInt("QUANTITY"));
 			}
+			
+			for(Item item : items) {
+				rs = stmt.executeQuery("SELECT * FROM ITEMS WHERE ITEM_ID=" + item.getItemID());
+				rs.next();
+				item.setPrice(rs.getFloat("PRICE"));
+				item.setTitle(rs.getString("TITLE"));
+				item.setRestaurantID(rs.getInt("RESTAURANT_ID"));
+			}
+			
 			Item[] itemArr = items.toArray(new Item[items.size()]);
 			Integer[] quantitiesArr = quantities.toArray(new Integer[quantities.size()]);
 			order.setItems(itemArr);
