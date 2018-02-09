@@ -20,7 +20,7 @@ public class Restaurants {
 		}
 	}
 	
-	public void addMenuItem(int restaurantID, String title, float price) throws ClassNotFoundException, SQLException {
+	/*public void addMenuItem(int restaurantID, String title, float price) throws ClassNotFoundException, SQLException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
         Statement stmt = con.createStatement();
@@ -44,6 +44,30 @@ public class Restaurants {
         Statement stmt = con.createStatement();
 		
 		stmt.executeUpdate("DELETE FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
+	}*/
+	
+	public Item[] getMenu(int restaurantID) throws ClassNotFoundException, SQLException, NoResultsException {
+		Class.forName("org.h2.Driver");
+		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
+        Statement stmt = con.createStatement();
+        
+        ResultSet rs = stmt.executeQuery("SELECT * FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
+        
+		ArrayList<Item> results = new ArrayList<Item>();
+		while(rs.next()) {
+			Item item = new Item();
+			item.setItemID(rs.getInt("ITEM_ID"));
+			item.setRestaurantID(restaurantID);
+			item.setTitle(rs.getString("TITLE"));
+			item.setPrice(rs.getFloat("PRICE"));
+			results.add(item);
+		}
+		
+		if(results.size() == 0) {
+			throw new NoResultsException("No results for given restaurantID.");
+		}
+		
+		return results.toArray(new Item[results.size()]);
 	}
 
 	public Order[] getOrders(int restaurantID) throws ClassNotFoundException, SQLException {
@@ -87,5 +111,25 @@ public class Restaurants {
 		}
 		
 		return orders.toArray(new Order[orders.size()]);
+	}
+	
+	public void changeOrderStatus(int restaurantID, int orderID, String status, int deliveryTime) throws ClassNotFoundException, SQLException, InvalidIDException {
+		Class.forName("org.h2.Driver");
+		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
+        Statement stmt = con.createStatement();
+        
+		ResultSet rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE ORDER_ID=" + orderID);
+		rs.next();
+		if(rs.getInt("RESTAURANT_ID") != restaurantID) {
+			throw new InvalidIDException("Not authorized to update this order status.");
+		}
+        
+        if(deliveryTime > 0) {
+        	stmt.executeUpdate("UPDATE ORDERS SET DELIVERY_TIME =" + deliveryTime + " WHERE ORDER_ID =" + orderID);
+        }
+        
+        if(status != null && !status.isEmpty()) {
+        	stmt.executeUpdate("UPDATE ORDERS SET STATUS =\'" + status + "\' WHERE ORDER_ID =" + orderID);
+        }
 	}
 }

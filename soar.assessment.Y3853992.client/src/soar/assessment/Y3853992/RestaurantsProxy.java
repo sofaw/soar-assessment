@@ -44,28 +44,28 @@ public class RestaurantsProxy implements soar.assessment.Y3853992.Restaurants {
     return restaurants;
   }
   
-  public int getRestaurantID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException{
+  public soar.assessment.Y3853992.Item[] getMenu(int restaurantID) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoResultsException{
     if (restaurants == null)
       _initRestaurantsProxy();
-    return restaurants.getRestaurantID(username);
-  }
-  
-  public void addMenuItem(int restaurantID, java.lang.String title, float price) throws java.rmi.RemoteException{
-    if (restaurants == null)
-      _initRestaurantsProxy();
-    restaurants.addMenuItem(restaurantID, title, price);
-  }
-  
-  public void deleteMenu(int restaurantID) throws java.rmi.RemoteException{
-    if (restaurants == null)
-      _initRestaurantsProxy();
-    restaurants.deleteMenu(restaurantID);
+    return restaurants.getMenu(restaurantID);
   }
   
   public soar.assessment.Y3853992.Order[] getOrders(int restaurantID) throws java.rmi.RemoteException{
     if (restaurants == null)
       _initRestaurantsProxy();
     return restaurants.getOrders(restaurantID);
+  }
+  
+  public void changeOrderStatus(int restaurantID, int orderID, java.lang.String status, int deliveryTime) throws java.rmi.RemoteException, soar.assessment.Y3853992.InvalidIDException{
+    if (restaurants == null)
+      _initRestaurantsProxy();
+    restaurants.changeOrderStatus(restaurantID, orderID, status, deliveryTime);
+  }
+  
+  public int getRestaurantID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException{
+    if (restaurants == null)
+      _initRestaurantsProxy();
+    return restaurants.getRestaurantID(username);
   }
   
   

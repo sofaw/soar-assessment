@@ -8,8 +8,8 @@
 package soar.assessment.Y3853992;
 
 public interface Restaurants extends java.rmi.Remote {
-    public int getRestaurantID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException;
-    public void addMenuItem(int restaurantID, java.lang.String title, float price) throws java.rmi.RemoteException;
-    public void deleteMenu(int restaurantID) throws java.rmi.RemoteException;
+    public soar.assessment.Y3853992.Item[] getMenu(int restaurantID) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoResultsException;
     public soar.assessment.Y3853992.Order[] getOrders(int restaurantID) throws java.rmi.RemoteException;
+    public void changeOrderStatus(int restaurantID, int orderID, java.lang.String status, int deliveryTime) throws java.rmi.RemoteException, soar.assessment.Y3853992.InvalidIDException;
+    public int getRestaurantID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException;
 }

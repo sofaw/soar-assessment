@@ -4,6 +4,78 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="getMenu">
+    <complexType>
+     <sequence>
+      <element name="restaurantID" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getMenuResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getMenuReturn" type="impl:Item"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Item">
+    <sequence>
+     <element name="itemID" type="xsd:int"/>
+     <element name="price" type="xsd:float"/>
+     <element name="quantity" type="xsd:int"/>
+     <element name="restaurantID" type="xsd:int"/>
+     <element name="title" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="NoResultsException">
+    <sequence/>
+   </complexType>
+   <element name="fault" type="impl:NoResultsException"/>
+   <element name="getOrders">
+    <complexType>
+     <sequence>
+      <element name="restaurantID" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getOrdersResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getOrdersReturn" type="impl:Order"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOfItem">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:Item"/>
+    </sequence>
+   </complexType>
+   <complexType name="Order">
+    <sequence>
+     <element name="deliveryTime" type="xsd:int"/>
+     <element name="items" nillable="true" type="impl:ArrayOfItem"/>
+     <element name="orderID" type="xsd:int"/>
+     <element name="status" nillable="true" type="xsd:string"/>
+     <element name="totalPrice" type="xsd:float"/>
+    </sequence>
+   </complexType>
+   <element name="changeOrderStatus">
+    <complexType>
+     <sequence>
+      <element name="restaurantID" type="xsd:int"/>
+      <element name="orderID" type="xsd:int"/>
+      <element name="status" type="xsd:string"/>
+      <element name="deliveryTime" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="changeOrderStatusResponse">
+    <complexType/>
+   </element>
+   <complexType name="InvalidIDException">
+    <sequence/>
+   </complexType>
+   <element name="fault1" type="impl:InvalidIDException"/>
    <element name="getRestaurantID">
     <complexType>
      <sequence>
@@ -21,78 +93,19 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <complexType name="NoValidEntryException">
     <sequence/>
    </complexType>
-   <element name="fault" type="impl:NoValidEntryException"/>
-   <element name="addMenuItem">
-    <complexType>
-     <sequence>
-      <element name="restaurantID" type="xsd:int"/>
-      <element name="title" type="xsd:string"/>
-      <element name="price" type="xsd:float"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="addMenuItemResponse">
-    <complexType/>
-   </element>
-   <element name="deleteMenu">
-    <complexType>
-     <sequence>
-      <element name="restaurantID" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="deleteMenuResponse">
-    <complexType/>
-   </element>
-   <element name="getOrders">
-    <complexType>
-     <sequence>
-      <element name="restaurantID" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="getOrdersResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="getOrdersReturn" type="impl:Order"/>
-     </sequence>
-    </complexType>
-   </element>
-   <complexType name="Item">
-    <sequence>
-     <element name="itemID" type="xsd:int"/>
-     <element name="price" type="xsd:float"/>
-     <element name="quantity" type="xsd:int"/>
-     <element name="restaurantID" type="xsd:int"/>
-     <element name="title" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
-   <complexType name="ArrayOfItem">
-    <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:Item"/>
-    </sequence>
-   </complexType>
-   <complexType name="Order">
-    <sequence>
-     <element name="deliveryTime" type="xsd:int"/>
-     <element name="items" nillable="true" type="impl:ArrayOfItem"/>
-     <element name="orderID" type="xsd:int"/>
-     <element name="status" nillable="true" type="xsd:string"/>
-     <element name="totalPrice" type="xsd:float"/>
-    </sequence>
-   </complexType>
+   <element name="fault2" type="impl:NoValidEntryException"/>
   </schema>
  </wsdl:types>
-
-   <wsdl:message name="deleteMenuResponse">
-
-      <wsdl:part element="impl:deleteMenuResponse" name="parameters"/>
-
-   </wsdl:message>
 
    <wsdl:message name="getOrdersRequest">
 
       <wsdl:part element="impl:getOrders" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="changeOrderStatusResponse">
+
+      <wsdl:part element="impl:changeOrderStatusResponse" name="parameters"/>
 
    </wsdl:message>
 
@@ -102,9 +115,15 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="addMenuItemRequest">
+   <wsdl:message name="getMenuRequest">
 
-      <wsdl:part element="impl:addMenuItem" name="parameters"/>
+      <wsdl:part element="impl:getMenu" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getMenuResponse">
+
+      <wsdl:part element="impl:getMenuResponse" name="parameters"/>
 
    </wsdl:message>
 
@@ -114,55 +133,45 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="NoResultsException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="changeOrderStatusRequest">
+
+      <wsdl:part element="impl:changeOrderStatus" name="parameters"/>
+
+   </wsdl:message>
+
    <wsdl:message name="getRestaurantIDResponse">
 
       <wsdl:part element="impl:getRestaurantIDResponse" name="parameters"/>
 
    </wsdl:message>
 
-   <wsdl:message name="deleteMenuRequest">
+   <wsdl:message name="InvalidIDException">
 
-      <wsdl:part element="impl:deleteMenu" name="parameters"/>
+      <wsdl:part element="impl:fault1" name="fault"/>
 
    </wsdl:message>
 
    <wsdl:message name="NoValidEntryException">
 
-      <wsdl:part element="impl:fault" name="fault"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="addMenuItemResponse">
-
-      <wsdl:part element="impl:addMenuItemResponse" name="parameters"/>
+      <wsdl:part element="impl:fault2" name="fault"/>
 
    </wsdl:message>
 
    <wsdl:portType name="Restaurants">
 
-      <wsdl:operation name="getRestaurantID">
+      <wsdl:operation name="getMenu">
 
-         <wsdl:input message="impl:getRestaurantIDRequest" name="getRestaurantIDRequest"/>
+         <wsdl:input message="impl:getMenuRequest" name="getMenuRequest"/>
 
-         <wsdl:output message="impl:getRestaurantIDResponse" name="getRestaurantIDResponse"/>
+         <wsdl:output message="impl:getMenuResponse" name="getMenuResponse"/>
 
-         <wsdl:fault message="impl:NoValidEntryException" name="NoValidEntryException"/>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="addMenuItem">
-
-         <wsdl:input message="impl:addMenuItemRequest" name="addMenuItemRequest"/>
-
-         <wsdl:output message="impl:addMenuItemResponse" name="addMenuItemResponse"/>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="deleteMenu">
-
-         <wsdl:input message="impl:deleteMenuRequest" name="deleteMenuRequest"/>
-
-         <wsdl:output message="impl:deleteMenuResponse" name="deleteMenuResponse"/>
+         <wsdl:fault message="impl:NoResultsException" name="NoResultsException"/>
 
       </wsdl:operation>
 
@@ -174,11 +183,97 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="changeOrderStatus">
+
+         <wsdl:input message="impl:changeOrderStatusRequest" name="changeOrderStatusRequest"/>
+
+         <wsdl:output message="impl:changeOrderStatusResponse" name="changeOrderStatusResponse"/>
+
+         <wsdl:fault message="impl:InvalidIDException" name="InvalidIDException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getRestaurantID">
+
+         <wsdl:input message="impl:getRestaurantIDRequest" name="getRestaurantIDRequest"/>
+
+         <wsdl:output message="impl:getRestaurantIDResponse" name="getRestaurantIDResponse"/>
+
+         <wsdl:fault message="impl:NoValidEntryException" name="NoValidEntryException"/>
+
+      </wsdl:operation>
+
    </wsdl:portType>
 
    <wsdl:binding name="RestaurantsSoapBinding" type="impl:Restaurants">
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getMenu">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getMenuRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getMenuResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="NoResultsException">
+
+            <wsdlsoap:fault name="NoResultsException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getOrders">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getOrdersRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getOrdersResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="changeOrderStatus">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="changeOrderStatusRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="changeOrderStatusResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="InvalidIDException">
+
+            <wsdlsoap:fault name="InvalidIDException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
 
       <wsdl:operation name="getRestaurantID">
 
@@ -201,60 +296,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
             <wsdlsoap:fault name="NoValidEntryException" use="literal"/>
 
          </wsdl:fault>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="addMenuItem">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="addMenuItemRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="addMenuItemResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="deleteMenu">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="deleteMenuRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="deleteMenuResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="getOrders">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="getOrdersRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="getOrdersResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
 
       </wsdl:operation>
 

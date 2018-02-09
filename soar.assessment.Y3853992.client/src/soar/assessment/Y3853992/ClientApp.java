@@ -93,7 +93,7 @@ public class ClientApp {
 		}
 		
 		
-		restaurants.setUsername("cs");
+		/*restaurants.setUsername("cs");
 		restaurants.setPassword("welovechicken");
 		restaurants.addMenuItem(restaurantID, "pizza", 9.5f);
 		
@@ -110,7 +110,7 @@ public class ClientApp {
 			} else {
 				System.out.println("Issues with server");
 			}
-		}
+		}*/
 		
 		/*try {
 			restaurants.setUsername("richiebn");
