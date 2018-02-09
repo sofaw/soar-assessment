@@ -44,12 +44,55 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <element name="deleteMenuResponse">
     <complexType/>
    </element>
+   <element name="getOrders">
+    <complexType>
+     <sequence>
+      <element name="restaurantID" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getOrdersResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getOrdersReturn" type="impl:Order"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Item">
+    <sequence>
+     <element name="itemID" type="xsd:int"/>
+     <element name="price" type="xsd:float"/>
+     <element name="quantity" type="xsd:int"/>
+     <element name="restaurantID" type="xsd:int"/>
+     <element name="title" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOfItem">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:Item"/>
+    </sequence>
+   </complexType>
+   <complexType name="Order">
+    <sequence>
+     <element name="deliveryTime" type="xsd:int"/>
+     <element name="items" nillable="true" type="impl:ArrayOfItem"/>
+     <element name="orderID" type="xsd:int"/>
+     <element name="status" nillable="true" type="xsd:string"/>
+     <element name="totalPrice" type="xsd:float"/>
+    </sequence>
+   </complexType>
   </schema>
  </wsdl:types>
 
    <wsdl:message name="deleteMenuResponse">
 
       <wsdl:part element="impl:deleteMenuResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getOrdersRequest">
+
+      <wsdl:part element="impl:getOrders" name="parameters"/>
 
    </wsdl:message>
 
@@ -62,6 +105,12 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="addMenuItemRequest">
 
       <wsdl:part element="impl:addMenuItem" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getOrdersResponse">
+
+      <wsdl:part element="impl:getOrdersResponse" name="parameters"/>
 
    </wsdl:message>
 
@@ -114,6 +163,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          <wsdl:input message="impl:deleteMenuRequest" name="deleteMenuRequest"/>
 
          <wsdl:output message="impl:deleteMenuResponse" name="deleteMenuResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getOrders">
+
+         <wsdl:input message="impl:getOrdersRequest" name="getOrdersRequest"/>
+
+         <wsdl:output message="impl:getOrdersResponse" name="getOrdersResponse"/>
 
       </wsdl:operation>
 
@@ -176,6 +233,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          </wsdl:input>
 
          <wsdl:output name="deleteMenuResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getOrders">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getOrdersRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getOrdersResponse">
 
             <wsdlsoap:body use="literal"/>
 

@@ -81,6 +81,8 @@ public class GraphicalClient extends JFrame {
 	private DefaultListModel<Item> basket_contents;
 	private JLabel order_total_label;
 	private JList<Order> c_orders_list;
+	private JList<Order> r_queued_list;
+	private JList<Order> r_accepted_list;
 	
 	private int restaurantID = -1;
 	private int customerID = -1;
@@ -121,6 +123,61 @@ public class GraphicalClient extends JFrame {
 		} catch (ServiceException ex) {
 			ex.printStackTrace();
 		}
+		
+		ListCellRenderer<Order> orderListCellRenderer = new ListCellRenderer<Order>() {
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Order> list, Order value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				JPanel panel = new JPanel();
+				String deliveryEstimate;
+				if(value.getDeliveryTime() < 0) {
+					deliveryEstimate = "N/A"; // No estimate provided
+				} else {
+					int hours = value.getDeliveryTime() / 60;
+					int minutes = value.getDeliveryTime() % 60;
+					String hoursString = "" + hours;
+					String minutesString = "" + minutes;
+					if(hoursString.length() == 1) {
+						hoursString = "0" + hoursString;
+					}
+					if(minutesString.length() == 1) {
+						minutesString = "0" + minutesString;
+					}
+					deliveryEstimate = hoursString + ":" + minutesString;
+				}
+				
+				JLabel orderLabel = new JLabel("<html>OrderID: " + value.getOrderID() 
+													+ "<br>Status: " + value.getStatus()
+													+ "<br>Total Cost: £" + value.getTotalPrice()
+													+ "<br>Delivery Estimate: " + deliveryEstimate
+													+ "</html>");
+				panel.add(orderLabel);
+				JScrollPane itemSummaryPane = new JScrollPane();
+				JList<Item> itemSummary = new JList<Item>();
+				itemSummaryPane.setViewportView(itemSummary);
+				itemSummary.setCellRenderer(new ListCellRenderer<Item>() {
+
+					@Override
+					public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
+							boolean isSelected, boolean cellHasFocus) {
+						return new JLabel("(x" + value.getQuantity() + ") " 
+							+ value.getTitle() + ": £" + value.getPrice());
+					}
+					
+				});
+				
+				DefaultListModel dlm = new DefaultListModel();
+				Item[] items = value.getItems();
+				for(int i = 0; i < items.length; i++) {
+					dlm.addElement(items[i]);
+				}
+				
+				itemSummary.setModel(dlm);
+				
+				panel.add(itemSummaryPane);
+				return panel;
+			}
+		};
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -782,7 +839,6 @@ public class GraphicalClient extends JFrame {
 		btnRefresh.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO: get customer's orders and populate c_orders_list using getOrders service
 				try {
 					Order[] orders = customers.getOrders(customerID);
 					DefaultListModel<Order> dlm = new DefaultListModel<Order>();
@@ -814,61 +870,8 @@ public class GraphicalClient extends JFrame {
 		customer_panel_order_status_tab.add(scrollPane, gbc_scrollPane);
 		
 		c_orders_list = new JList();
-		c_orders_list.setCellRenderer(new ListCellRenderer<Order>() {
-			@Override
-			public Component getListCellRendererComponent(JList<? extends Order> list, Order value, int index,
-					boolean isSelected, boolean cellHasFocus) {
-				JPanel panel = new JPanel();
-				String deliveryEstimate;
-				if(value.getDeliveryTime() < 0) {
-					deliveryEstimate = "N/A"; // No estimate provided
-				} else {
-					int hours = value.getDeliveryTime() / 60;
-					int minutes = value.getDeliveryTime() % 60;
-					String hoursString = "" + hours;
-					String minutesString = "" + minutes;
-					if(hoursString.length() == 1) {
-						hoursString = "0" + hoursString;
-					}
-					if(minutesString.length() == 1) {
-						minutesString = "0" + minutesString;
-					}
-					deliveryEstimate = hoursString + ":" + minutesString;
-				}
+		c_orders_list.setCellRenderer(orderListCellRenderer);
 				
-				JLabel orderLabel = new JLabel("<html>OrderID: " + value.getOrderID() 
-													+ "<br>Status: " + value.getStatus()
-													+ "<br>Total Cost: £" + value.getTotalPrice()
-													+ "<br>Delivery Estimate: " + deliveryEstimate
-													+ "</html>");
-				panel.add(orderLabel);
-				JScrollPane itemSummaryPane = new JScrollPane();
-				JList<Item> itemSummary = new JList<Item>();
-				itemSummaryPane.setViewportView(itemSummary);
-				itemSummary.setCellRenderer(new ListCellRenderer<Item>() {
-
-					@Override
-					public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
-							boolean isSelected, boolean cellHasFocus) {
-						return new JLabel("(x" + value.getQuantity() + ") " 
-							+ value.getTitle() + ": £" + value.getPrice());
-					}
-					
-				});
-				
-				DefaultListModel dlm = new DefaultListModel();
-				Item[] items = value.getItems();
-				for(int i = 0; i < items.length; i++) {
-					dlm.addElement(items[i]);
-				}
-				
-				itemSummary.setModel(dlm);
-				
-				panel.add(itemSummaryPane);
-				return panel;
-			}
-			
-		});
 		scrollPane.setViewportView(c_orders_list);
 		
 		JTabbedPane restaurant_panel = new JTabbedPane(JTabbedPane.TOP);
@@ -877,11 +880,41 @@ public class GraphicalClient extends JFrame {
 		JPanel restaurant_panel_orders_tab = new JPanel();
 		restaurant_panel.addTab("Orders", null, restaurant_panel_orders_tab, null);
 		GridBagLayout gbl_restaurant_panel_orders_tab = new GridBagLayout();
-		gbl_restaurant_panel_orders_tab.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_restaurant_panel_orders_tab.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_restaurant_panel_orders_tab.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_restaurant_panel_orders_tab.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_restaurant_panel_orders_tab.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_restaurant_panel_orders_tab.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		restaurant_panel_orders_tab.setLayout(gbl_restaurant_panel_orders_tab);
+		
+		JButton btnRefresh_1 = new JButton("Refresh");
+		btnRefresh_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					Order[] orders = restaurants.getOrders(restaurantID);
+					
+					DefaultListModel<Order> q_dlm = new DefaultListModel<Order>();
+					DefaultListModel<Order> a_dlm = new DefaultListModel<Order>();
+					for(int i = 0; i < orders.length; i++) {
+						Order order = orders[i];
+						if(order.getStatus().equals("QUEUED")) {
+							q_dlm.addElement(order);
+						} else if(!order.getStatus().contentEquals("REJECTED")) {
+							a_dlm.addElement(order);
+						}
+					}
+					r_queued_list.setModel(q_dlm);
+					r_accepted_list.setModel(a_dlm);
+				} catch (RemoteException e1) {
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
+				}
+			}
+		});
+		GridBagConstraints gbc_btnRefresh_1 = new GridBagConstraints();
+		gbc_btnRefresh_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnRefresh_1.gridx = 2;
+		gbc_btnRefresh_1.gridy = 0;
+		restaurant_panel_orders_tab.add(btnRefresh_1, gbc_btnRefresh_1);
 		
 		JLabel lblQueued = new JLabel("Queued:");
 		GridBagConstraints gbc_lblQueued = new GridBagConstraints();
@@ -891,22 +924,33 @@ public class GraphicalClient extends JFrame {
 		gbc_lblQueued.gridy = 1;
 		restaurant_panel_orders_tab.add(lblQueued, gbc_lblQueued);
 		
-		JPanel rp_ot_queued_panel = new JPanel();
-		rp_ot_queued_panel.setBackground(Color.WHITE);
-		GridBagConstraints gbc_rp_ot_queued_panel = new GridBagConstraints();
-		gbc_rp_ot_queued_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_rp_ot_queued_panel.fill = GridBagConstraints.BOTH;
-		gbc_rp_ot_queued_panel.gridx = 1;
-		gbc_rp_ot_queued_panel.gridy = 2;
-		restaurant_panel_orders_tab.add(rp_ot_queued_panel, gbc_rp_ot_queued_panel);
+		JScrollPane r_queued_scroll = new JScrollPane();
+		GridBagConstraints gbc_r_queued_scroll = new GridBagConstraints();
+		gbc_r_queued_scroll.gridheight = 2;
+		gbc_r_queued_scroll.insets = new Insets(0, 0, 5, 5);
+		gbc_r_queued_scroll.fill = GridBagConstraints.BOTH;
+		gbc_r_queued_scroll.gridx = 1;
+		gbc_r_queued_scroll.gridy = 2;
+		restaurant_panel_orders_tab.add(r_queued_scroll, gbc_r_queued_scroll);
 		
-		JSeparator separator_3 = new JSeparator();
-		GridBagConstraints gbc_separator_3 = new GridBagConstraints();
-		gbc_separator_3.gridwidth = 3;
-		gbc_separator_3.insets = new Insets(0, 0, 5, 0);
-		gbc_separator_3.gridx = 0;
-		gbc_separator_3.gridy = 3;
-		restaurant_panel_orders_tab.add(separator_3, gbc_separator_3);
+		r_queued_list = new JList<Order>();
+		r_queued_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		r_queued_list.setCellRenderer(orderListCellRenderer);
+		r_queued_scroll.setViewportView(r_queued_list);
+		
+		JButton btnAccept = new JButton("Accept");
+		GridBagConstraints gbc_btnAccept = new GridBagConstraints();
+		gbc_btnAccept.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAccept.gridx = 2;
+		gbc_btnAccept.gridy = 2;
+		restaurant_panel_orders_tab.add(btnAccept, gbc_btnAccept);
+		
+		JButton btnReject = new JButton("Reject");
+		GridBagConstraints gbc_btnReject = new GridBagConstraints();
+		gbc_btnReject.insets = new Insets(0, 0, 5, 5);
+		gbc_btnReject.gridx = 2;
+		gbc_btnReject.gridy = 3;
+		restaurant_panel_orders_tab.add(btnReject, gbc_btnReject);
 		
 		JLabel lblAccepted = new JLabel("Accepted:");
 		GridBagConstraints gbc_lblAccepted = new GridBagConstraints();
@@ -916,14 +960,25 @@ public class GraphicalClient extends JFrame {
 		gbc_lblAccepted.gridy = 4;
 		restaurant_panel_orders_tab.add(lblAccepted, gbc_lblAccepted);
 		
-		JPanel rp_ot_accepted_panel = new JPanel();
-		rp_ot_accepted_panel.setBackground(Color.WHITE);
-		GridBagConstraints gbc_rp_ot_accepted_panel = new GridBagConstraints();
-		gbc_rp_ot_accepted_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_rp_ot_accepted_panel.fill = GridBagConstraints.BOTH;
-		gbc_rp_ot_accepted_panel.gridx = 1;
-		gbc_rp_ot_accepted_panel.gridy = 5;
-		restaurant_panel_orders_tab.add(rp_ot_accepted_panel, gbc_rp_ot_accepted_panel);
+		JScrollPane r_accepted_scroll = new JScrollPane();
+		GridBagConstraints gbc_r_accepted_scroll = new GridBagConstraints();
+		gbc_r_accepted_scroll.insets = new Insets(0, 0, 5, 5);
+		gbc_r_accepted_scroll.fill = GridBagConstraints.BOTH;
+		gbc_r_accepted_scroll.gridx = 1;
+		gbc_r_accepted_scroll.gridy = 5;
+		restaurant_panel_orders_tab.add(r_accepted_scroll, gbc_r_accepted_scroll);
+		
+		r_accepted_list = new JList<Order>();
+		r_accepted_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		r_accepted_list.setCellRenderer(orderListCellRenderer);
+		r_accepted_scroll.setViewportView(r_accepted_list);
+		
+		JButton btnUpdateStatus = new JButton("Update Status");
+		GridBagConstraints gbc_btnUpdateStatus = new GridBagConstraints();
+		gbc_btnUpdateStatus.insets = new Insets(0, 0, 5, 5);
+		gbc_btnUpdateStatus.gridx = 2;
+		gbc_btnUpdateStatus.gridy = 5;
+		restaurant_panel_orders_tab.add(btnUpdateStatus, gbc_btnUpdateStatus);
 		
 		JPanel restaurant_panel_menu_tab = new JPanel();
 		restaurant_panel.addTab("Menu", null, restaurant_panel_menu_tab, null);

@@ -16,7 +16,7 @@ public class RestaurantsSoapBindingStub extends org.apache.axis.client.Stub impl
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[3];
+        _operations = new org.apache.axis.description.OperationDesc[4];
         _initOperationDesc1();
     }
 
@@ -62,6 +62,17 @@ public class RestaurantsSoapBindingStub extends org.apache.axis.client.Stub impl
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         _operations[2] = oper;
 
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("getOrders");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "restaurantID"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
+        oper.addParameter(param);
+        oper.setReturnType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Order"));
+        oper.setReturnClass(soar.assessment.Y3853992.Order[].class);
+        oper.setReturnQName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "getOrdersReturn"));
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[3] = oper;
+
     }
 
     public RestaurantsSoapBindingStub() throws org.apache.axis.AxisFault {
@@ -93,9 +104,32 @@ public class RestaurantsSoapBindingStub extends org.apache.axis.client.Stub impl
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "ArrayOfItem");
+            cachedSerQNames.add(qName);
+            cls = soar.assessment.Y3853992.Item[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Item");
+            qName2 = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "item");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Item");
+            cachedSerQNames.add(qName);
+            cls = soar.assessment.Y3853992.Item.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoValidEntryException");
             cachedSerQNames.add(qName);
             cls = soar.assessment.Y3853992.NoValidEntryException.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Order");
+            cachedSerQNames.add(qName);
+            cls = soar.assessment.Y3853992.Order.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -257,6 +291,40 @@ public class RestaurantsSoapBindingStub extends org.apache.axis.client.Stub impl
             throw (java.rmi.RemoteException)_resp;
         }
         extractAttachments(_call);
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
+    public soar.assessment.Y3853992.Order[] getOrders(int restaurantID) throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[3]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "getOrders"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(restaurantID)});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return (soar.assessment.Y3853992.Order[]) _resp;
+            } catch (java.lang.Exception _exception) {
+                return (soar.assessment.Y3853992.Order[]) org.apache.axis.utils.JavaUtils.convert(_resp, soar.assessment.Y3853992.Order[].class);
+            }
+        }
   } catch (org.apache.axis.AxisFault axisFaultException) {
   throw axisFaultException;
 }

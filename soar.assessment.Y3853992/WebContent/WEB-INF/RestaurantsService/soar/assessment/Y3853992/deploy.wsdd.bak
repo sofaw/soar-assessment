@@ -32,12 +32,38 @@
       <operation name="deleteMenu" qname="operNS:deleteMenu" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
         <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <parameter name="allowedMethods" value="deleteMenu addMenuItem getRestaurantID"/>
+      <operation name="getOrders" qname="operNS:getOrders" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getOrdersReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Order" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="deleteMenu addMenuItem getRestaurantID getOrders"/>
 
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:Item"
+        type="java:soar.assessment.Y3853992.Item"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:ArrayOfItem"
+        type="java:soar.assessment.Y3853992.Item[]"
+        innerType="cmp-ns:Item" xmlns:cmp-ns="http://Y3853992.assessment.soar"
+        encodingStyle=""
+      />
       <typeMapping
         xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:NoValidEntryException"
         type="java:soar.assessment.Y3853992.NoValidEntryException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:Order"
+        type="java:soar.assessment.Y3853992.Order"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
