@@ -1151,7 +1151,7 @@ public class GraphicalClient extends JFrame {
 		restaurant_panel_menu_tab.setLayout(new CardLayout(0, 0));
 		
 		JPanel rp_mt_current_menu = new JPanel();
-		restaurant_panel_menu_tab.add(rp_mt_current_menu, "name_139444151858240");
+		restaurant_panel_menu_tab.add(rp_mt_current_menu, "rp_mt_current_menu");
 		GridBagLayout gbl_rp_mt_current_menu = new GridBagLayout();
 		gbl_rp_mt_current_menu.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_rp_mt_current_menu.rowHeights = new int[]{0, 0, 0, 0, 0};
@@ -1267,6 +1267,29 @@ public class GraphicalClient extends JFrame {
 		scrollPane_2.setViewportView(summary_menu_list);
 		
 		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DefaultListModel<Item> dlm = (DefaultListModel<Item>) summary_menu_list.getModel();
+				Item[] items = new Item[dlm.getSize()];
+				for(int i = 0; i < dlm.getSize(); i++) {
+					items[i] = dlm.getElementAt(i);
+				}
+				
+				try {
+					restaurants.updateMenu(restaurantID, items);
+					
+					CardLayout cardLayout = (CardLayout) restaurant_panel_menu_tab.getLayout();
+					cardLayout.show(restaurant_panel_menu_tab, "rp_mt_current_menu");
+					
+					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "Menu has been updated. Refresh to view.");
+				} catch (RemoteException ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "An error occurred. Please try again.");
+				}
+				
+			}
+		});
 		GridBagConstraints gbc_btnUpdate = new GridBagConstraints();
 		gbc_btnUpdate.insets = new Insets(0, 0, 5, 5);
 		gbc_btnUpdate.gridx = 6;
