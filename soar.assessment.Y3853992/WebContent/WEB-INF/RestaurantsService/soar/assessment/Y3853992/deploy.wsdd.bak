@@ -38,7 +38,11 @@
         <parameter qname="pns:username" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <fault name="NoValidEntryException" qname="fns:fault2" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
-      <parameter name="allowedMethods" value="changeOrderStatus getMenu getRestaurantID getOrders"/>
+      <operation name="updateMenu" qname="operNS:updateMenu" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:items" xmlns:pns="http://Y3853992.assessment.soar" type="tns:Item" xmlns:tns="http://Y3853992.assessment.soar"/>
+      </operation>
+      <parameter name="allowedMethods" value="updateMenu changeOrderStatus getMenu getRestaurantID getOrders"/>
 
       <typeMapping
         xmlns:ns="http://Y3853992.assessment.soar"

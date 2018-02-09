@@ -66,8 +66,8 @@ public class GraphicalClient extends JFrame {
 	private JTextField c_search;
 	private JTextField c_search_2;
 	private GridBagLayout gbl_basket_panel;
-	private JTextField textField_5;
-	private JTextField textField_6;
+	private JTextField r_menu_title_text;
+	private JTextField r_menu_price_text;
 	private JPasswordField creg_password;
 	private JTextField creg_email;
 	private JTextField creg_fullname;
@@ -86,6 +86,7 @@ public class GraphicalClient extends JFrame {
 	private JList<Order> r_queued_list;
 	private JList<Order> r_accepted_list;
 	private JList<Item> menu_list;
+	private JList<Item> summary_menu_list;
 	
 	private int restaurantID = -1;
 	private int customerID = -1;
@@ -1231,7 +1232,7 @@ public class GraphicalClient extends JFrame {
 		GridBagLayout gbl_rp_mt_update_menu = new GridBagLayout();
 		gbl_rp_mt_update_menu.columnWidths = new int[]{0, 49, 0, 0, 0, 60, 0, 0, 0};
 		gbl_rp_mt_update_menu.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_rp_mt_update_menu.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_rp_mt_update_menu.columnWeights = new double[]{1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_rp_mt_update_menu.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		rp_mt_update_menu.setLayout(gbl_rp_mt_update_menu);
 		
@@ -1243,15 +1244,27 @@ public class GraphicalClient extends JFrame {
 		gbc_lblSummary.gridy = 1;
 		rp_mt_update_menu.add(lblSummary, gbc_lblSummary);
 		
-		JPanel menu_summary_panel = new JPanel();
-		menu_summary_panel.setBackground(Color.WHITE);
-		GridBagConstraints gbc_menu_summary_panel = new GridBagConstraints();
-		gbc_menu_summary_panel.gridwidth = 5;
-		gbc_menu_summary_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_menu_summary_panel.fill = GridBagConstraints.BOTH;
-		gbc_menu_summary_panel.gridx = 1;
-		gbc_menu_summary_panel.gridy = 2;
-		rp_mt_update_menu.add(menu_summary_panel, gbc_menu_summary_panel);
+		JScrollPane scrollPane_2 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane_2 = new GridBagConstraints();
+		gbc_scrollPane_2.gridwidth = 5;
+		gbc_scrollPane_2.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_2.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane_2.gridx = 1;
+		gbc_scrollPane_2.gridy = 2;
+		rp_mt_update_menu.add(scrollPane_2, gbc_scrollPane_2);
+		
+		summary_menu_list = new JList<Item>();
+		summary_menu_list.setModel(new DefaultListModel<Item>());
+		summary_menu_list.setCellRenderer(new ListCellRenderer<Item>() {
+
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				return new JLabel(value.getTitle() + ": £" + value.getPrice());
+			}
+			
+		});
+		scrollPane_2.setViewportView(summary_menu_list);
 		
 		JButton btnUpdate = new JButton("Update");
 		GridBagConstraints gbc_btnUpdate = new GridBagConstraints();
@@ -1276,14 +1289,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblTitle.gridy = 4;
 		rp_mt_update_menu.add(lblTitle, gbc_lblTitle);
 		
-		textField_5 = new JTextField();
-		GridBagConstraints gbc_textField_5 = new GridBagConstraints();
-		gbc_textField_5.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_5.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_5.gridx = 2;
-		gbc_textField_5.gridy = 4;
-		rp_mt_update_menu.add(textField_5, gbc_textField_5);
-		textField_5.setColumns(10);
+		r_menu_title_text = new JTextField();
+		GridBagConstraints gbc_r_menu_title_text = new GridBagConstraints();
+		gbc_r_menu_title_text.insets = new Insets(0, 0, 5, 5);
+		gbc_r_menu_title_text.fill = GridBagConstraints.HORIZONTAL;
+		gbc_r_menu_title_text.gridx = 2;
+		gbc_r_menu_title_text.gridy = 4;
+		rp_mt_update_menu.add(r_menu_title_text, gbc_r_menu_title_text);
+		r_menu_title_text.setColumns(10);
 		
 		JLabel lblPrice = new JLabel("Price:");
 		GridBagConstraints gbc_lblPrice = new GridBagConstraints();
@@ -1293,16 +1306,51 @@ public class GraphicalClient extends JFrame {
 		gbc_lblPrice.gridy = 4;
 		rp_mt_update_menu.add(lblPrice, gbc_lblPrice);
 		
-		textField_6 = new JTextField();
-		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
-		gbc_textField_6.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_6.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_6.gridx = 4;
-		gbc_textField_6.gridy = 4;
-		rp_mt_update_menu.add(textField_6, gbc_textField_6);
-		textField_6.setColumns(10);
+		r_menu_price_text = new JTextField();
+		GridBagConstraints gbc_r_menu_price_text = new GridBagConstraints();
+		gbc_r_menu_price_text.insets = new Insets(0, 0, 5, 5);
+		gbc_r_menu_price_text.fill = GridBagConstraints.HORIZONTAL;
+		gbc_r_menu_price_text.gridx = 4;
+		gbc_r_menu_price_text.gridy = 4;
+		rp_mt_update_menu.add(r_menu_price_text, gbc_r_menu_price_text);
+		r_menu_price_text.setColumns(10);
 		
 		JButton button = new JButton("+");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Add to summary
+				String title = r_menu_title_text.getText();
+				String priceStr = r_menu_price_text.getText();
+				float price;
+				if(title == null || title.isEmpty() ||
+						priceStr == null || priceStr.isEmpty()) {
+					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "Both title and price must be provided.");
+				} else {
+					try {
+						price = Float.parseFloat(priceStr);
+					} catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "Price must be a floating point number.");
+						return;
+					}
+					
+					DefaultListModel<Item> dlm = (DefaultListModel<Item>) summary_menu_list.getModel();
+					if(dlm == null) {
+						dlm = new DefaultListModel<Item>();
+					}
+					
+					Item item = new Item();
+					item.setRestaurantID(restaurantID);
+					item.setTitle(title);
+					item.setPrice(price);
+					dlm.addElement(item);
+					summary_menu_list.setModel(dlm);
+					
+					r_menu_title_text.setText("");
+					r_menu_price_text.setText("");
+				}
+			}
+		});
 		GridBagConstraints gbc_button = new GridBagConstraints();
 		gbc_button.insets = new Insets(0, 0, 5, 5);
 		gbc_button.gridx = 5;

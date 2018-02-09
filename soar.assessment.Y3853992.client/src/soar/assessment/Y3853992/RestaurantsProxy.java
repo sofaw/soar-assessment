@@ -68,5 +68,11 @@ public class RestaurantsProxy implements soar.assessment.Y3853992.Restaurants {
     return restaurants.getRestaurantID(username);
   }
   
+  public void updateMenu(int restaurantID, soar.assessment.Y3853992.Item[] items) throws java.rmi.RemoteException{
+    if (restaurants == null)
+      _initRestaurantsProxy();
+    restaurants.updateMenu(restaurantID, items);
+  }
+  
   
 }

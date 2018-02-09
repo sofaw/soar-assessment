@@ -20,32 +20,6 @@ public class Restaurants {
 		}
 	}
 	
-	/*public void addMenuItem(int restaurantID, String title, float price) throws ClassNotFoundException, SQLException {
-		Class.forName("org.h2.Driver");
-		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
-        Statement stmt = con.createStatement();
-        
-		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ITEMS("
-        		+ "ITEM_ID INT PRIMARY KEY AUTO_INCREMENT, "
-        		+ "RESTAURANT_ID  INT, "
-        		+ "TITLE VARCHAR(35), "
-        		+ "PRICE FLOAT, "
-        		+ "FOREIGN KEY (RESTAURANT_ID) REFERENCES RESTAURANTS(RESTAURANT_ID) ON DELETE CASCADE)");
-
-        stmt.executeUpdate("INSERT INTO ITEMS (RESTAURANT_ID, TITLE, PRICE) VALUES ("
-        		+ "\'" + restaurantID + "\', "
-        		+ "\'" + title + "\', "
-        		+ "\'" + price + "\')" );
-	}
-	
-	public void deleteMenu(int restaurantID) throws ClassNotFoundException, SQLException {
-		Class.forName("org.h2.Driver");
-		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
-        Statement stmt = con.createStatement();
-		
-		stmt.executeUpdate("DELETE FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
-	}*/
-	
 	public Item[] getMenu(int restaurantID) throws ClassNotFoundException, SQLException, NoResultsException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
@@ -68,6 +42,31 @@ public class Restaurants {
 		}
 		
 		return results.toArray(new Item[results.size()]);
+	}
+	
+	public void updateMenu(int restaurantID, Item[] items) throws ClassNotFoundException, SQLException {
+		Class.forName("org.h2.Driver");
+		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
+        Statement stmt = con.createStatement();
+		
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ITEMS("
+        		+ "ITEM_ID INT PRIMARY KEY AUTO_INCREMENT, "
+        		+ "RESTAURANT_ID  INT, "
+        		+ "TITLE VARCHAR(35), "
+        		+ "PRICE FLOAT, "
+        		+ "FOREIGN KEY (RESTAURANT_ID) REFERENCES RESTAURANTS(RESTAURANT_ID) ON DELETE CASCADE)");
+        
+        // Delete old menu
+		stmt.executeUpdate("DELETE FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
+		
+		// Add new items
+		for(int i = 0; i < items.length; i++) {
+            stmt.executeUpdate("INSERT INTO ITEMS (RESTAURANT_ID, TITLE, PRICE) VALUES ("
+            		+ "\'" + restaurantID + "\', "
+            		+ "\'" + items[i].getTitle() + "\', "
+            		+ "\'" + items[i].getPrice() + "\'"
+            		+ ")" );
+		}
 	}
 
 	public Order[] getOrders(int restaurantID) throws ClassNotFoundException, SQLException {

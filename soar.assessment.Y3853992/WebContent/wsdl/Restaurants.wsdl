@@ -94,6 +94,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <sequence/>
    </complexType>
    <element name="fault2" type="impl:NoValidEntryException"/>
+   <element name="updateMenu">
+    <complexType>
+     <sequence>
+      <element name="restaurantID" type="xsd:int"/>
+      <element maxOccurs="unbounded" name="items" type="impl:Item"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="updateMenuResponse">
+    <complexType/>
+   </element>
   </schema>
  </wsdl:types>
 
@@ -103,9 +114,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="changeOrderStatusResponse">
+   <wsdl:message name="updateMenuResponse">
 
-      <wsdl:part element="impl:changeOrderStatusResponse" name="parameters"/>
+      <wsdl:part element="impl:updateMenuResponse" name="parameters"/>
 
    </wsdl:message>
 
@@ -118,6 +129,36 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="getMenuRequest">
 
       <wsdl:part element="impl:getMenu" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getRestaurantIDResponse">
+
+      <wsdl:part element="impl:getRestaurantIDResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="InvalidIDException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="NoValidEntryException">
+
+      <wsdl:part element="impl:fault2" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="changeOrderStatusResponse">
+
+      <wsdl:part element="impl:changeOrderStatusResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateMenuRequest">
+
+      <wsdl:part element="impl:updateMenu" name="parameters"/>
 
    </wsdl:message>
 
@@ -142,24 +183,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="changeOrderStatusRequest">
 
       <wsdl:part element="impl:changeOrderStatus" name="parameters"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="getRestaurantIDResponse">
-
-      <wsdl:part element="impl:getRestaurantIDResponse" name="parameters"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="InvalidIDException">
-
-      <wsdl:part element="impl:fault1" name="fault"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="NoValidEntryException">
-
-      <wsdl:part element="impl:fault2" name="fault"/>
 
    </wsdl:message>
 
@@ -200,6 +223,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          <wsdl:output message="impl:getRestaurantIDResponse" name="getRestaurantIDResponse"/>
 
          <wsdl:fault message="impl:NoValidEntryException" name="NoValidEntryException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateMenu">
+
+         <wsdl:input message="impl:updateMenuRequest" name="updateMenuRequest"/>
+
+         <wsdl:output message="impl:updateMenuResponse" name="updateMenuResponse"/>
 
       </wsdl:operation>
 
@@ -296,6 +327,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
             <wsdlsoap:fault name="NoValidEntryException" use="literal"/>
 
          </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateMenu">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateMenuRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateMenuResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
 
       </wsdl:operation>
 
