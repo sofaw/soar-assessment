@@ -80,6 +80,7 @@ public class GraphicalClient extends JFrame {
 	private JList<Item> basket_list;
 	private DefaultListModel<Item> basket_contents;
 	private JLabel order_total_label;
+	private JList<Order> c_orders_list;
 	
 	private int restaurantID = -1;
 	private int customerID = -1;
@@ -766,21 +767,15 @@ public class GraphicalClient extends JFrame {
 				// TODO: get customer's orders and populate c_orders_list using getOrders service
 				try {
 					Order[] orders = customers.getOrders(customerID);
-					
+					DefaultListModel<Order> dlm = new DefaultListModel<Order>();
 					for(int i = 0; i < orders.length; i++) {
-						// TODO: add to c_orders_list
-						System.out.println(orders[i].getOrderID());
-						System.out.println(orders[i].getTotalPrice());
-						System.out.println(orders[i].getStatus());
-						Item[] items = orders[i].getItems();
-						int[] quantities = orders[i].getQuantities();
-						for(int j = 0; j < items.length; j++) {
-							System.out.println(items[j].getTitle() + ": £" + items[j].getPrice() + " x" + quantities[j]);
-						}
+						dlm.addElement(orders[i]);
 					}
+					
+					c_orders_list.setModel(dlm);
+					
 				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(customer_panel_order_status_tab, "An error has occurred. Please try again.");
 				}
 			}
 		});
@@ -800,7 +795,43 @@ public class GraphicalClient extends JFrame {
 		gbc_scrollPane.gridy = 2;
 		customer_panel_order_status_tab.add(scrollPane, gbc_scrollPane);
 		
-		JList c_orders_list = new JList();
+		c_orders_list = new JList();
+		c_orders_list.setCellRenderer(new ListCellRenderer<Order>() {
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Order> list, Order value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				JPanel panel = new JPanel();
+				JLabel orderLabel = new JLabel("<html>OrderID: " + value.getOrderID() 
+													+"<br>Status: " + value.getStatus()
+													+"<br>Total Cost: £" + value.getTotalPrice()
+													+"<br>Delivery Estimate: " + value.getDeliveryTime());
+				panel.add(orderLabel);
+				// TODO: add quantity info to Item class
+				JScrollPane itemSummaryPane = new JScrollPane();
+				JList<Item> itemSummary = new JList<Item>();
+				itemSummaryPane.setViewportView(itemSummary);
+				itemSummary.setCellRenderer(new ListCellRenderer<Item>() {
+
+					@Override
+					public Component getListCellRendererComponent(JList<? extends Item> list, Item value, int index,
+							boolean isSelected, boolean cellHasFocus) {
+						return new JLabel(value.getTitle() + ": £" + value.getPrice());
+					}
+					
+				});
+				
+				DefaultListModel dlm = new DefaultListModel();
+				Item[] items = value.getItems();
+				for(int i = 0; i < items.length; i++) {
+					dlm.addElement(items[i]);
+				}
+				itemSummary.setModel(dlm);
+				
+				panel.add(itemSummaryPane);
+				return panel;
+			}
+			
+		});
 		scrollPane.setViewportView(c_orders_list);
 		
 		JTabbedPane restaurant_panel = new JTabbedPane(JTabbedPane.TOP);
