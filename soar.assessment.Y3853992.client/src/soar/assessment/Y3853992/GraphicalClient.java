@@ -34,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JTabbedPane;
@@ -87,8 +88,8 @@ public class GraphicalClient extends JFrame {
 	private RestaurantsSoapBindingStub restaurants;
 	EngineConfiguration customersConfig;
 	CustomersSoapBindingStub customers;
-	private JTextField textField;
-	private JTextField textField_2;
+	private JTextField card_number;
+	private JTextField delivery_address;
 
 	/**
 	 * Launch the application.
@@ -651,9 +652,9 @@ public class GraphicalClient extends JFrame {
 		customer_panel_search_tab.add(customer_tab_1_order_placed, "customer_tab_1_order_placed");
 		GridBagLayout gbl_customer_tab_1_order_placed = new GridBagLayout();
 		gbl_customer_tab_1_order_placed.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_customer_tab_1_order_placed.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_customer_tab_1_order_placed.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_customer_tab_1_order_placed.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_customer_tab_1_order_placed.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_customer_tab_1_order_placed.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		customer_tab_1_order_placed.setLayout(gbl_customer_tab_1_order_placed);
 		
 		JLabel lblThanksForYour = new JLabel("Thanks for your order!");
@@ -686,14 +687,14 @@ public class GraphicalClient extends JFrame {
 		gbc_lblCardNumber.gridy = 1;
 		customer_tab_1_details.add(lblCardNumber, gbc_lblCardNumber);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 1;
-		customer_tab_1_details.add(textField, gbc_textField);
-		textField.setColumns(10);
+		card_number = new JTextField();
+		GridBagConstraints gbc_card_number = new GridBagConstraints();
+		gbc_card_number.insets = new Insets(0, 0, 5, 5);
+		gbc_card_number.fill = GridBagConstraints.HORIZONTAL;
+		gbc_card_number.gridx = 2;
+		gbc_card_number.gridy = 1;
+		customer_tab_1_details.add(card_number, gbc_card_number);
+		card_number.setColumns(10);
 		
 		JLabel lblDeliveryAddress = new JLabel("Delivery Address:");
 		GridBagConstraints gbc_lblDeliveryAddress = new GridBagConstraints();
@@ -703,16 +704,38 @@ public class GraphicalClient extends JFrame {
 		gbc_lblDeliveryAddress.gridy = 2;
 		customer_tab_1_details.add(lblDeliveryAddress, gbc_lblDeliveryAddress);
 		
-		textField_2 = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 2;
-		gbc_textField_2.gridy = 2;
-		customer_tab_1_details.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		delivery_address = new JTextField();
+		GridBagConstraints gbc_delivery_address = new GridBagConstraints();
+		gbc_delivery_address.insets = new Insets(0, 0, 5, 5);
+		gbc_delivery_address.fill = GridBagConstraints.HORIZONTAL;
+		gbc_delivery_address.gridx = 2;
+		gbc_delivery_address.gridy = 2;
+		customer_tab_1_details.add(delivery_address, gbc_delivery_address);
+		delivery_address.setColumns(10);
 		
 		JButton place_order = new JButton("Place Order");
+		place_order.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ArrayList<Item> basket = new ArrayList<Item>();
+				DefaultListModel m = (DefaultListModel) basket_list.getModel();
+				for(int i = 0; i < m.getSize(); i++) {
+					basket.add((Item) m.getElementAt(i));
+				}
+				Item[] basketArr = new Item[basket.size()];
+				basketArr = basket.toArray(basketArr);
+				try {
+					customers.placeOrder(customerID, basketArr, card_number.getText(), delivery_address.getText());
+					
+					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
+					cardLayout.show(customer_panel_search_tab, "customer_tab_1_order_placed");
+				} catch(NullFieldException ex) {
+					JOptionPane.showMessageDialog(customer_tab_1_details, "Please fill in all required fields.");
+				} catch (RemoteException e1) {
+					JOptionPane.showMessageDialog(customer_tab_1_details, "An error has occurred. Please try again.");
+				}
+			}
+		});
 		GridBagConstraints gbc_place_order = new GridBagConstraints();
 		gbc_place_order.insets = new Insets(0, 0, 0, 5);
 		gbc_place_order.gridx = 2;
@@ -737,6 +760,30 @@ public class GraphicalClient extends JFrame {
 		customer_panel_order_status_tab.add(lblYourOrders, gbc_lblYourOrders);
 		
 		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO: get customer's orders and populate c_orders_list using getOrders service
+				try {
+					Order[] orders = customers.getOrders(customerID);
+					
+					for(int i = 0; i < orders.length; i++) {
+						// TODO: add to c_orders_list
+						System.out.println(orders[i].getOrderID());
+						System.out.println(orders[i].getTotalPrice());
+						System.out.println(orders[i].getStatus());
+						Item[] items = orders[i].getItems();
+						int[] quantities = orders[i].getQuantities();
+						for(int j = 0; j < items.length; j++) {
+							System.out.println(items[j].getTitle() + ": £" + items[j].getPrice() + " x" + quantities[j]);
+						}
+					}
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		GridBagConstraints gbc_btnRefresh = new GridBagConstraints();
 		gbc_btnRefresh.anchor = GridBagConstraints.EAST;
 		gbc_btnRefresh.insets = new Insets(0, 0, 5, 5);
@@ -744,15 +791,17 @@ public class GraphicalClient extends JFrame {
 		gbc_btnRefresh.gridy = 1;
 		customer_panel_order_status_tab.add(btnRefresh, gbc_btnRefresh);
 		
-		JPanel customer_tab_2_orders_panel = new JPanel();
-		customer_tab_2_orders_panel.setBackground(Color.WHITE);
-		GridBagConstraints gbc_customer_tab_2_orders_panel = new GridBagConstraints();
-		gbc_customer_tab_2_orders_panel.gridwidth = 3;
-		gbc_customer_tab_2_orders_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_customer_tab_2_orders_panel.fill = GridBagConstraints.BOTH;
-		gbc_customer_tab_2_orders_panel.gridx = 1;
-		gbc_customer_tab_2_orders_panel.gridy = 2;
-		customer_panel_order_status_tab.add(customer_tab_2_orders_panel, gbc_customer_tab_2_orders_panel);
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridwidth = 3;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 2;
+		customer_panel_order_status_tab.add(scrollPane, gbc_scrollPane);
+		
+		JList c_orders_list = new JList();
+		scrollPane.setViewportView(c_orders_list);
 		
 		JTabbedPane restaurant_panel = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(restaurant_panel, "restaurant_panel");

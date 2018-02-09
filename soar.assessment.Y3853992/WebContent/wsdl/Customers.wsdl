@@ -72,24 +72,75 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="username" nillable="true" type="xsd:string"/>
     </sequence>
    </complexType>
+   <element name="placeOrder">
+    <complexType>
+     <sequence>
+      <element name="customerID" type="xsd:int"/>
+      <element maxOccurs="unbounded" name="items" type="impl:Item"/>
+      <element name="cardNumber" type="xsd:string"/>
+      <element name="deliveryAddress" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="placeOrderResponse">
+    <complexType/>
+   </element>
+   <complexType name="NullFieldException">
+    <sequence/>
+   </complexType>
+   <element name="fault2" type="impl:NullFieldException"/>
+   <element name="getOrders">
+    <complexType>
+     <sequence>
+      <element name="customerID" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getOrdersResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getOrdersReturn" type="impl:Order"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOfItem">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:Item"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOf_xsd_int">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:int"/>
+    </sequence>
+   </complexType>
+   <complexType name="Order">
+    <sequence>
+     <element name="deliveryTime" type="xsd:int"/>
+     <element name="items" nillable="true" type="impl:ArrayOfItem"/>
+     <element name="orderID" type="xsd:int"/>
+     <element name="quantities" nillable="true" type="impl:ArrayOf_xsd_int"/>
+     <element name="status" nillable="true" type="xsd:string"/>
+     <element name="totalPrice" type="xsd:float"/>
+    </sequence>
+   </complexType>
   </schema>
  </wsdl:types>
+
+   <wsdl:message name="getOrdersRequest">
+
+      <wsdl:part element="impl:getOrders" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="placeOrderRequest">
+
+      <wsdl:part element="impl:placeOrder" name="parameters"/>
+
+   </wsdl:message>
 
    <wsdl:message name="getMenuRequest">
 
       <wsdl:part element="impl:getMenu" name="parameters"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="getMenuResponse">
-
-      <wsdl:part element="impl:getMenuResponse" name="parameters"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="NoResultsException">
-
-      <wsdl:part element="impl:fault" name="fault"/>
 
    </wsdl:message>
 
@@ -111,15 +162,45 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="NoValidEntryException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getMenuResponse">
+
+      <wsdl:part element="impl:getMenuResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getOrdersResponse">
+
+      <wsdl:part element="impl:getOrdersResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="NoResultsException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="NullFieldException">
+
+      <wsdl:part element="impl:fault2" name="fault"/>
+
+   </wsdl:message>
+
    <wsdl:message name="searchForRestaurantsResponse">
 
       <wsdl:part element="impl:searchForRestaurantsResponse" name="parameters"/>
 
    </wsdl:message>
 
-   <wsdl:message name="NoValidEntryException">
+   <wsdl:message name="placeOrderResponse">
 
-      <wsdl:part element="impl:fault1" name="fault"/>
+      <wsdl:part element="impl:placeOrderResponse" name="parameters"/>
 
    </wsdl:message>
 
@@ -152,6 +233,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
          <wsdl:output message="impl:searchForRestaurantsResponse" name="searchForRestaurantsResponse"/>
 
          <wsdl:fault message="impl:NoResultsException" name="NoResultsException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="placeOrder">
+
+         <wsdl:input message="impl:placeOrderRequest" name="placeOrderRequest"/>
+
+         <wsdl:output message="impl:placeOrderResponse" name="placeOrderResponse"/>
+
+         <wsdl:fault message="impl:NullFieldException" name="NullFieldException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getOrders">
+
+         <wsdl:input message="impl:getOrdersRequest" name="getOrdersRequest"/>
+
+         <wsdl:output message="impl:getOrdersResponse" name="getOrdersResponse"/>
 
       </wsdl:operation>
 
@@ -230,6 +329,48 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
             <wsdlsoap:fault name="NoResultsException" use="literal"/>
 
          </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="placeOrder">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="placeOrderRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="placeOrderResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="NullFieldException">
+
+            <wsdlsoap:fault name="NullFieldException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getOrders">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getOrdersRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getOrdersResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
 
       </wsdl:operation>
 

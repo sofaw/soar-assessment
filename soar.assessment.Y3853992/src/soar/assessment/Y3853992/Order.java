@@ -1,31 +1,17 @@
 package soar.assessment.Y3853992;
 
-import java.sql.Time;
-
 public class Order {
 	protected int orderID;
-	protected int restaurantID;
-	protected int customerID;
 	protected float totalPrice;
 	protected String status;
-	protected Time deliveryTime;
+	protected int deliveryTime;
+	protected Item[] items;
+	protected Integer[] quantities;
 	public int getOrderID() {
 		return orderID;
 	}
 	public void setOrderID(int orderID) {
 		this.orderID = orderID;
-	}
-	public int getRestaurantID() {
-		return restaurantID;
-	}
-	public void setRestaurantID(int restaurantID) {
-		this.restaurantID = restaurantID;
-	}
-	public int getCustomerID() {
-		return customerID;
-	}
-	public void setCustomerID(int customerID) {
-		this.customerID = customerID;
 	}
 	public float getTotalPrice() {
 		return totalPrice;
@@ -39,10 +25,22 @@ public class Order {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Time getDeliveryTime() {
+	public int getDeliveryTime() {
 		return deliveryTime;
 	}
-	public void setDeliveryTime(Time deliveryTime) {
+	public void setDeliveryTime(int deliveryTime) {
 		this.deliveryTime = deliveryTime;
 	}
+	public Item[] getItems() {
+		return items;
+	}
+	public void setItems(Item[] items) {
+		this.items = items;
+	}
+	public Integer[] getQuantities() {
+		return quantities;
+	}
+	public void setQuantities(Integer[] quantities) {
+		this.quantities = quantities;
+	}	
 }
