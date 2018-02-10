@@ -68,9 +68,9 @@ public class Customers {
 		return results.toArray(new Item[results.size()]);
 	}
 	
-	public void placeOrder(int customerID, Item[] items, String cardNumber, String deliveryAddress) throws ClassNotFoundException, SQLException, NullFieldException {
-		if(cardNumber == null || cardNumber.isEmpty() ||
-				deliveryAddress == null || deliveryAddress.isEmpty()) {
+	public void placeOrder(Order order) throws ClassNotFoundException, SQLException, NullFieldException {
+		if(order.getCardNumber() == null || order.getCardNumber().isEmpty() ||
+				order.getDeliveryAddress() == null || order.getDeliveryAddress().isEmpty()) {
 			throw new NullFieldException("Card number and delivery address must be provided.");
 		}
 		
@@ -101,6 +101,7 @@ public class Customers {
         		+ ")");
         
         // Calculate total price
+        Item[] items = order.getItems();
         float totalPrice = 0;
         for(int i = 0; i < items.length; i++) {
         	totalPrice += (items[i].getPrice() * items[i].getQuantity());
@@ -109,11 +110,11 @@ public class Customers {
         // Add order to orders table
         stmt.executeUpdate("INSERT INTO ORDERS (RESTAURANT_ID, CUSTOMER_ID, TOTAL_PRICE, STATUS, CARDNUMBER, DELIVERY_ADDRESS, DELIVERY_TIME) VALUES ("
         		+ "\'" + items[0].getRestaurantID() + "\', "
-        		+ "\'" + customerID + "\', "
+        		+ "\'" + order.getCustomerID() + "\', "
         		+ "\'" + totalPrice + "\', "
         		+ "\'QUEUED\', "
-        		+ "\'" + cardNumber + "\', "
-        		+ "\'" + deliveryAddress + "\', "
+        		+ "\'" + order.getCardNumber() + "\', "
+        		+ "\'" + order.getDeliveryAddress() + "\', "
         		+ "-1"
         		+ ")" );
         
@@ -143,6 +144,8 @@ public class Customers {
 		while(rs.next()) {
 			Order order = new Order();
 			order.setOrderID(rs.getInt("ORDER_ID"));
+			order.setRestaurantID(rs.getInt("RESTAURANT_ID"));
+			order.setCustomerID(rs.getInt("CUSTOMER_ID"));
 			order.setTotalPrice(rs.getFloat("TOTAL_PRICE"));
 			order.setStatus(rs.getString("STATUS"));
 			order.setDeliveryTime(rs.getInt("DELIVERY_TIME"));

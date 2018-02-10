@@ -31,6 +31,38 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <sequence/>
    </complexType>
    <element name="fault" type="impl:NoResultsException"/>
+   <element name="getOrders">
+    <complexType>
+     <sequence>
+      <element name="customerID" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getOrdersResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getOrdersReturn" type="impl:Order"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOfItem">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:Item"/>
+    </sequence>
+   </complexType>
+   <complexType name="Order">
+    <sequence>
+     <element name="cardNumber" nillable="true" type="xsd:string"/>
+     <element name="customerID" type="xsd:int"/>
+     <element name="deliveryAddress" nillable="true" type="xsd:string"/>
+     <element name="deliveryTime" type="xsd:int"/>
+     <element name="items" nillable="true" type="impl:ArrayOfItem"/>
+     <element name="orderID" type="xsd:int"/>
+     <element name="restaurantID" type="xsd:int"/>
+     <element name="status" nillable="true" type="xsd:string"/>
+     <element name="totalPrice" type="xsd:float"/>
+    </sequence>
+   </complexType>
    <element name="getCustomerID">
     <complexType>
      <sequence>
@@ -76,10 +108,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <element name="placeOrder">
     <complexType>
      <sequence>
-      <element name="customerID" type="xsd:int"/>
-      <element maxOccurs="unbounded" name="items" type="impl:Item"/>
-      <element name="cardNumber" type="xsd:string"/>
-      <element name="deliveryAddress" type="xsd:string"/>
+      <element name="order" type="impl:Order"/>
      </sequence>
     </complexType>
    </element>
@@ -90,34 +119,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <sequence/>
    </complexType>
    <element name="fault2" type="impl:NullFieldException"/>
-   <element name="getOrders">
-    <complexType>
-     <sequence>
-      <element name="customerID" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="getOrdersResponse">
-    <complexType>
-     <sequence>
-      <element maxOccurs="unbounded" name="getOrdersReturn" type="impl:Order"/>
-     </sequence>
-    </complexType>
-   </element>
-   <complexType name="ArrayOfItem">
-    <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:Item"/>
-    </sequence>
-   </complexType>
-   <complexType name="Order">
-    <sequence>
-     <element name="deliveryTime" type="xsd:int"/>
-     <element name="items" nillable="true" type="impl:ArrayOfItem"/>
-     <element name="orderID" type="xsd:int"/>
-     <element name="status" nillable="true" type="xsd:string"/>
-     <element name="totalPrice" type="xsd:float"/>
-    </sequence>
-   </complexType>
   </schema>
  </wsdl:types>
 
@@ -211,6 +212,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="getOrders">
+
+         <wsdl:input message="impl:getOrdersRequest" name="getOrdersRequest"/>
+
+         <wsdl:output message="impl:getOrdersResponse" name="getOrdersResponse"/>
+
+      </wsdl:operation>
+
       <wsdl:operation name="getCustomerID">
 
          <wsdl:input message="impl:getCustomerIDRequest" name="getCustomerIDRequest"/>
@@ -241,14 +250,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="getOrders">
-
-         <wsdl:input message="impl:getOrdersRequest" name="getOrdersRequest"/>
-
-         <wsdl:output message="impl:getOrdersResponse" name="getOrdersResponse"/>
-
-      </wsdl:operation>
-
    </wsdl:portType>
 
    <wsdl:binding name="CustomersSoapBinding" type="impl:Customers">
@@ -276,6 +277,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
             <wsdlsoap:fault name="NoResultsException" use="literal"/>
 
          </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getOrders">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getOrdersRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getOrdersResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
 
       </wsdl:operation>
 
@@ -348,24 +367,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
             <wsdlsoap:fault name="NullFieldException" use="literal"/>
 
          </wsdl:fault>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="getOrders">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="getOrdersRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="getOrdersResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
 
       </wsdl:operation>
 

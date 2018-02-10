@@ -41,6 +41,17 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
         _operations[0] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("getOrders");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "customerID"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
+        oper.addParameter(param);
+        oper.setReturnType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Order"));
+        oper.setReturnClass(soar.assessment.Y3853992.Order[].class);
+        oper.setReturnQName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "getOrdersReturn"));
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[1] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
         oper.setName("getCustomerID");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "username"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
@@ -55,7 +66,7 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
                       new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoValidEntryException"), 
                       true
                      ));
-        _operations[1] = oper;
+        _operations[2] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("searchForRestaurants");
@@ -72,17 +83,11 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
                       new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoResultsException"), 
                       true
                      ));
-        _operations[2] = oper;
+        _operations[3] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("placeOrder");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "customerID"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
-        oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "items"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Item"), soar.assessment.Y3853992.Item[].class, false, false);
-        oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "cardNumber"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
-        oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "deliveryAddress"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "order"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Order"), soar.assessment.Y3853992.Order.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
@@ -93,17 +98,6 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
                       new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NullFieldException"), 
                       true
                      ));
-        _operations[3] = oper;
-
-        oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("getOrders");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "customerID"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
-        oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Order"));
-        oper.setReturnClass(soar.assessment.Y3853992.Order[].class);
-        oper.setReturnQName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "getOrdersReturn"));
-        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
-        oper.setUse(org.apache.axis.constants.Use.LITERAL);
         _operations[4] = oper;
 
     }
@@ -296,12 +290,46 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
 }
     }
 
-    public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException {
+    public soar.assessment.Y3853992.Order[] getOrders(int customerID) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
         _call.setOperation(_operations[1]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "getOrders"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(customerID)});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return (soar.assessment.Y3853992.Order[]) _resp;
+            } catch (java.lang.Exception _exception) {
+                return (soar.assessment.Y3853992.Order[]) org.apache.axis.utils.JavaUtils.convert(_resp, soar.assessment.Y3853992.Order[].class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
+    public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[2]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -343,7 +371,7 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[2]);
+        _call.setOperation(_operations[3]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -380,12 +408,12 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
 }
     }
 
-    public void placeOrder(int customerID, soar.assessment.Y3853992.Item[] items, java.lang.String cardNumber, java.lang.String deliveryAddress) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException {
+    public void placeOrder(soar.assessment.Y3853992.Order order) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[3]);
+        _call.setOperation(_operations[4]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -396,7 +424,7 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
 
         setRequestHeaders(_call);
         setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(customerID), items, cardNumber, deliveryAddress});
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {order});
 
         if (_resp instanceof java.rmi.RemoteException) {
             throw (java.rmi.RemoteException)_resp;
@@ -411,40 +439,6 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
               throw (soar.assessment.Y3853992.NullFieldException) axisFaultException.detail;
          }
    }
-  throw axisFaultException;
-}
-    }
-
-    public soar.assessment.Y3853992.Order[] getOrders(int customerID) throws java.rmi.RemoteException {
-        if (super.cachedEndpoint == null) {
-            throw new org.apache.axis.NoEndPointException();
-        }
-        org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[4]);
-        _call.setUseSOAPAction(true);
-        _call.setSOAPActionURI("");
-        _call.setEncodingStyle(null);
-        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
-        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-        _call.setOperationName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "getOrders"));
-
-        setRequestHeaders(_call);
-        setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(customerID)});
-
-        if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
-        }
-        else {
-            extractAttachments(_call);
-            try {
-                return (soar.assessment.Y3853992.Order[]) _resp;
-            } catch (java.lang.Exception _exception) {
-                return (soar.assessment.Y3853992.Order[]) org.apache.axis.utils.JavaUtils.convert(_resp, soar.assessment.Y3853992.Order[].class);
-            }
-        }
-  } catch (org.apache.axis.AxisFault axisFaultException) {
   throw axisFaultException;
 }
     }

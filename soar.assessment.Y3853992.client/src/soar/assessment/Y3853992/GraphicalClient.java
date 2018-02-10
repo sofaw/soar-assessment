@@ -51,13 +51,30 @@ import javax.swing.JTable;
 import java.awt.FlowLayout;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.jms.ConnectionFactory;
+import javax.jms.DeliveryMode;
 import javax.swing.AbstractListModel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.jms.Topic;
+
+import org.apache.activemq.ActiveMQConnection;
+import org.apache.activemq.ActiveMQConnectionFactory;
+
 public class GraphicalClient extends JFrame {
 
 	private JPanel contentPane;
+	private JPanel home_panel;
 	private JTextField clogin_username;
 	private JTextField rlogin_username;
 	private JPasswordField clogin_password;
@@ -98,6 +115,11 @@ public class GraphicalClient extends JFrame {
 	private JTextField card_number;
 	private JTextField delivery_address;
 	private JTextField r_time_text;
+	
+	// Push notifications
+	private Topic restaurantTopic; // For msgs corresponding to restaurant order updates
+	private Topic customerTopic; // For msgs corresponding to a customer placing an order
+	private Session session;
 
 	/**
 	 * Launch the application.
@@ -117,8 +139,9 @@ public class GraphicalClient extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws JMSException 
 	 */
-	public GraphicalClient() {
+	public GraphicalClient() throws JMSException {
 		// Setup stubs
 		try {
 			restaurantsConfig = new FileProvider(ClientApp.class.getResourceAsStream("restaurantclient.wsdd"));
@@ -128,6 +151,12 @@ public class GraphicalClient extends JFrame {
 		} catch (ServiceException ex) {
 			ex.printStackTrace();
 		}
+		
+		// Setup push notifications
+		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
+		Connection connection = connectionFactory.createConnection();
+		connection.start();
+		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		
 		ListCellRenderer<Order> orderListCellRenderer = new ListCellRenderer<Order>() {
 			@Override
@@ -201,7 +230,7 @@ public class GraphicalClient extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
 		
-		JPanel home_panel = new JPanel();
+		home_panel = new JPanel();
 		contentPane.add(home_panel, "home_panel");
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 40, 95, 65, 0, 40, -60, 0};
@@ -238,6 +267,16 @@ public class GraphicalClient extends JFrame {
 					customers.setUsername(username);
 					customers.setPassword(password);
 					customerID = customers.getCustomerID(username);
+					
+					// Setup push notifications
+					customerTopic = session.createTopic("customerTopic");
+					
+					restaurantTopic = session.createTopic("restaurantTopic");
+					MessageConsumer consumer = session.createConsumer(restaurantTopic, 
+							"CustomerID = " + customerID);
+					CustomerListener listener = new CustomerListener();
+					consumer.setMessageListener(listener);
+					
 					
 					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 					cardLayout.show(contentPane, "customer_panel");
@@ -303,6 +342,14 @@ public class GraphicalClient extends JFrame {
 					restaurants.setUsername(username);
 					restaurants.setPassword(password);
 					restaurantID = restaurants.getRestaurantID(username);
+					
+					// Setup push notifications
+					restaurantTopic = session.createTopic("restaurantTopic");
+					customerTopic = session.createTopic("customerTopic");
+					MessageConsumer consumer = session.createConsumer(customerTopic, 
+							"RestaurantID = " + restaurantID);
+					RestaurantListener listener = new RestaurantListener();
+					consumer.setMessageListener(listener);
 					
 					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 					cardLayout.show(contentPane, "restaurant_panel");
@@ -816,7 +863,14 @@ public class GraphicalClient extends JFrame {
 				Item[] basketArr = new Item[basket.size()];
 				basketArr = basket.toArray(basketArr);
 				try {
-					customers.placeOrder(customerID, basketArr, card_number.getText(), delivery_address.getText());
+					Order order = new Order();
+					order.setCustomerID(customerID);
+					order.setItems(basketArr);
+					order.setCardNumber(card_number.getText());
+					order.setDeliveryAddress(delivery_address.getText());
+					customers.placeOrder(order);
+					
+					sendCustomerMessage("placing order", basketArr[0].getRestaurantID());
 					
 					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 					cardLayout.show(customer_panel_search_tab, "customer_tab_1_order_placed");
@@ -824,6 +878,8 @@ public class GraphicalClient extends JFrame {
 					JOptionPane.showMessageDialog(customer_tab_1_details, "Please fill in all required fields.");
 				} catch (RemoteException e1) {
 					JOptionPane.showMessageDialog(customer_tab_1_details, "An error has occurred. Please try again.");
+				} catch (JMSException ex) {
+					ex.printStackTrace();
 				}
 			}
 		});
@@ -850,8 +906,8 @@ public class GraphicalClient extends JFrame {
 		gbc_lblYourOrders.gridy = 1;
 		customer_panel_order_status_tab.add(lblYourOrders, gbc_lblYourOrders);
 		
-		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.addMouseListener(new MouseAdapter() {
+		JButton c_order_refresh_button = new JButton("Refresh");
+		c_order_refresh_button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
@@ -868,12 +924,12 @@ public class GraphicalClient extends JFrame {
 				}
 			}
 		});
-		GridBagConstraints gbc_btnRefresh = new GridBagConstraints();
-		gbc_btnRefresh.anchor = GridBagConstraints.EAST;
-		gbc_btnRefresh.insets = new Insets(0, 0, 5, 5);
-		gbc_btnRefresh.gridx = 3;
-		gbc_btnRefresh.gridy = 1;
-		customer_panel_order_status_tab.add(btnRefresh, gbc_btnRefresh);
+		GridBagConstraints gbc_c_order_refresh_button = new GridBagConstraints();
+		gbc_c_order_refresh_button.anchor = GridBagConstraints.EAST;
+		gbc_c_order_refresh_button.insets = new Insets(0, 0, 5, 5);
+		gbc_c_order_refresh_button.gridx = 3;
+		gbc_c_order_refresh_button.gridy = 1;
+		customer_panel_order_status_tab.add(c_order_refresh_button, gbc_c_order_refresh_button);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -962,8 +1018,8 @@ public class GraphicalClient extends JFrame {
 		gbc_lblQueued.gridy = 1;
 		restaurant_panel_orders_tab.add(lblQueued, gbc_lblQueued);
 		
-		JButton btnRefresh_1 = new JButton("Refresh");
-		btnRefresh_1.addMouseListener(new MouseAdapter() {
+		JButton r_order_refresh_button = new JButton("Refresh");
+		r_order_refresh_button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
@@ -986,11 +1042,11 @@ public class GraphicalClient extends JFrame {
 				}
 			}
 		});
-		GridBagConstraints gbc_btnRefresh_1 = new GridBagConstraints();
-		gbc_btnRefresh_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnRefresh_1.gridx = 3;
-		gbc_btnRefresh_1.gridy = 1;
-		restaurant_panel_orders_tab.add(btnRefresh_1, gbc_btnRefresh_1);
+		GridBagConstraints gbc_order_refresh_button = new GridBagConstraints();
+		gbc_order_refresh_button.insets = new Insets(0, 0, 5, 5);
+		gbc_order_refresh_button.gridx = 3;
+		gbc_order_refresh_button.gridy = 1;
+		restaurant_panel_orders_tab.add(r_order_refresh_button, gbc_order_refresh_button);
 		
 		JScrollPane r_queued_scroll = new JScrollPane();
 		GridBagConstraints gbc_r_queued_scroll = new GridBagConstraints();
@@ -1014,11 +1070,14 @@ public class GraphicalClient extends JFrame {
 				if(selected != null) {
 					try {
 						restaurants.changeOrderStatus(restaurantID, selected.getOrderID(), "ACCEPTED", -1);
+						sendRestaurantMessage("accepting order", selected.getCustomerID());
 					} catch (InvalidIDException ex) {
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "You are not authorized to change the status of this order.");
 					} catch (RemoteException ex) {
 						ex.printStackTrace();
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "An error occurred. Please try again.");
+					} catch (JMSException ex) {
+						ex.printStackTrace();
 					}
 				}
 			}
@@ -1037,11 +1096,14 @@ public class GraphicalClient extends JFrame {
 				if(selected != null) {
 					try {
 						restaurants.changeOrderStatus(restaurantID, selected.getOrderID(), "REJECTED", -1);
+						sendRestaurantMessage("rejecting order", selected.getCustomerID());
 					} catch (InvalidIDException ex) {
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "You are not authorized to change the status of this order.");
 					} catch (RemoteException ex) {
 						ex.printStackTrace();
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "An error occurred. Please try again.");
+					} catch (JMSException ex) {
+						ex.printStackTrace();
 					}
 				}
 			}
@@ -1113,7 +1175,6 @@ public class GraphicalClient extends JFrame {
 		btnUpdateStatus.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// r_time_text; r_status_combo
 				Order selected = r_accepted_list.getSelectedValue();
 				if(selected != null) {
 					String timeStr = r_time_text.getText();
@@ -1130,11 +1191,15 @@ public class GraphicalClient extends JFrame {
 								selected.getOrderID(), 
 								r_status_combo.getSelectedItem().toString(), 
 								time);
+
+						sendRestaurantMessage("updating order status", selected.getCustomerID());
 					} catch (InvalidIDException ex) {
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "You are not authorized to change the status of this order.");
 					} catch (RemoteException ex) {
 						ex.printStackTrace();
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "An error occurred. Please try again.");
+					} catch (JMSException ex) {
+						ex.printStackTrace();
 					}
 				}
 			}
@@ -1646,4 +1711,74 @@ public class GraphicalClient extends JFrame {
 		restaurant_reg_panel.add(button_1, gbc_button_1);
 	}
 
+	private void updateCustomerOrders() throws RemoteException {
+		Order[] orders = customers.getOrders(customerID);
+		DefaultListModel<Order> dlm = new DefaultListModel<Order>();
+		for(int i = 0; i < orders.length; i++) {
+			dlm.addElement(orders[i]);
+		}
+		
+		c_orders_list.setModel(dlm);
+	}
+	
+	private void updateRestaurantOrders() throws RemoteException {
+		Order[] orders = restaurants.getOrders(restaurantID);
+		
+		DefaultListModel<Order> q_dlm = new DefaultListModel<Order>();
+		DefaultListModel<Order> a_dlm = new DefaultListModel<Order>();
+		for(int i = 0; i < orders.length; i++) {
+			Order order = orders[i];
+			if(order.getStatus().equals("QUEUED")) {
+				q_dlm.addElement(order);
+			} else if(!order.getStatus().contentEquals("REJECTED")) {
+				a_dlm.addElement(order);
+			}
+		}
+		r_queued_list.setModel(q_dlm);
+		r_accepted_list.setModel(a_dlm);
+	}
+	
+	private void sendRestaurantMessage(String data, int customerID) throws JMSException {
+		TextMessage message = session.createTextMessage(data);
+		message.setIntProperty("CustomerID", customerID);
+		MessageProducer producer = session.createProducer(restaurantTopic);
+		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+		producer.send(message);
+	}
+	
+	private void sendCustomerMessage(String data, int restaurantID) throws JMSException {
+		TextMessage message = session.createTextMessage(data);
+		message.setIntProperty("RestaurantID", restaurantID);
+		MessageProducer producer = session.createProducer(customerTopic);
+		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+		producer.send(message);
+	}
+	
+	private class CustomerListener implements MessageListener {
+
+		@Override
+		public void onMessage(Message arg0) {
+			try {
+				updateCustomerOrders();
+			} catch (RemoteException ex) {
+				ex.printStackTrace();
+			}
+			JOptionPane.showMessageDialog(home_panel, "Restaurant has changed your order status.");
+		}
+		
+	}
+	
+	private class RestaurantListener implements MessageListener {
+
+		@Override
+		public void onMessage(Message arg0) {
+			try {
+				updateRestaurantOrders();
+			} catch (RemoteException ex) {
+				ex.printStackTrace();
+			}
+			JOptionPane.showMessageDialog(home_panel, "Customer has placed an order.");
+		}
+		
+	}
 }

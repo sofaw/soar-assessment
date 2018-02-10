@@ -14,6 +14,10 @@
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:restaurantID" type="tns:int"/>
         <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="NoResultsException" qname="fns:fault" class="soar.assessment.Y3853992.NoResultsException" type="tns:NoResultsException"/>
       </operation>
+      <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="getRestaurantID" qname="operNS:getRestaurantID" returnQName="retNS:getRestaurantIDReturn" returnType="rtns:int" soapAction="">
+        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
+        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="NoValidEntryException" qname="fns:fault1" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException"/>
+      </operation>
       <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://Y3853992.assessment.soar" name="getOrders" qname="operNS:getOrders" returnQName="retNS:getOrdersReturn" returnType="rtns:Order" soapAction="">
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:restaurantID" type="tns:int"/>
       </operation>
@@ -22,11 +26,7 @@
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:orderID" type="tns:int"/>
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:status" type="tns:string"/>
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:deliveryTime" type="tns:int"/>
-        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="InvalidIDException" qname="fns:fault1" class="soar.assessment.Y3853992.InvalidIDException" type="tns:InvalidIDException"/>
-      </operation>
-      <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="getRestaurantID" qname="operNS:getRestaurantID" returnQName="retNS:getRestaurantIDReturn" returnType="rtns:int" soapAction="">
-        <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
-        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="NoValidEntryException" qname="fns:fault2" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException"/>
+        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="InvalidIDException" qname="fns:fault2" class="soar.assessment.Y3853992.InvalidIDException" type="tns:InvalidIDException"/>
       </operation>
       <operation xmlns:operNS="http://Y3853992.assessment.soar" name="updateMenu" qname="operNS:updateMenu" soapAction="">
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:restaurantID" type="tns:int"/>

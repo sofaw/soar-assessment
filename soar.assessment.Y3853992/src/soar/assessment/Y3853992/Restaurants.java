@@ -74,13 +74,15 @@ public class Restaurants {
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
         Statement stmt = con.createStatement();
         
-		ResultSet rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE CUSTOMER_ID=" + restaurantID);
+		ResultSet rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE RESTAURANT_ID=" + restaurantID);
 		
 		ArrayList<Order> orders = new ArrayList<Order>();
 		
 		while(rs.next()) {
 			Order order = new Order();
 			order.setOrderID(rs.getInt("ORDER_ID"));
+			order.setRestaurantID(rs.getInt("RESTAURANT_ID"));
+			order.setCustomerID(rs.getInt("CUSTOMER_ID"));
 			order.setTotalPrice(rs.getFloat("TOTAL_PRICE"));
 			order.setStatus(rs.getString("STATUS"));
 			order.setDeliveryTime(rs.getInt("DELIVERY_TIME"));

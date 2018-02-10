@@ -24,6 +24,9 @@
         <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <fault name="NoResultsException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoResultsException" type="tns:NoResultsException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
+      <operation name="getOrders" qname="operNS:getOrders" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getOrdersReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Order" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:customerID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
       <operation name="getCustomerID" qname="operNS:getCustomerID" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getCustomerIDReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:username" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <fault name="NoValidEntryException" qname="fns:fault1" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException" xmlns:tns="http://Y3853992.assessment.soar"/>
@@ -33,14 +36,8 @@
         <fault name="NoResultsException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoResultsException" type="tns:NoResultsException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
       <operation name="placeOrder" qname="operNS:placeOrder" xmlns:operNS="http://Y3853992.assessment.soar" soapAction="" >
-        <parameter qname="pns:customerID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:items" xmlns:pns="http://Y3853992.assessment.soar" type="tns:Item" xmlns:tns="http://Y3853992.assessment.soar"/>
-        <parameter qname="pns:cardNumber" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <parameter qname="pns:deliveryAddress" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:order" xmlns:pns="http://Y3853992.assessment.soar" type="tns:Order" xmlns:tns="http://Y3853992.assessment.soar"/>
         <fault name="NullFieldException" qname="fns:fault2" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NullFieldException" type="tns:NullFieldException" xmlns:tns="http://Y3853992.assessment.soar"/>
-      </operation>
-      <operation name="getOrders" qname="operNS:getOrders" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getOrdersReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Order" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
-        <parameter qname="pns:customerID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
       <parameter name="allowedMethods" value="placeOrder getMenu searchForRestaurants getOrders getCustomerID"/>
 
@@ -52,19 +49,19 @@
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
+      <arrayMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:ArrayOfItem"
+        type="java:soar.assessment.Y3853992.Item[]"
+        innerType="cmp-ns:Item" xmlns:cmp-ns="http://Y3853992.assessment.soar"
+        encodingStyle=""
+      />
       <typeMapping
         xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:Restaurant"
         type="java:soar.assessment.Y3853992.Restaurant"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <arrayMapping
-        xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:ArrayOfItem"
-        type="java:soar.assessment.Y3853992.Item[]"
-        innerType="cmp-ns:Item" xmlns:cmp-ns="http://Y3853992.assessment.soar"
         encodingStyle=""
       />
       <typeMapping

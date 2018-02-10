@@ -37,23 +37,20 @@
    <ns2:parameter qname="ns1:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
    <ns2:fault class="soar.assessment.Y3853992.NoResultsException" qname="ns1:fault" type="ns1:NoResultsException"/>
   </ns2:operation>
-  <ns1:operation name="getCustomerID" qname="ns2:getCustomerID" returnQName="ns2:getCustomerIDReturn" returnType="xsd:int" soapAction="" xmlns:ns2="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns2:username" type="xsd:string"/>
-   <ns1:fault class="soar.assessment.Y3853992.NoValidEntryException" qname="ns2:fault1" type="ns2:NoValidEntryException"/>
+  <ns1:operation name="getOrders" qname="ns2:getOrders" returnQName="ns2:getOrdersReturn" returnType="ns2:Order" soapAction="" xmlns:ns2="http://Y3853992.assessment.soar">
+   <ns1:parameter qname="ns2:customerID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
   </ns1:operation>
-  <ns1:operation name="searchForRestaurants" qname="ns3:searchForRestaurants" returnQName="ns3:searchForRestaurantsReturn" returnType="ns3:Restaurant" soapAction="" xmlns:ns3="http://Y3853992.assessment.soar">
-   <ns1:parameter qname="ns3:searchTerm" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:fault class="soar.assessment.Y3853992.NoResultsException" qname="ns3:fault" type="ns3:NoResultsException"/>
+  <ns1:operation name="getCustomerID" qname="ns3:getCustomerID" returnQName="ns3:getCustomerIDReturn" returnType="xsd:int" soapAction="" xmlns:ns3="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns3:username" type="xsd:string"/>
+   <ns1:fault class="soar.assessment.Y3853992.NoValidEntryException" qname="ns3:fault1" type="ns3:NoValidEntryException"/>
   </ns1:operation>
-  <ns1:operation name="placeOrder" qname="ns4:placeOrder" soapAction="" xmlns:ns4="http://Y3853992.assessment.soar">
-   <ns1:parameter qname="ns4:customerID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns4:items" type="ns4:Item"/>
-   <ns1:parameter qname="ns4:cardNumber" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns4:deliveryAddress" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:fault class="soar.assessment.Y3853992.NullFieldException" qname="ns4:fault2" type="ns4:NullFieldException"/>
+  <ns1:operation name="searchForRestaurants" qname="ns4:searchForRestaurants" returnQName="ns4:searchForRestaurantsReturn" returnType="ns4:Restaurant" soapAction="" xmlns:ns4="http://Y3853992.assessment.soar">
+   <ns1:parameter qname="ns4:searchTerm" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:fault class="soar.assessment.Y3853992.NoResultsException" qname="ns4:fault" type="ns4:NoResultsException"/>
   </ns1:operation>
-  <ns1:operation name="getOrders" qname="ns5:getOrders" returnQName="ns5:getOrdersReturn" returnType="ns5:Order" soapAction="" xmlns:ns5="http://Y3853992.assessment.soar">
-   <ns1:parameter qname="ns5:customerID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="placeOrder" qname="ns5:placeOrder" soapAction="" xmlns:ns5="http://Y3853992.assessment.soar">
+   <ns1:parameter qname="ns5:order" type="ns5:Order"/>
+   <ns1:fault class="soar.assessment.Y3853992.NullFieldException" qname="ns5:fault2" type="ns5:NullFieldException"/>
   </ns1:operation>
   <ns1:requestFlow>
    <ns1:handler type="java:org.apache.ws.axis.security.WSDoAllReceiver">
@@ -106,19 +103,19 @@
    <ns1:parameter qname="ns19:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
    <ns1:fault class="soar.assessment.Y3853992.NoResultsException" qname="ns19:fault" type="ns19:NoResultsException"/>
   </ns1:operation>
-  <ns1:operation name="getOrders" qname="ns20:getOrders" returnQName="ns20:getOrdersReturn" returnType="ns20:Order" soapAction="" xmlns:ns20="http://Y3853992.assessment.soar">
-   <ns1:parameter qname="ns20:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+  <ns1:operation name="getRestaurantID" qname="ns20:getRestaurantID" returnQName="ns20:getRestaurantIDReturn" returnType="xsd:int" soapAction="" xmlns:ns20="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns20:username" type="xsd:string"/>
+   <ns1:fault class="soar.assessment.Y3853992.NoValidEntryException" qname="ns20:fault1" type="ns20:NoValidEntryException"/>
   </ns1:operation>
-  <ns1:operation name="changeOrderStatus" qname="ns21:changeOrderStatus" soapAction="" xmlns:ns21="http://Y3853992.assessment.soar">
+  <ns1:operation name="getOrders" qname="ns21:getOrders" returnQName="ns21:getOrdersReturn" returnType="ns21:Order" soapAction="" xmlns:ns21="http://Y3853992.assessment.soar">
    <ns1:parameter qname="ns21:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns21:orderID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns21:status" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:parameter qname="ns21:deliveryTime" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-   <ns1:fault class="soar.assessment.Y3853992.InvalidIDException" qname="ns21:fault1" type="ns21:InvalidIDException"/>
   </ns1:operation>
-  <ns1:operation name="getRestaurantID" qname="ns22:getRestaurantID" returnQName="ns22:getRestaurantIDReturn" returnType="xsd:int" soapAction="" xmlns:ns22="http://Y3853992.assessment.soar" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns22:username" type="xsd:string"/>
-   <ns1:fault class="soar.assessment.Y3853992.NoValidEntryException" qname="ns22:fault2" type="ns22:NoValidEntryException"/>
+  <ns1:operation name="changeOrderStatus" qname="ns22:changeOrderStatus" soapAction="" xmlns:ns22="http://Y3853992.assessment.soar">
+   <ns1:parameter qname="ns22:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns22:orderID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns22:status" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:parameter qname="ns22:deliveryTime" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   <ns1:fault class="soar.assessment.Y3853992.InvalidIDException" qname="ns22:fault2" type="ns22:InvalidIDException"/>
   </ns1:operation>
   <ns1:operation name="updateMenu" qname="ns23:updateMenu" soapAction="" xmlns:ns23="http://Y3853992.assessment.soar">
    <ns1:parameter qname="ns23:restaurantID" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
