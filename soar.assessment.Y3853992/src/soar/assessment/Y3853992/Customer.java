@@ -1,11 +1,17 @@
 package soar.assessment.Y3853992;
 
 public class Customer {
+	protected int customerID;
 	protected String username;
 	protected String fullname;
 	protected String email;
 	protected String password;
-	
+	public int getCustomerID() {
+		return customerID;
+	}
+	public void setCustomerID(int customerID) {
+		this.customerID = customerID;
+	}
 	public String getUsername() {
 		return username;
 	}

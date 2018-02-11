@@ -46,7 +46,10 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     </sequence>
    </complexType>
    <complexType name="InvalidIDException">
-    <sequence/>
+    <sequence>
+     <element name="id" type="xsd:int"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault" type="impl:InvalidIDException"/>
    <element name="getCustomerID">
@@ -63,10 +66,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <complexType name="NoValidEntryException">
-    <sequence/>
+   <complexType name="InvalidUsernameException">
+    <sequence>
+     <element name="message" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
-   <element name="fault1" type="impl:NoValidEntryException"/>
+   <element name="fault1" type="impl:InvalidUsernameException"/>
    <element name="placeOrder">
     <complexType>
      <sequence>
@@ -78,11 +84,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType/>
    </element>
    <complexType name="NullFieldException">
-    <sequence/>
+    <sequence>
+     <element name="fieldName" nillable="true" type="xsd:string"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault2" type="impl:NullFieldException"/>
    <complexType name="InvalidPaymentException">
-    <sequence/>
+    <sequence>
+     <element name="cardNumber" nillable="true" type="xsd:string"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault3" type="impl:InvalidPaymentException"/>
   </schema>
@@ -118,6 +130,12 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="InvalidUsernameException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
+
+   </wsdl:message>
+
    <wsdl:message name="NullFieldException">
 
       <wsdl:part element="impl:fault2" name="fault"/>
@@ -142,12 +160,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="NoValidEntryException">
-
-      <wsdl:part element="impl:fault1" name="fault"/>
-
-   </wsdl:message>
-
    <wsdl:portType name="Customers">
 
       <wsdl:operation name="getOrders">
@@ -166,7 +178,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output message="impl:getCustomerIDResponse" name="getCustomerIDResponse"/>
 
-         <wsdl:fault message="impl:NoValidEntryException" name="NoValidEntryException"/>
+         <wsdl:fault message="impl:InvalidUsernameException" name="InvalidUsernameException"/>
 
       </wsdl:operation>
 
@@ -228,9 +240,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          </wsdl:output>
 
-         <wsdl:fault name="NoValidEntryException">
+         <wsdl:fault name="InvalidUsernameException">
 
-            <wsdlsoap:fault name="NoValidEntryException" use="literal"/>
+            <wsdlsoap:fault name="InvalidUsernameException" use="literal"/>
 
          </wsdl:fault>
 

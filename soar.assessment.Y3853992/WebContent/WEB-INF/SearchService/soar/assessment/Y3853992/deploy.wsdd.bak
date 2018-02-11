@@ -26,18 +26,10 @@
       </operation>
       <operation name="searchForRestaurants" qname="operNS:searchForRestaurants" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:searchForRestaurantsReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Restaurant" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
         <parameter qname="pns:searchTerm" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <fault name="EmptySearchTermException" qname="fns:fault1" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.EmptySearchTermException" type="tns:EmptySearchTermException" xmlns:tns="http://Y3853992.assessment.soar"/>
+        <fault name="NullFieldException" qname="fns:fault1" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NullFieldException" type="tns:NullFieldException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
       <parameter name="allowedMethods" value="getMenu searchForRestaurants"/>
 
-      <typeMapping
-        xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:EmptySearchTermException"
-        type="java:soar.assessment.Y3853992.EmptySearchTermException"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
       <typeMapping
         xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:Item"
@@ -58,6 +50,14 @@
         xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:InvalidIDException"
         type="java:soar.assessment.Y3853992.InvalidIDException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:NullFieldException"
+        type="java:soar.assessment.Y3853992.NullFieldException"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

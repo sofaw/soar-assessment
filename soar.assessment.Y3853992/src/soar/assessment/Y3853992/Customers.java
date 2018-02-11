@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Customers {
-	public int getCustomerID(String username) throws NoValidEntryException, ClassNotFoundException, SQLException {
+	public int getCustomerID(String username) throws ClassNotFoundException, SQLException, InvalidUsernameException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
 		Statement stmt = con.createStatement();
@@ -18,18 +18,20 @@ public class Customers {
 		if(rs.next()) {
 			return rs.getInt("CUSTOMER_ID");
 		} else {
-			throw new NoValidEntryException("Unable to find a valid ID for the given username.");
+			throw new InvalidUsernameException(username);
 		}
 	}
 	
 	public void placeOrder(Order order) throws ClassNotFoundException, SQLException, NullFieldException, InvalidPaymentException {
-		if(order.getCardNumber() == null || order.getCardNumber().isEmpty() ||
-				order.getDeliveryAddress() == null || order.getDeliveryAddress().isEmpty()) {
-			throw new NullFieldException("Card number and delivery address must be provided.");
+		if(order.getCardNumber() == null || order.getCardNumber().isEmpty()) {
+			throw new NullFieldException("CardNumber");
+		}
+		if(order.getDeliveryAddress() == null || order.getDeliveryAddress().isEmpty()) {
+			throw new NullFieldException("DeliveryAddress");
 		}
 		
 		if(order.getCardNumber().length() != 16) {
-			throw new InvalidPaymentException("Card number should be 16 digits.");
+			throw new InvalidPaymentException(order.getCardNumber());
 		}
 		
 		Class.forName("org.h2.Driver");
@@ -97,7 +99,7 @@ public class Customers {
 		
         ResultSet rs = stmt.executeQuery("SELECT * FROM CUSTOMERS WHERE CUSTOMER_ID=" + customerID);
         if(!rs.next()) {
-        	throw new InvalidIDException("Invalid customer ID.");
+        	throw new InvalidIDException(customerID);
         }
 		
 		rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE CUSTOMER_ID=" + customerID);

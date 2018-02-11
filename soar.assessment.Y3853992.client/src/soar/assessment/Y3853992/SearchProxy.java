@@ -50,7 +50,7 @@ public class SearchProxy implements soar.assessment.Y3853992.Search {
     return search.getMenu(restaurantID);
   }
   
-  public soar.assessment.Y3853992.Restaurant[] searchForRestaurants(java.lang.String searchTerm) throws java.rmi.RemoteException, soar.assessment.Y3853992.EmptySearchTermException{
+  public soar.assessment.Y3853992.Restaurant[] searchForRestaurants(java.lang.String searchTerm) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException{
     if (search == null)
       _initSearchProxy();
     return search.searchForRestaurants(searchTerm);

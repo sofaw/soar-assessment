@@ -8,13 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Search {
-	public Restaurant[] searchForRestaurants(String searchTerm) throws ClassNotFoundException, SQLException, EmptySearchTermException {
+	public Restaurant[] searchForRestaurants(String searchTerm) throws ClassNotFoundException, SQLException, NullFieldException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
 		Statement stmt = con.createStatement();
 		
 		if(searchTerm == null || searchTerm.isEmpty()) {
-			throw new EmptySearchTermException("A non-empty search term must be provided.");
+			throw new NullFieldException("SearchTerm");
 		}
 		
 		ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_NAME LIKE " + "\'%" + searchTerm + "%\'");
@@ -40,7 +40,7 @@ public class Search {
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_ID=" + restaurantID);
 		if(!rs.next()) {
-			throw new InvalidIDException("Not a valid restaurant ID.");
+			throw new InvalidIDException(restaurantID);
 		}
         
         rs = stmt.executeQuery("SELECT * FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);

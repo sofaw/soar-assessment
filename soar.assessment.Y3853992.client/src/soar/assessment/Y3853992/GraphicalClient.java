@@ -144,9 +144,9 @@ public class GraphicalClient extends JFrame {
 	public GraphicalClient() throws JMSException {
 		// Setup stubs
 		try {
-			restaurantsConfig = new FileProvider(ClientApp.class.getResourceAsStream("restaurantclient.wsdd"));
+			restaurantsConfig = new FileProvider(GraphicalClient.class.getResourceAsStream("restaurantclient.wsdd"));
 			restaurants = (RestaurantsSoapBindingStub) new RestaurantsServiceLocator(restaurantsConfig).getRestaurants();
-			customersConfig = new FileProvider(ClientApp.class.getResourceAsStream("customerclient.wsdd"));
+			customersConfig = new FileProvider(GraphicalClient.class.getResourceAsStream("customerclient.wsdd"));
 			customers = (CustomersSoapBindingStub) new CustomersServiceLocator(customersConfig).getCustomers();
 		} catch (ServiceException ex) {
 			ex.printStackTrace();
@@ -280,7 +280,7 @@ public class GraphicalClient extends JFrame {
 					
 					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 					cardLayout.show(contentPane, "customer_panel");
-				} catch(NoValidEntryException ex) {
+				} catch(InvalidUsernameException ex) {
 					JOptionPane.showMessageDialog(home_panel, "Could not get ID for given username.");
 				} catch (Exception ex) {
 					if(ex instanceof AxisFault) {
@@ -353,7 +353,7 @@ public class GraphicalClient extends JFrame {
 					
 					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 					cardLayout.show(contentPane, "restaurant_panel");
-				} catch(NoValidEntryException ex) {
+				} catch(InvalidUsernameException ex) {
 					JOptionPane.showMessageDialog(home_panel, "Could not get ID for given username.");
 				} catch (Exception ex) {
 					if(ex instanceof AxisFault) {
@@ -469,7 +469,7 @@ public class GraphicalClient extends JFrame {
 					
 					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 					cardLayout.show(customer_panel_search_tab, "customer_tab_1_results");
-				} catch(EmptySearchTermException ex) {
+				} catch(NullFieldException ex) {
 					JOptionPane.showMessageDialog(customer_panel_search_tab, "Please provide a non-empty search term.");
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(customer_panel_search_tab, "Incorrect username/password.");
@@ -666,7 +666,7 @@ public class GraphicalClient extends JFrame {
 					
 					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 					cardLayout.show(customer_panel_search_tab, "customer_tab_1_results");
-				} catch(EmptySearchTermException ex) {
+				} catch(NullFieldException ex) {
 					JOptionPane.showMessageDialog(customer_panel_search_tab, "Please provide a non-empty search term.");
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
@@ -1588,7 +1588,7 @@ public class GraphicalClient extends JFrame {
 					creg_password.setText("");
 				} catch (NullFieldException ex) {
 					JOptionPane.showMessageDialog(customer_reg_panel, "Please fill in all required fields.");
-				} catch (UsernameAlreadyTakenException ex) {
+				} catch (InvalidUsernameException ex) {
 					JOptionPane.showMessageDialog(customer_reg_panel, "That username is already taken. Please pick a new username.");
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(customer_reg_panel, "An exception has occurred. Please try again.");
@@ -1730,7 +1730,7 @@ public class GraphicalClient extends JFrame {
 					rreg_password.setText("");
 				} catch (NullFieldException ex) {
 					JOptionPane.showMessageDialog(customer_reg_panel, "Please fill in all required fields.");
-				} catch (UsernameAlreadyTakenException ex) {
+				} catch (InvalidUsernameException ex) {
 					JOptionPane.showMessageDialog(customer_reg_panel, "That username is already taken. Please pick a new username.");
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(customer_reg_panel, "An exception has occurred. Please try again.");

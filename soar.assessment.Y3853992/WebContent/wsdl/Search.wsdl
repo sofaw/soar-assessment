@@ -28,7 +28,10 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     </sequence>
    </complexType>
    <complexType name="InvalidIDException">
-    <sequence/>
+    <sequence>
+     <element name="id" type="xsd:int"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault" type="impl:InvalidIDException"/>
    <element name="searchForRestaurants">
@@ -55,18 +58,15 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="username" nillable="true" type="xsd:string"/>
     </sequence>
    </complexType>
-   <complexType name="EmptySearchTermException">
-    <sequence/>
+   <complexType name="NullFieldException">
+    <sequence>
+     <element name="fieldName" nillable="true" type="xsd:string"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
-   <element name="fault1" type="impl:EmptySearchTermException"/>
+   <element name="fault1" type="impl:NullFieldException"/>
   </schema>
  </wsdl:types>
-
-   <wsdl:message name="EmptySearchTermException">
-
-      <wsdl:part element="impl:fault1" name="fault"/>
-
-   </wsdl:message>
 
    <wsdl:message name="getMenuRequest">
 
@@ -83,6 +83,12 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="searchForRestaurantsRequest">
 
       <wsdl:part element="impl:searchForRestaurants" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="NullFieldException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
 
    </wsdl:message>
 
@@ -116,7 +122,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output message="impl:searchForRestaurantsResponse" name="searchForRestaurantsResponse"/>
 
-         <wsdl:fault message="impl:EmptySearchTermException" name="EmptySearchTermException"/>
+         <wsdl:fault message="impl:NullFieldException" name="NullFieldException"/>
 
       </wsdl:operation>
 
@@ -166,9 +172,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          </wsdl:output>
 
-         <wsdl:fault name="EmptySearchTermException">
+         <wsdl:fault name="NullFieldException">
 
-            <wsdlsoap:fault name="EmptySearchTermException" use="literal"/>
+            <wsdlsoap:fault name="NullFieldException" use="literal"/>
 
          </wsdl:fault>
 

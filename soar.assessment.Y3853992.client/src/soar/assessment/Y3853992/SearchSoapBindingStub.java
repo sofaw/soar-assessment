@@ -51,8 +51,8 @@ public class SearchSoapBindingStub extends org.apache.axis.client.Stub implement
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault1"),
-                      "soar.assessment.Y3853992.EmptySearchTermException",
-                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "EmptySearchTermException"), 
+                      "soar.assessment.Y3853992.NullFieldException",
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NullFieldException"), 
                       true
                      ));
         _operations[1] = oper;
@@ -88,13 +88,6 @@ public class SearchSoapBindingStub extends org.apache.axis.client.Stub implement
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
-            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "EmptySearchTermException");
-            cachedSerQNames.add(qName);
-            cls = soar.assessment.Y3853992.EmptySearchTermException.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
             qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidIDException");
             cachedSerQNames.add(qName);
             cls = soar.assessment.Y3853992.InvalidIDException.class;
@@ -105,6 +98,13 @@ public class SearchSoapBindingStub extends org.apache.axis.client.Stub implement
             qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Item");
             cachedSerQNames.add(qName);
             cls = soar.assessment.Y3853992.Item.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NullFieldException");
+            cachedSerQNames.add(qName);
+            cls = soar.assessment.Y3853992.NullFieldException.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -224,7 +224,7 @@ public class SearchSoapBindingStub extends org.apache.axis.client.Stub implement
 }
     }
 
-    public soar.assessment.Y3853992.Restaurant[] searchForRestaurants(java.lang.String searchTerm) throws java.rmi.RemoteException, soar.assessment.Y3853992.EmptySearchTermException {
+    public soar.assessment.Y3853992.Restaurant[] searchForRestaurants(java.lang.String searchTerm) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -258,8 +258,8 @@ public class SearchSoapBindingStub extends org.apache.axis.client.Stub implement
         if (axisFaultException.detail instanceof java.rmi.RemoteException) {
               throw (java.rmi.RemoteException) axisFaultException.detail;
          }
-        if (axisFaultException.detail instanceof soar.assessment.Y3853992.EmptySearchTermException) {
-              throw (soar.assessment.Y3853992.EmptySearchTermException) axisFaultException.detail;
+        if (axisFaultException.detail instanceof soar.assessment.Y3853992.NullFieldException) {
+              throw (soar.assessment.Y3853992.NullFieldException) axisFaultException.detail;
          }
    }
   throw axisFaultException;

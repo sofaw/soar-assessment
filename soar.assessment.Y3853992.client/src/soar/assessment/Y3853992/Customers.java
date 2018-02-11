@@ -9,6 +9,6 @@ package soar.assessment.Y3853992;
 
 public interface Customers extends java.rmi.Remote {
     public soar.assessment.Y3853992.Order[] getOrders(int customerID) throws java.rmi.RemoteException, soar.assessment.Y3853992.InvalidIDException;
-    public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException;
+    public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.InvalidUsernameException;
     public void placeOrder(soar.assessment.Y3853992.Order order) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.InvalidPaymentException;
 }

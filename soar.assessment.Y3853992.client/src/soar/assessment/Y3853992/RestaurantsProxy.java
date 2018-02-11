@@ -44,7 +44,7 @@ public class RestaurantsProxy implements soar.assessment.Y3853992.Restaurants {
     return restaurants;
   }
   
-  public int getRestaurantID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException{
+  public int getRestaurantID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.InvalidUsernameException{
     if (restaurants == null)
       _initRestaurantsProxy();
     return restaurants.getRestaurantID(username);

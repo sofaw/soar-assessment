@@ -24,29 +24,6 @@ public class RegistrationSoapBindingStub extends org.apache.axis.client.Stub imp
         org.apache.axis.description.OperationDesc oper;
         org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("registerRestaurant");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "restaurant"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Restaurant"), soar.assessment.Y3853992.Restaurant.class, false, false);
-        oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        oper.setReturnClass(int.class);
-        oper.setReturnQName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "registerRestaurantReturn"));
-        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
-        oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        oper.addFault(new org.apache.axis.description.FaultDesc(
-                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault1"),
-                      "soar.assessment.Y3853992.NullFieldException",
-                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NullFieldException"), 
-                      true
-                     ));
-        oper.addFault(new org.apache.axis.description.FaultDesc(
-                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault"),
-                      "soar.assessment.Y3853992.UsernameAlreadyTakenException",
-                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "UsernameAlreadyTakenException"), 
-                      true
-                     ));
-        _operations[0] = oper;
-
-        oper = new org.apache.axis.description.OperationDesc();
         oper.setName("registerCustomer");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "customer"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Customer"), soar.assessment.Y3853992.Customer.class, false, false);
         oper.addParameter(param);
@@ -56,15 +33,38 @@ public class RegistrationSoapBindingStub extends org.apache.axis.client.Stub imp
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         oper.addFault(new org.apache.axis.description.FaultDesc(
-                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault1"),
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault"),
                       "soar.assessment.Y3853992.NullFieldException",
                       new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NullFieldException"), 
                       true
                      ));
         oper.addFault(new org.apache.axis.description.FaultDesc(
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault1"),
+                      "soar.assessment.Y3853992.InvalidUsernameException",
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidUsernameException"), 
+                      true
+                     ));
+        _operations[0] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("registerRestaurant");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "restaurant"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Restaurant"), soar.assessment.Y3853992.Restaurant.class, false, false);
+        oper.addParameter(param);
+        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
+        oper.setReturnClass(int.class);
+        oper.setReturnQName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "registerRestaurantReturn"));
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault"),
-                      "soar.assessment.Y3853992.UsernameAlreadyTakenException",
-                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "UsernameAlreadyTakenException"), 
+                      "soar.assessment.Y3853992.NullFieldException",
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NullFieldException"), 
+                      true
+                     ));
+        oper.addFault(new org.apache.axis.description.FaultDesc(
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault1"),
+                      "soar.assessment.Y3853992.InvalidUsernameException",
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidUsernameException"), 
                       true
                      ));
         _operations[1] = oper;
@@ -107,6 +107,13 @@ public class RegistrationSoapBindingStub extends org.apache.axis.client.Stub imp
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidUsernameException");
+            cachedSerQNames.add(qName);
+            cls = soar.assessment.Y3853992.InvalidUsernameException.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NullFieldException");
             cachedSerQNames.add(qName);
             cls = soar.assessment.Y3853992.NullFieldException.class;
@@ -117,13 +124,6 @@ public class RegistrationSoapBindingStub extends org.apache.axis.client.Stub imp
             qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Restaurant");
             cachedSerQNames.add(qName);
             cls = soar.assessment.Y3853992.Restaurant.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "UsernameAlreadyTakenException");
-            cachedSerQNames.add(qName);
-            cls = soar.assessment.Y3853992.UsernameAlreadyTakenException.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -194,57 +194,12 @@ public class RegistrationSoapBindingStub extends org.apache.axis.client.Stub imp
         }
     }
 
-    public int registerRestaurant(soar.assessment.Y3853992.Restaurant restaurant) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.UsernameAlreadyTakenException {
+    public int registerCustomer(soar.assessment.Y3853992.Customer customer) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.InvalidUsernameException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
         _call.setOperation(_operations[0]);
-        _call.setUseSOAPAction(true);
-        _call.setSOAPActionURI("");
-        _call.setEncodingStyle(null);
-        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
-        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-        _call.setOperationName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "registerRestaurant"));
-
-        setRequestHeaders(_call);
-        setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {restaurant});
-
-        if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
-        }
-        else {
-            extractAttachments(_call);
-            try {
-                return ((java.lang.Integer) _resp).intValue();
-            } catch (java.lang.Exception _exception) {
-                return ((java.lang.Integer) org.apache.axis.utils.JavaUtils.convert(_resp, int.class)).intValue();
-            }
-        }
-  } catch (org.apache.axis.AxisFault axisFaultException) {
-    if (axisFaultException.detail != null) {
-        if (axisFaultException.detail instanceof java.rmi.RemoteException) {
-              throw (java.rmi.RemoteException) axisFaultException.detail;
-         }
-        if (axisFaultException.detail instanceof soar.assessment.Y3853992.NullFieldException) {
-              throw (soar.assessment.Y3853992.NullFieldException) axisFaultException.detail;
-         }
-        if (axisFaultException.detail instanceof soar.assessment.Y3853992.UsernameAlreadyTakenException) {
-              throw (soar.assessment.Y3853992.UsernameAlreadyTakenException) axisFaultException.detail;
-         }
-   }
-  throw axisFaultException;
-}
-    }
-
-    public int registerCustomer(soar.assessment.Y3853992.Customer customer) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.UsernameAlreadyTakenException {
-        if (super.cachedEndpoint == null) {
-            throw new org.apache.axis.NoEndPointException();
-        }
-        org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[1]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -276,8 +231,53 @@ public class RegistrationSoapBindingStub extends org.apache.axis.client.Stub imp
         if (axisFaultException.detail instanceof soar.assessment.Y3853992.NullFieldException) {
               throw (soar.assessment.Y3853992.NullFieldException) axisFaultException.detail;
          }
-        if (axisFaultException.detail instanceof soar.assessment.Y3853992.UsernameAlreadyTakenException) {
-              throw (soar.assessment.Y3853992.UsernameAlreadyTakenException) axisFaultException.detail;
+        if (axisFaultException.detail instanceof soar.assessment.Y3853992.InvalidUsernameException) {
+              throw (soar.assessment.Y3853992.InvalidUsernameException) axisFaultException.detail;
+         }
+   }
+  throw axisFaultException;
+}
+    }
+
+    public int registerRestaurant(soar.assessment.Y3853992.Restaurant restaurant) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.InvalidUsernameException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[1]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "registerRestaurant"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {restaurant});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return ((java.lang.Integer) _resp).intValue();
+            } catch (java.lang.Exception _exception) {
+                return ((java.lang.Integer) org.apache.axis.utils.JavaUtils.convert(_resp, int.class)).intValue();
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+    if (axisFaultException.detail != null) {
+        if (axisFaultException.detail instanceof java.rmi.RemoteException) {
+              throw (java.rmi.RemoteException) axisFaultException.detail;
+         }
+        if (axisFaultException.detail instanceof soar.assessment.Y3853992.NullFieldException) {
+              throw (soar.assessment.Y3853992.NullFieldException) axisFaultException.detail;
+         }
+        if (axisFaultException.detail instanceof soar.assessment.Y3853992.InvalidUsernameException) {
+              throw (soar.assessment.Y3853992.InvalidUsernameException) axisFaultException.detail;
          }
    }
   throw axisFaultException;

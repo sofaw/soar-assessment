@@ -8,7 +8,58 @@
 package soar.assessment.Y3853992;
 
 public class InvalidPaymentException  extends org.apache.axis.AxisFault  implements java.io.Serializable {
+    private java.lang.String cardNumber;
+
+    private java.lang.String message1;
+
     public InvalidPaymentException() {
+    }
+
+    public InvalidPaymentException(
+           java.lang.String cardNumber,
+           java.lang.String message1) {
+        this.cardNumber = cardNumber;
+        this.message1 = message1;
+    }
+
+
+    /**
+     * Gets the cardNumber value for this InvalidPaymentException.
+     * 
+     * @return cardNumber
+     */
+    public java.lang.String getCardNumber() {
+        return cardNumber;
+    }
+
+
+    /**
+     * Sets the cardNumber value for this InvalidPaymentException.
+     * 
+     * @param cardNumber
+     */
+    public void setCardNumber(java.lang.String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+
+    /**
+     * Gets the message1 value for this InvalidPaymentException.
+     * 
+     * @return message1
+     */
+    public java.lang.String getMessage1() {
+        return message1;
+    }
+
+
+    /**
+     * Sets the message1 value for this InvalidPaymentException.
+     * 
+     * @param message1
+     */
+    public void setMessage1(java.lang.String message1) {
+        this.message1 = message1;
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -22,7 +73,13 @@ public class InvalidPaymentException  extends org.apache.axis.AxisFault  impleme
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true;
+        _equals = true && 
+            ((this.cardNumber==null && other.getCardNumber()==null) || 
+             (this.cardNumber!=null &&
+              this.cardNumber.equals(other.getCardNumber()))) &&
+            ((this.message1==null && other.getMessage1()==null) || 
+             (this.message1!=null &&
+              this.message1.equals(other.getMessage1())));
         __equalsCalc = null;
         return _equals;
     }
@@ -34,6 +91,12 @@ public class InvalidPaymentException  extends org.apache.axis.AxisFault  impleme
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
+        if (getCardNumber() != null) {
+            _hashCode += getCardNumber().hashCode();
+        }
+        if (getMessage1() != null) {
+            _hashCode += getMessage1().hashCode();
+        }
         __hashCodeCalc = false;
         return _hashCode;
     }
@@ -44,6 +107,18 @@ public class InvalidPaymentException  extends org.apache.axis.AxisFault  impleme
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidPaymentException"));
+        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("cardNumber");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "cardNumber"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("message1");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "message"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
     }
 
     /**

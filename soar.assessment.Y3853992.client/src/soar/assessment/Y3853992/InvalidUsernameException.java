@@ -1,5 +1,5 @@
 /**
- * NullFieldException.java
+ * InvalidUsernameException.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -7,44 +7,24 @@
 
 package soar.assessment.Y3853992;
 
-public class NullFieldException  extends org.apache.axis.AxisFault  implements java.io.Serializable {
-    private java.lang.String fieldName;
-
+public class InvalidUsernameException  extends org.apache.axis.AxisFault  implements java.io.Serializable {
     private java.lang.String message1;
 
-    public NullFieldException() {
+    private java.lang.String username;
+
+    public InvalidUsernameException() {
     }
 
-    public NullFieldException(
-           java.lang.String fieldName,
-           java.lang.String message1) {
-        this.fieldName = fieldName;
+    public InvalidUsernameException(
+           java.lang.String message1,
+           java.lang.String username) {
         this.message1 = message1;
+        this.username = username;
     }
 
 
     /**
-     * Gets the fieldName value for this NullFieldException.
-     * 
-     * @return fieldName
-     */
-    public java.lang.String getFieldName() {
-        return fieldName;
-    }
-
-
-    /**
-     * Sets the fieldName value for this NullFieldException.
-     * 
-     * @param fieldName
-     */
-    public void setFieldName(java.lang.String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-
-    /**
-     * Gets the message1 value for this NullFieldException.
+     * Gets the message1 value for this InvalidUsernameException.
      * 
      * @return message1
      */
@@ -54,7 +34,7 @@ public class NullFieldException  extends org.apache.axis.AxisFault  implements j
 
 
     /**
-     * Sets the message1 value for this NullFieldException.
+     * Sets the message1 value for this InvalidUsernameException.
      * 
      * @param message1
      */
@@ -62,10 +42,30 @@ public class NullFieldException  extends org.apache.axis.AxisFault  implements j
         this.message1 = message1;
     }
 
+
+    /**
+     * Gets the username value for this InvalidUsernameException.
+     * 
+     * @return username
+     */
+    public java.lang.String getUsername() {
+        return username;
+    }
+
+
+    /**
+     * Sets the username value for this InvalidUsernameException.
+     * 
+     * @param username
+     */
+    public void setUsername(java.lang.String username) {
+        this.username = username;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof NullFieldException)) return false;
-        NullFieldException other = (NullFieldException) obj;
+        if (!(obj instanceof InvalidUsernameException)) return false;
+        InvalidUsernameException other = (InvalidUsernameException) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -74,12 +74,12 @@ public class NullFieldException  extends org.apache.axis.AxisFault  implements j
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            ((this.fieldName==null && other.getFieldName()==null) || 
-             (this.fieldName!=null &&
-              this.fieldName.equals(other.getFieldName()))) &&
             ((this.message1==null && other.getMessage1()==null) || 
              (this.message1!=null &&
-              this.message1.equals(other.getMessage1())));
+              this.message1.equals(other.getMessage1()))) &&
+            ((this.username==null && other.getUsername()==null) || 
+             (this.username!=null &&
+              this.username.equals(other.getUsername())));
         __equalsCalc = null;
         return _equals;
     }
@@ -91,11 +91,11 @@ public class NullFieldException  extends org.apache.axis.AxisFault  implements j
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        if (getFieldName() != null) {
-            _hashCode += getFieldName().hashCode();
-        }
         if (getMessage1() != null) {
             _hashCode += getMessage1().hashCode();
+        }
+        if (getUsername() != null) {
+            _hashCode += getUsername().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -103,19 +103,19 @@ public class NullFieldException  extends org.apache.axis.AxisFault  implements j
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(NullFieldException.class, true);
+        new org.apache.axis.description.TypeDesc(InvalidUsernameException.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NullFieldException"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidUsernameException"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("fieldName");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fieldName"));
+        elemField.setFieldName("message1");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "message"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("message1");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "message"));
+        elemField.setFieldName("username");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "username"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);

@@ -16,7 +16,7 @@
       </operation>
       <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="getCustomerID" qname="operNS:getCustomerID" returnQName="retNS:getCustomerIDReturn" returnType="rtns:int" soapAction="">
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
-        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="NoValidEntryException" qname="fns:fault1" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException"/>
+        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="InvalidUsernameException" qname="fns:fault1" class="soar.assessment.Y3853992.InvalidUsernameException" type="tns:InvalidUsernameException"/>
       </operation>
       <operation xmlns:operNS="http://Y3853992.assessment.soar" name="placeOrder" qname="operNS:placeOrder" soapAction="">
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" qname="pns:order" type="tns:Order"/>
@@ -27,9 +27,9 @@
 
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:Item" type="java:soar.assessment.Y3853992.Item" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <arrayMapping xmlns:ns="http://Y3853992.assessment.soar" xmlns:cmp-ns="http://Y3853992.assessment.soar" qname="ns:ArrayOfItem" type="java:soar.assessment.Y3853992.Item[]" innerType="cmp-ns:Item" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:InvalidUsernameException" type="java:soar.assessment.Y3853992.InvalidUsernameException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:InvalidPaymentException" type="java:soar.assessment.Y3853992.InvalidPaymentException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:InvalidIDException" type="java:soar.assessment.Y3853992.InvalidIDException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
-      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:NoValidEntryException" type="java:soar.assessment.Y3853992.NoValidEntryException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:Order" type="java:soar.assessment.Y3853992.Order" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:NullFieldException" type="java:soar.assessment.Y3853992.NullFieldException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
   </service>

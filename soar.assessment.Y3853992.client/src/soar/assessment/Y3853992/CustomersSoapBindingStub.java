@@ -51,8 +51,8 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         oper.addFault(new org.apache.axis.description.FaultDesc(
                       new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "fault1"),
-                      "soar.assessment.Y3853992.NoValidEntryException",
-                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoValidEntryException"), 
+                      "soar.assessment.Y3853992.InvalidUsernameException",
+                      new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidUsernameException"), 
                       true
                      ));
         _operations[1] = oper;
@@ -132,16 +132,16 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Item");
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidUsernameException");
             cachedSerQNames.add(qName);
-            cls = soar.assessment.Y3853992.Item.class;
+            cls = soar.assessment.Y3853992.InvalidUsernameException.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoValidEntryException");
+            qName = new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Item");
             cachedSerQNames.add(qName);
-            cls = soar.assessment.Y3853992.NoValidEntryException.class;
+            cls = soar.assessment.Y3853992.Item.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -268,7 +268,7 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
 }
     }
 
-    public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException {
+    public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.InvalidUsernameException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -302,8 +302,8 @@ public class CustomersSoapBindingStub extends org.apache.axis.client.Stub implem
         if (axisFaultException.detail instanceof java.rmi.RemoteException) {
               throw (java.rmi.RemoteException) axisFaultException.detail;
          }
-        if (axisFaultException.detail instanceof soar.assessment.Y3853992.NoValidEntryException) {
-              throw (soar.assessment.Y3853992.NoValidEntryException) axisFaultException.detail;
+        if (axisFaultException.detail instanceof soar.assessment.Y3853992.InvalidUsernameException) {
+              throw (soar.assessment.Y3853992.InvalidUsernameException) axisFaultException.detail;
          }
    }
   throw axisFaultException;

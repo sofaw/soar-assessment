@@ -50,7 +50,7 @@ public class CustomersProxy implements soar.assessment.Y3853992.Customers {
     return customers.getOrders(customerID);
   }
   
-  public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoValidEntryException{
+  public int getCustomerID(java.lang.String username) throws java.rmi.RemoteException, soar.assessment.Y3853992.InvalidUsernameException{
     if (customers == null)
       _initCustomersProxy();
     return customers.getCustomerID(username);

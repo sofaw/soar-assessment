@@ -18,10 +18,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <complexType name="NoValidEntryException">
-    <sequence/>
+   <complexType name="InvalidUsernameException">
+    <sequence>
+     <element name="message" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
-   <element name="fault" type="impl:NoValidEntryException"/>
+   <element name="fault" type="impl:InvalidUsernameException"/>
    <element name="getOrders">
     <complexType>
      <sequence>
@@ -64,7 +67,10 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     </sequence>
    </complexType>
    <complexType name="InvalidIDException">
-    <sequence/>
+    <sequence>
+     <element name="id" type="xsd:int"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault1" type="impl:InvalidIDException"/>
    <element name="changeOrderStatus">
@@ -81,15 +87,24 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType/>
    </element>
    <complexType name="NullFieldException">
-    <sequence/>
+    <sequence>
+     <element name="fieldName" nillable="true" type="xsd:string"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault2" type="impl:NullFieldException"/>
    <complexType name="InvalidStatusException">
-    <sequence/>
+    <sequence>
+     <element name="message" nillable="true" type="xsd:string"/>
+     <element name="status" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault3" type="impl:InvalidStatusException"/>
    <complexType name="UnauthorizedException">
-    <sequence/>
+    <sequence>
+     <element name="id" type="xsd:int"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault4" type="impl:UnauthorizedException"/>
    <element name="updateMenu">
@@ -104,7 +119,10 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexType/>
    </element>
    <complexType name="InvalidItemException">
-    <sequence/>
+    <sequence>
+     <element name="id" type="xsd:int"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
    </complexType>
    <element name="fault5" type="impl:InvalidItemException"/>
   </schema>
@@ -134,6 +152,12 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="InvalidUsernameException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
    <wsdl:message name="InvalidItemException">
 
       <wsdl:part element="impl:fault5" name="fault"/>
@@ -143,12 +167,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="InvalidIDException">
 
       <wsdl:part element="impl:fault1" name="fault"/>
-
-   </wsdl:message>
-
-   <wsdl:message name="NoValidEntryException">
-
-      <wsdl:part element="impl:fault" name="fault"/>
 
    </wsdl:message>
 
@@ -202,7 +220,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output message="impl:getRestaurantIDResponse" name="getRestaurantIDResponse"/>
 
-         <wsdl:fault message="impl:NoValidEntryException" name="NoValidEntryException"/>
+         <wsdl:fault message="impl:InvalidUsernameException" name="InvalidUsernameException"/>
 
       </wsdl:operation>
 
@@ -266,9 +284,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          </wsdl:output>
 
-         <wsdl:fault name="NoValidEntryException">
+         <wsdl:fault name="InvalidUsernameException">
 
-            <wsdlsoap:fault name="NoValidEntryException" use="literal"/>
+            <wsdlsoap:fault name="InvalidUsernameException" use="literal"/>
 
          </wsdl:fault>
 

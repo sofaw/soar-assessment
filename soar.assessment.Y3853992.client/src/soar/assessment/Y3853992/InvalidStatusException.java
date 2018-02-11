@@ -8,7 +8,58 @@
 package soar.assessment.Y3853992;
 
 public class InvalidStatusException  extends org.apache.axis.AxisFault  implements java.io.Serializable {
+    private java.lang.String message1;
+
+    private java.lang.String status;
+
     public InvalidStatusException() {
+    }
+
+    public InvalidStatusException(
+           java.lang.String message1,
+           java.lang.String status) {
+        this.message1 = message1;
+        this.status = status;
+    }
+
+
+    /**
+     * Gets the message1 value for this InvalidStatusException.
+     * 
+     * @return message1
+     */
+    public java.lang.String getMessage1() {
+        return message1;
+    }
+
+
+    /**
+     * Sets the message1 value for this InvalidStatusException.
+     * 
+     * @param message1
+     */
+    public void setMessage1(java.lang.String message1) {
+        this.message1 = message1;
+    }
+
+
+    /**
+     * Gets the status value for this InvalidStatusException.
+     * 
+     * @return status
+     */
+    public java.lang.String getStatus() {
+        return status;
+    }
+
+
+    /**
+     * Sets the status value for this InvalidStatusException.
+     * 
+     * @param status
+     */
+    public void setStatus(java.lang.String status) {
+        this.status = status;
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -22,7 +73,13 @@ public class InvalidStatusException  extends org.apache.axis.AxisFault  implemen
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true;
+        _equals = true && 
+            ((this.message1==null && other.getMessage1()==null) || 
+             (this.message1!=null &&
+              this.message1.equals(other.getMessage1()))) &&
+            ((this.status==null && other.getStatus()==null) || 
+             (this.status!=null &&
+              this.status.equals(other.getStatus())));
         __equalsCalc = null;
         return _equals;
     }
@@ -34,6 +91,12 @@ public class InvalidStatusException  extends org.apache.axis.AxisFault  implemen
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
+        if (getMessage1() != null) {
+            _hashCode += getMessage1().hashCode();
+        }
+        if (getStatus() != null) {
+            _hashCode += getStatus().hashCode();
+        }
         __hashCodeCalc = false;
         return _hashCode;
     }
@@ -44,6 +107,18 @@ public class InvalidStatusException  extends org.apache.axis.AxisFault  implemen
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidStatusException"));
+        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("message1");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "message"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("status");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "status"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
     }
 
     /**

@@ -16,13 +16,13 @@
       </operation>
       <operation xmlns:operNS="http://Y3853992.assessment.soar" xmlns:retNS="http://Y3853992.assessment.soar" xmlns:rtns="http://Y3853992.assessment.soar" name="searchForRestaurants" qname="operNS:searchForRestaurants" returnQName="retNS:searchForRestaurantsReturn" returnType="rtns:Restaurant" soapAction="">
         <parameter xmlns:pns="http://Y3853992.assessment.soar" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:searchTerm" type="tns:string"/>
-        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="EmptySearchTermException" qname="fns:fault1" class="soar.assessment.Y3853992.EmptySearchTermException" type="tns:EmptySearchTermException"/>
+        <fault xmlns:fns="http://Y3853992.assessment.soar" xmlns:tns="http://Y3853992.assessment.soar" name="NullFieldException" qname="fns:fault1" class="soar.assessment.Y3853992.NullFieldException" type="tns:NullFieldException"/>
       </operation>
       <parameter name="allowedMethods" value="getMenu searchForRestaurants"/>
 
-      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:EmptySearchTermException" type="java:soar.assessment.Y3853992.EmptySearchTermException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:Item" type="java:soar.assessment.Y3853992.Item" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:Restaurant" type="java:soar.assessment.Y3853992.Restaurant" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
       <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:InvalidIDException" type="java:soar.assessment.Y3853992.InvalidIDException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://Y3853992.assessment.soar" qname="ns:NullFieldException" type="java:soar.assessment.Y3853992.NullFieldException" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
   </service>
 </deployment>

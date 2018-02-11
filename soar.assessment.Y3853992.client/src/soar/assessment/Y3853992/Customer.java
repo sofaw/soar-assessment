@@ -8,6 +8,8 @@
 package soar.assessment.Y3853992;
 
 public class Customer  implements java.io.Serializable {
+    private int customerID;
+
     private java.lang.String email;
 
     private java.lang.String fullname;
@@ -20,14 +22,36 @@ public class Customer  implements java.io.Serializable {
     }
 
     public Customer(
+           int customerID,
            java.lang.String email,
            java.lang.String fullname,
            java.lang.String password,
            java.lang.String username) {
+           this.customerID = customerID;
            this.email = email;
            this.fullname = fullname;
            this.password = password;
            this.username = username;
+    }
+
+
+    /**
+     * Gets the customerID value for this Customer.
+     * 
+     * @return customerID
+     */
+    public int getCustomerID() {
+        return customerID;
+    }
+
+
+    /**
+     * Sets the customerID value for this Customer.
+     * 
+     * @param customerID
+     */
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
     }
 
 
@@ -122,6 +146,7 @@ public class Customer  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
+            this.customerID == other.getCustomerID() &&
             ((this.email==null && other.getEmail()==null) || 
              (this.email!=null &&
               this.email.equals(other.getEmail()))) &&
@@ -145,6 +170,7 @@ public class Customer  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
+        _hashCode += getCustomerID();
         if (getEmail() != null) {
             _hashCode += getEmail().hashCode();
         }
@@ -168,6 +194,12 @@ public class Customer  implements java.io.Serializable {
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "Customer"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("customerID");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "customerID"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("email");
         elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "email"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));

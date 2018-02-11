@@ -8,6 +8,6 @@
 package soar.assessment.Y3853992;
 
 public interface Registration extends java.rmi.Remote {
-    public int registerRestaurant(soar.assessment.Y3853992.Restaurant restaurant) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.UsernameAlreadyTakenException;
-    public int registerCustomer(soar.assessment.Y3853992.Customer customer) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.UsernameAlreadyTakenException;
+    public int registerCustomer(soar.assessment.Y3853992.Customer customer) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.InvalidUsernameException;
+    public int registerRestaurant(soar.assessment.Y3853992.Restaurant restaurant) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.InvalidUsernameException;
 }

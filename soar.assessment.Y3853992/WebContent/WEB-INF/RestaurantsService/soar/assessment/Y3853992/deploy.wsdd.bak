@@ -22,7 +22,7 @@
       <parameter name="typeMappingVersion" value="1.2"/>
       <operation name="getRestaurantID" qname="operNS:getRestaurantID" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getRestaurantIDReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:username" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
-        <fault name="NoValidEntryException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.NoValidEntryException" type="tns:NoValidEntryException" xmlns:tns="http://Y3853992.assessment.soar"/>
+        <fault name="InvalidUsernameException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.InvalidUsernameException" type="tns:InvalidUsernameException" xmlns:tns="http://Y3853992.assessment.soar"/>
       </operation>
       <operation name="getOrders" qname="operNS:getOrders" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getOrdersReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Order" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
         <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
@@ -63,6 +63,14 @@
       />
       <typeMapping
         xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:InvalidUsernameException"
+        type="java:soar.assessment.Y3853992.InvalidUsernameException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:InvalidItemException"
         type="java:soar.assessment.Y3853992.InvalidItemException"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
@@ -73,14 +81,6 @@
         xmlns:ns="http://Y3853992.assessment.soar"
         qname="ns:InvalidIDException"
         type="java:soar.assessment.Y3853992.InvalidIDException"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://Y3853992.assessment.soar"
-        qname="ns:NoValidEntryException"
-        type="java:soar.assessment.Y3853992.NoValidEntryException"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

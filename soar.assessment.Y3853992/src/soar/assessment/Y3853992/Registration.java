@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Registration {
-	public int registerRestaurant(Restaurant restaurant) throws ClassNotFoundException, SQLException, UsernameAlreadyTakenException, NullFieldException {
+	public int registerRestaurant(Restaurant restaurant) throws ClassNotFoundException, SQLException, NullFieldException, InvalidUsernameException {
 		Class.forName("org.h2.Driver");
         Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
         Statement stmt = con.createStatement();
@@ -22,7 +22,7 @@ public class Registration {
         // Check username not already taken
         ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE USERNAME=" + "\'" + restaurant.getUsername() + "\'");
         if(rs.next()) {
-        	throw new UsernameAlreadyTakenException("Username is already taken.");
+        	throw new InvalidUsernameException(restaurant.getUsername());
         }
         
         // Check no fields are null/empty
@@ -31,7 +31,7 @@ public class Registration {
         		restaurant.getAddress() == null || restaurant.getAddress().isEmpty() ||
         		restaurant.getEmail() == null || restaurant.getEmail().isEmpty() ||
         		restaurant.getPassword() == null || restaurant.getPassword().isEmpty()) {
-        	throw new NullFieldException("All registration fields must be provided.");
+        	throw new NullFieldException();
         }
         
         stmt.executeUpdate("INSERT INTO RESTAURANTS (USERNAME, RESTAURANT_NAME, ADDRESS, EMAIL, PASSWORD) VALUES ("
@@ -49,7 +49,7 @@ public class Registration {
     	return restaurantID;
 	}
 	
-	public int registerCustomer(Customer customer) throws ClassNotFoundException, SQLException, UsernameAlreadyTakenException, NullFieldException {
+	public int registerCustomer(Customer customer) throws ClassNotFoundException, SQLException, NullFieldException, InvalidUsernameException {
 		Class.forName("org.h2.Driver");
         Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
         Statement stmt = con.createStatement();
@@ -63,7 +63,7 @@ public class Registration {
         // Check username not already taken
         ResultSet rs = stmt.executeQuery("SELECT * FROM CUSTOMERS WHERE USERNAME=" + "\'" + customer.getUsername() + "\'");
         if(rs.next()) {
-        	throw new UsernameAlreadyTakenException("Username is already taken.");
+        	throw new InvalidUsernameException(customer.getUsername());
         }
         
         // Check no fields are null/empty
@@ -71,7 +71,7 @@ public class Registration {
         		customer.getFullname() == null || customer.getFullname().isEmpty() ||
         		customer.getEmail() == null || customer.getEmail().isEmpty() ||
         		customer.getPassword() == null || customer.getPassword().isEmpty()) {
-        	throw new NullFieldException("All registration fields must be provided.");
+        	throw new NullFieldException();
         }
         
         stmt.executeUpdate("INSERT INTO CUSTOMERS (USERNAME, FULLNAME, EMAIL, PASSWORD) VALUES ("

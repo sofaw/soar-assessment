@@ -8,7 +8,58 @@
 package soar.assessment.Y3853992;
 
 public class InvalidItemException  extends org.apache.axis.AxisFault  implements java.io.Serializable {
+    private int id;
+
+    private java.lang.String message1;
+
     public InvalidItemException() {
+    }
+
+    public InvalidItemException(
+           int id,
+           java.lang.String message1) {
+        this.id = id;
+        this.message1 = message1;
+    }
+
+
+    /**
+     * Gets the id value for this InvalidItemException.
+     * 
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
+
+
+    /**
+     * Sets the id value for this InvalidItemException.
+     * 
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    /**
+     * Gets the message1 value for this InvalidItemException.
+     * 
+     * @return message1
+     */
+    public java.lang.String getMessage1() {
+        return message1;
+    }
+
+
+    /**
+     * Sets the message1 value for this InvalidItemException.
+     * 
+     * @param message1
+     */
+    public void setMessage1(java.lang.String message1) {
+        this.message1 = message1;
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -22,7 +73,11 @@ public class InvalidItemException  extends org.apache.axis.AxisFault  implements
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true;
+        _equals = true && 
+            this.id == other.getId() &&
+            ((this.message1==null && other.getMessage1()==null) || 
+             (this.message1!=null &&
+              this.message1.equals(other.getMessage1())));
         __equalsCalc = null;
         return _equals;
     }
@@ -34,6 +89,10 @@ public class InvalidItemException  extends org.apache.axis.AxisFault  implements
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
+        _hashCode += getId();
+        if (getMessage1() != null) {
+            _hashCode += getMessage1().hashCode();
+        }
         __hashCodeCalc = false;
         return _hashCode;
     }
@@ -44,6 +103,18 @@ public class InvalidItemException  extends org.apache.axis.AxisFault  implements
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidItemException"));
+        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("id");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "id"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("message1");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "message"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
     }
 
     /**

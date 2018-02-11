@@ -4,37 +4,6 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
-   <element name="registerRestaurant">
-    <complexType>
-     <sequence>
-      <element name="restaurant" type="impl:Restaurant"/>
-     </sequence>
-    </complexType>
-   </element>
-   <complexType name="Restaurant">
-    <sequence>
-     <element name="address" nillable="true" type="xsd:string"/>
-     <element name="email" nillable="true" type="xsd:string"/>
-     <element name="password" nillable="true" type="xsd:string"/>
-     <element name="restaurantName" nillable="true" type="xsd:string"/>
-     <element name="username" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
-   <element name="registerRestaurantResponse">
-    <complexType>
-     <sequence>
-      <element name="registerRestaurantReturn" type="xsd:int"/>
-     </sequence>
-    </complexType>
-   </element>
-   <complexType name="UsernameAlreadyTakenException">
-    <sequence/>
-   </complexType>
-   <element name="fault" type="impl:UsernameAlreadyTakenException"/>
-   <complexType name="NullFieldException">
-    <sequence/>
-   </complexType>
-   <element name="fault1" type="impl:NullFieldException"/>
    <element name="registerCustomer">
     <complexType>
      <sequence>
@@ -44,6 +13,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    </element>
    <complexType name="Customer">
     <sequence>
+     <element name="customerID" type="xsd:int"/>
      <element name="email" nillable="true" type="xsd:string"/>
      <element name="fullname" nillable="true" type="xsd:string"/>
      <element name="password" nillable="true" type="xsd:string"/>
@@ -57,14 +27,46 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <complexType name="NullFieldException">
+    <sequence>
+     <element name="fieldName" nillable="true" type="xsd:string"/>
+     <element name="message" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="fault" type="impl:NullFieldException"/>
+   <complexType name="InvalidUsernameException">
+    <sequence>
+     <element name="message" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="fault1" type="impl:InvalidUsernameException"/>
+   <element name="registerRestaurant">
+    <complexType>
+     <sequence>
+      <element name="restaurant" type="impl:Restaurant"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Restaurant">
+    <sequence>
+     <element name="address" nillable="true" type="xsd:string"/>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="restaurantID" type="xsd:int"/>
+     <element name="restaurantName" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="registerRestaurantResponse">
+    <complexType>
+     <sequence>
+      <element name="registerRestaurantReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
   </schema>
  </wsdl:types>
-
-   <wsdl:message name="UsernameAlreadyTakenException">
-
-      <wsdl:part element="impl:fault" name="fault"/>
-
-   </wsdl:message>
 
    <wsdl:message name="registerCustomerRequest">
 
@@ -78,15 +80,21 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="registerRestaurantResponse">
+   <wsdl:message name="InvalidUsernameException">
 
-      <wsdl:part element="impl:registerRestaurantResponse" name="parameters"/>
+      <wsdl:part element="impl:fault1" name="fault"/>
 
    </wsdl:message>
 
    <wsdl:message name="NullFieldException">
 
-      <wsdl:part element="impl:fault1" name="fault"/>
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="registerRestaurantResponse">
+
+      <wsdl:part element="impl:registerRestaurantResponse" name="parameters"/>
 
    </wsdl:message>
 
@@ -98,18 +106,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    <wsdl:portType name="Registration">
 
-      <wsdl:operation name="registerRestaurant">
-
-         <wsdl:input message="impl:registerRestaurantRequest" name="registerRestaurantRequest"/>
-
-         <wsdl:output message="impl:registerRestaurantResponse" name="registerRestaurantResponse"/>
-
-         <wsdl:fault message="impl:NullFieldException" name="NullFieldException"/>
-
-         <wsdl:fault message="impl:UsernameAlreadyTakenException" name="UsernameAlreadyTakenException"/>
-
-      </wsdl:operation>
-
       <wsdl:operation name="registerCustomer">
 
          <wsdl:input message="impl:registerCustomerRequest" name="registerCustomerRequest"/>
@@ -118,7 +114,19 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:fault message="impl:NullFieldException" name="NullFieldException"/>
 
-         <wsdl:fault message="impl:UsernameAlreadyTakenException" name="UsernameAlreadyTakenException"/>
+         <wsdl:fault message="impl:InvalidUsernameException" name="InvalidUsernameException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="registerRestaurant">
+
+         <wsdl:input message="impl:registerRestaurantRequest" name="registerRestaurantRequest"/>
+
+         <wsdl:output message="impl:registerRestaurantResponse" name="registerRestaurantResponse"/>
+
+         <wsdl:fault message="impl:NullFieldException" name="NullFieldException"/>
+
+         <wsdl:fault message="impl:InvalidUsernameException" name="InvalidUsernameException"/>
 
       </wsdl:operation>
 
@@ -127,36 +135,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:binding name="RegistrationSoapBinding" type="impl:Registration">
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-
-      <wsdl:operation name="registerRestaurant">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="registerRestaurantRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="registerRestaurantResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-         <wsdl:fault name="NullFieldException">
-
-            <wsdlsoap:fault name="NullFieldException" use="literal"/>
-
-         </wsdl:fault>
-
-         <wsdl:fault name="UsernameAlreadyTakenException">
-
-            <wsdlsoap:fault name="UsernameAlreadyTakenException" use="literal"/>
-
-         </wsdl:fault>
-
-      </wsdl:operation>
 
       <wsdl:operation name="registerCustomer">
 
@@ -180,9 +158,39 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          </wsdl:fault>
 
-         <wsdl:fault name="UsernameAlreadyTakenException">
+         <wsdl:fault name="InvalidUsernameException">
 
-            <wsdlsoap:fault name="UsernameAlreadyTakenException" use="literal"/>
+            <wsdlsoap:fault name="InvalidUsernameException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="registerRestaurant">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="registerRestaurantRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="registerRestaurantResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="NullFieldException">
+
+            <wsdlsoap:fault name="NullFieldException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="InvalidUsernameException">
+
+            <wsdlsoap:fault name="InvalidUsernameException" use="literal"/>
 
          </wsdl:fault>
 

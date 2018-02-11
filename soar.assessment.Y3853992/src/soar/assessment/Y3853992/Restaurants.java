@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Restaurants {
-	public int getRestaurantID(String username) throws NoValidEntryException, ClassNotFoundException, SQLException {
+	public int getRestaurantID(String username) throws ClassNotFoundException, SQLException, InvalidUsernameException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
 		Statement stmt = con.createStatement();
@@ -16,7 +16,7 @@ public class Restaurants {
 		if(rs.next()) {
 			return rs.getInt("RESTAURANT_ID");
 		} else {
-			throw new NoValidEntryException("Unable to find a valid ID for the given username.");
+			throw new InvalidUsernameException(username);
 		}
 	}
 	
@@ -27,14 +27,14 @@ public class Restaurants {
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_ID=" + restaurantID);
         if(!rs.next()) {
-        	throw new InvalidIDException("Invalid restaurant ID.");
+        	throw new InvalidIDException(restaurantID);
         }
         
         // Check items are valid
         for(int i = 0; i < items.length; i++) {
         	if(items[i].getTitle() == null || items[i].getTitle().isEmpty() ||
         			items[i].getPrice() < 0) {
-        		throw new InvalidItemException("Item must have a non-empty title and positive value for price.");
+        		throw new InvalidItemException(items[i].getItemID());
         	}
         }
 		
@@ -65,7 +65,7 @@ public class Restaurants {
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_ID=" + restaurantID);
         if(!rs.next()) {
-        	throw new InvalidIDException("Invalid restaurant ID.");
+        	throw new InvalidIDException(restaurantID);
         }
         
 		rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE RESTAURANT_ID=" + restaurantID);
@@ -117,14 +117,14 @@ public class Restaurants {
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_ID=" + restaurantID);
 		if(!rs.next()) {
-			throw new InvalidIDException("Not a valid restaurant ID.");
+			throw new InvalidIDException(restaurantID);
 		}
 		rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE ORDER_ID=" + orderID);
 		if(!rs.next()) {
-			throw new InvalidIDException("Not a valid order ID.");
+			throw new InvalidIDException(orderID);
 		}
 		if(rs.getInt("RESTAURANT_ID") != restaurantID) {
-			throw new UnauthorizedException("Not authorized to update this order status.");
+			throw new UnauthorizedException(restaurantID);
 		}
 		
 		boolean updated = false;
@@ -136,7 +136,7 @@ public class Restaurants {
         if(status != null && !status.isEmpty()) {
         	if(!(status.equals("QUEUED") || status.equals("ACCEPTED") || status.equals("REJECTED") 
         			|| status.equals("UNDER PREPARATION") || status.equals("ON THE WAY") || status.equals("DELIVERED"))) {
-        		throw new InvalidStatusException("A valid status must be provided.");
+        		throw new InvalidStatusException(status);
         	}
         	stmt.executeUpdate("UPDATE ORDERS SET STATUS =\'" + status + "\' WHERE ORDER_ID =" + orderID);
         	updated = true;
@@ -144,7 +144,7 @@ public class Restaurants {
         
         // If both status and deliveryTime are invalid (i.e. no updates) throw exception
         if(!updated) {
-        	throw new NullFieldException("A valid status or delivery time must be provided.");
+        	throw new NullFieldException();
         }
 	}
 }
