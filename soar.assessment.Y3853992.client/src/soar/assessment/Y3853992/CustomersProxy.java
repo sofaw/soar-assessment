@@ -44,13 +44,7 @@ public class CustomersProxy implements soar.assessment.Y3853992.Customers {
     return customers;
   }
   
-  public soar.assessment.Y3853992.Item[] getMenu(int restaurantID) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoResultsException{
-    if (customers == null)
-      _initCustomersProxy();
-    return customers.getMenu(restaurantID);
-  }
-  
-  public soar.assessment.Y3853992.Order[] getOrders(int customerID) throws java.rmi.RemoteException{
+  public soar.assessment.Y3853992.Order[] getOrders(int customerID) throws java.rmi.RemoteException, soar.assessment.Y3853992.InvalidIDException{
     if (customers == null)
       _initCustomersProxy();
     return customers.getOrders(customerID);
@@ -62,13 +56,7 @@ public class CustomersProxy implements soar.assessment.Y3853992.Customers {
     return customers.getCustomerID(username);
   }
   
-  public soar.assessment.Y3853992.Restaurant[] searchForRestaurants(java.lang.String searchTerm) throws java.rmi.RemoteException, soar.assessment.Y3853992.NoResultsException{
-    if (customers == null)
-      _initCustomersProxy();
-    return customers.searchForRestaurants(searchTerm);
-  }
-  
-  public void placeOrder(soar.assessment.Y3853992.Order order) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException{
+  public void placeOrder(soar.assessment.Y3853992.Order order) throws java.rmi.RemoteException, soar.assessment.Y3853992.NullFieldException, soar.assessment.Y3853992.InvalidPaymentException{
     if (customers == null)
       _initCustomersProxy();
     customers.placeOrder(order);

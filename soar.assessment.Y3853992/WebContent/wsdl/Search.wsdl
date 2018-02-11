@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://Y3853992.assessment.soar" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://Y3853992.assessment.soar" xmlns:intf="http://Y3853992.assessment.soar" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://Y3853992.assessment.soar" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="getMenu">
+    <complexType>
+     <sequence>
+      <element name="restaurantID" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getMenuResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getMenuReturn" type="impl:Item"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Item">
+    <sequence>
+     <element name="itemID" type="xsd:int"/>
+     <element name="price" type="xsd:float"/>
+     <element name="quantity" type="xsd:int"/>
+     <element name="restaurantID" type="xsd:int"/>
+     <element name="title" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="InvalidIDException">
+    <sequence/>
+   </complexType>
+   <element name="fault" type="impl:InvalidIDException"/>
+   <element name="searchForRestaurants">
+    <complexType>
+     <sequence>
+      <element name="searchTerm" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="searchForRestaurantsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="searchForRestaurantsReturn" type="impl:Restaurant"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Restaurant">
+    <sequence>
+     <element name="address" nillable="true" type="xsd:string"/>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="restaurantID" type="xsd:int"/>
+     <element name="restaurantName" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="EmptySearchTermException">
+    <sequence/>
+   </complexType>
+   <element name="fault1" type="impl:EmptySearchTermException"/>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="EmptySearchTermException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getMenuRequest">
+
+      <wsdl:part element="impl:getMenu" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getMenuResponse">
+
+      <wsdl:part element="impl:getMenuResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchForRestaurantsRequest">
+
+      <wsdl:part element="impl:searchForRestaurants" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="InvalidIDException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchForRestaurantsResponse">
+
+      <wsdl:part element="impl:searchForRestaurantsResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="Search">
+
+      <wsdl:operation name="getMenu">
+
+         <wsdl:input message="impl:getMenuRequest" name="getMenuRequest"/>
+
+         <wsdl:output message="impl:getMenuResponse" name="getMenuResponse"/>
+
+         <wsdl:fault message="impl:InvalidIDException" name="InvalidIDException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchForRestaurants">
+
+         <wsdl:input message="impl:searchForRestaurantsRequest" name="searchForRestaurantsRequest"/>
+
+         <wsdl:output message="impl:searchForRestaurantsResponse" name="searchForRestaurantsResponse"/>
+
+         <wsdl:fault message="impl:EmptySearchTermException" name="EmptySearchTermException"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="SearchSoapBinding" type="impl:Search">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getMenu">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getMenuRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getMenuResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="InvalidIDException">
+
+            <wsdlsoap:fault name="InvalidIDException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchForRestaurants">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchForRestaurantsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchForRestaurantsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="EmptySearchTermException">
+
+            <wsdlsoap:fault name="EmptySearchTermException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="SearchService">
+
+      <wsdl:port binding="impl:SearchSoapBinding" name="Search">
+
+         <wsdlsoap:address location="http://localhost:8080/soar.assessment.Y3853992/services/Search"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

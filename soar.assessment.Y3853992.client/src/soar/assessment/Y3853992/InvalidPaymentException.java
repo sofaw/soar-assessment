@@ -1,5 +1,5 @@
 /**
- * NoResultsException.java
+ * InvalidPaymentException.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -7,14 +7,14 @@
 
 package soar.assessment.Y3853992;
 
-public class NoResultsException  extends org.apache.axis.AxisFault  implements java.io.Serializable {
-    public NoResultsException() {
+public class InvalidPaymentException  extends org.apache.axis.AxisFault  implements java.io.Serializable {
+    public InvalidPaymentException() {
     }
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof NoResultsException)) return false;
-        NoResultsException other = (NoResultsException) obj;
+        if (!(obj instanceof InvalidPaymentException)) return false;
+        InvalidPaymentException other = (InvalidPaymentException) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -40,10 +40,10 @@ public class NoResultsException  extends org.apache.axis.AxisFault  implements j
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(NoResultsException.class, true);
+        new org.apache.axis.description.TypeDesc(InvalidPaymentException.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "NoResultsException"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://Y3853992.assessment.soar", "InvalidPaymentException"));
     }
 
     /**

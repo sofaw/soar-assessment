@@ -22,56 +22,14 @@ public class Customers {
 		}
 	}
 	
-	public Restaurant[] searchForRestaurants(String searchTerm) throws ClassNotFoundException, SQLException, NoResultsException {
-		Class.forName("org.h2.Driver");
-		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_NAME LIKE " + "\'%" + searchTerm + "%\'");
-		
-		ArrayList<Restaurant> results = new ArrayList<Restaurant>();
-		while(rs.next()) {
-			Restaurant r = new Restaurant();
-			r.setRestaurantID(rs.getInt("RESTAURANT_ID"));
-			r.setRestaurantName(rs.getString("RESTAURANT_NAME"));
-			r.setEmail(rs.getString("EMAIL"));
-			r.setAddress(rs.getString("ADDRESS"));
-			results.add(r);
-		}
-		
-		if(results.size() == 0) {
-			throw new NoResultsException("No results for given search term.");
-		}
-		
-		return results.toArray(new Restaurant[results.size()]);
-	}
-	
-	public Item[] getMenu(int restaurantID) throws ClassNotFoundException, SQLException, NoResultsException {
-		Class.forName("org.h2.Driver");
-		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
-		
-		ArrayList<Item> results = new ArrayList<Item>();
-		while(rs.next()) {
-			Item item = new Item();
-			item.setItemID(rs.getInt("ITEM_ID"));
-			item.setRestaurantID(restaurantID);
-			item.setTitle(rs.getString("TITLE"));
-			item.setPrice(rs.getFloat("PRICE"));
-			results.add(item);
-		}
-		
-		if(results.size() == 0) {
-			throw new NoResultsException("No results for given restaurantID.");
-		}
-		
-		return results.toArray(new Item[results.size()]);
-	}
-	
-	public void placeOrder(Order order) throws ClassNotFoundException, SQLException, NullFieldException {
+	public void placeOrder(Order order) throws ClassNotFoundException, SQLException, NullFieldException, InvalidPaymentException {
 		if(order.getCardNumber() == null || order.getCardNumber().isEmpty() ||
 				order.getDeliveryAddress() == null || order.getDeliveryAddress().isEmpty()) {
 			throw new NullFieldException("Card number and delivery address must be provided.");
+		}
+		
+		if(order.getCardNumber().length() != 16) {
+			throw new InvalidPaymentException("Card number should be 16 digits.");
 		}
 		
 		Class.forName("org.h2.Driver");
@@ -132,12 +90,17 @@ public class Customers {
         }
 	}
 	
-    public Order[] getOrders(int customerID) throws ClassNotFoundException, SQLException {
+    public Order[] getOrders(int customerID) throws ClassNotFoundException, SQLException, InvalidIDException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
 		Statement stmt = con.createStatement();
 		
-		ResultSet rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE CUSTOMER_ID=" + customerID);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM CUSTOMERS WHERE CUSTOMER_ID=" + customerID);
+        if(!rs.next()) {
+        	throw new InvalidIDException("Invalid customer ID.");
+        }
+		
+		rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE CUSTOMER_ID=" + customerID);
 		
 		ArrayList<Order> orders = new ArrayList<Order>();
 		

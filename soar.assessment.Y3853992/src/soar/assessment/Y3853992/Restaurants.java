@@ -20,34 +20,23 @@ public class Restaurants {
 		}
 	}
 	
-	public Item[] getMenu(int restaurantID) throws ClassNotFoundException, SQLException, NoResultsException {
+	public void updateMenu(int restaurantID, Item[] items) throws ClassNotFoundException, SQLException, InvalidItemException, InvalidIDException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
         Statement stmt = con.createStatement();
         
-        ResultSet rs = stmt.executeQuery("SELECT * FROM ITEMS WHERE RESTAURANT_ID=" + restaurantID);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_ID=" + restaurantID);
+        if(!rs.next()) {
+        	throw new InvalidIDException("Invalid restaurant ID.");
+        }
         
-		ArrayList<Item> results = new ArrayList<Item>();
-		while(rs.next()) {
-			Item item = new Item();
-			item.setItemID(rs.getInt("ITEM_ID"));
-			item.setRestaurantID(restaurantID);
-			item.setTitle(rs.getString("TITLE"));
-			item.setPrice(rs.getFloat("PRICE"));
-			results.add(item);
-		}
-		
-		if(results.size() == 0) {
-			throw new NoResultsException("No results for given restaurantID.");
-		}
-		
-		return results.toArray(new Item[results.size()]);
-	}
-	
-	public void updateMenu(int restaurantID, Item[] items) throws ClassNotFoundException, SQLException {
-		Class.forName("org.h2.Driver");
-		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
-        Statement stmt = con.createStatement();
+        // Check items are valid
+        for(int i = 0; i < items.length; i++) {
+        	if(items[i].getTitle() == null || items[i].getTitle().isEmpty() ||
+        			items[i].getPrice() < 0) {
+        		throw new InvalidItemException("Item must have a non-empty title and positive value for price.");
+        	}
+        }
 		
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ITEMS("
         		+ "ITEM_ID INT PRIMARY KEY AUTO_INCREMENT, "
@@ -69,12 +58,17 @@ public class Restaurants {
 		}
 	}
 
-	public Order[] getOrders(int restaurantID) throws ClassNotFoundException, SQLException {
+	public Order[] getOrders(int restaurantID) throws ClassNotFoundException, SQLException, InvalidIDException {
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
         Statement stmt = con.createStatement();
         
-		ResultSet rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE RESTAURANT_ID=" + restaurantID);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_ID=" + restaurantID);
+        if(!rs.next()) {
+        	throw new InvalidIDException("Invalid restaurant ID.");
+        }
+        
+		rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE RESTAURANT_ID=" + restaurantID);
 		
 		ArrayList<Order> orders = new ArrayList<Order>();
 		
@@ -114,23 +108,43 @@ public class Restaurants {
 		return orders.toArray(new Order[orders.size()]);
 	}
 	
-	public void changeOrderStatus(int restaurantID, int orderID, String status, int deliveryTime) throws ClassNotFoundException, SQLException, InvalidIDException {
+	public void changeOrderStatus(int restaurantID, int orderID, String status, int deliveryTime) throws ClassNotFoundException, 
+		SQLException, InvalidIDException, NullFieldException, InvalidStatusException, UnauthorizedException {
+		
 		Class.forName("org.h2.Driver");
 		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa" );
         Statement stmt = con.createStatement();
         
-		ResultSet rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE ORDER_ID=" + orderID);
-		rs.next();
-		if(rs.getInt("RESTAURANT_ID") != restaurantID) {
-			throw new InvalidIDException("Not authorized to update this order status.");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM RESTAURANTS WHERE RESTAURANT_ID=" + restaurantID);
+		if(!rs.next()) {
+			throw new InvalidIDException("Not a valid restaurant ID.");
 		}
-        
+		rs = stmt.executeQuery("SELECT * FROM ORDERS WHERE ORDER_ID=" + orderID);
+		if(!rs.next()) {
+			throw new InvalidIDException("Not a valid order ID.");
+		}
+		if(rs.getInt("RESTAURANT_ID") != restaurantID) {
+			throw new UnauthorizedException("Not authorized to update this order status.");
+		}
+		
+		boolean updated = false;
         if(deliveryTime > 0) {
         	stmt.executeUpdate("UPDATE ORDERS SET DELIVERY_TIME =" + deliveryTime + " WHERE ORDER_ID =" + orderID);
+        	updated = true;
         }
         
         if(status != null && !status.isEmpty()) {
+        	if(!(status.equals("QUEUED") || status.equals("ACCEPTED") || status.equals("REJECTED") 
+        			|| status.equals("UNDER PREPARATION") || status.equals("ON THE WAY") || status.equals("DELIVERED"))) {
+        		throw new InvalidStatusException("A valid status must be provided.");
+        	}
         	stmt.executeUpdate("UPDATE ORDERS SET STATUS =\'" + status + "\' WHERE ORDER_ID =" + orderID);
+        	updated = true;
+        }
+        
+        // If both status and deliveryTime are invalid (i.e. no updates) throw exception
+        if(!updated) {
+        	throw new NullFieldException("A valid status or delivery time must be provided.");
         }
 	}
 }

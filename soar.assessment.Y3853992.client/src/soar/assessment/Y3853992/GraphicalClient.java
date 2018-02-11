@@ -456,7 +456,8 @@ public class GraphicalClient extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				String searchTerm = c_search.getText();
 				try {
-					Restaurant[] searchResults = customers.searchForRestaurants(searchTerm);
+					Search search = new SearchServiceLocator().getSearch();
+					Restaurant[] searchResults = search.searchForRestaurants(searchTerm);
 					
 					// Display each of the search results in the results panel
 					DefaultListModel<Restaurant> dlm = new DefaultListModel<Restaurant>();
@@ -468,14 +469,10 @@ public class GraphicalClient extends JFrame {
 					
 					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 					cardLayout.show(customer_panel_search_tab, "customer_tab_1_results");
-				} catch(NoResultsException ex) {
-					JOptionPane.showMessageDialog(customer_panel_search_tab, "No results for given search term. Please try again.");
+				} catch(EmptySearchTermException ex) {
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "Please provide a non-empty search term.");
 				} catch (Exception ex) {
-					if(ex instanceof AxisFault) {
-						JOptionPane.showMessageDialog(customer_panel_search_tab, "Incorrect username/password.");
-					} else {
-						JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
-					}
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "Incorrect username/password.");
 				}
 			}
 		});
@@ -539,7 +536,8 @@ public class GraphicalClient extends JFrame {
 						restaurantId = c_search_list.getModel().getElementAt(indexB).getRestaurantID();
 					}
 					try {
-						Item[] items = customers.getMenu(restaurantId);
+						Search search = new SearchServiceLocator().getSearch();
+						Item[] items = search.getMenu(restaurantId);
 						
 						for(int i = 0; i < items.length; i++) {
 							Item currentItem = items[i];
@@ -598,14 +596,15 @@ public class GraphicalClient extends JFrame {
 						
 						CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 						cardLayout.show(customer_panel_search_tab, "customer_tab_1_place_order");
-					} catch (NoResultsException ex) {
-						JOptionPane.showMessageDialog(customer_panel_search_tab, "No menu for given restaurant. Please try again.");
+					} catch (NullPointerException ex) {
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "Restaurant has not provided a menu. Please try a different restaurant.");
+					} catch (InvalidIDException ex) {
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "Invalid restaurant ID. Please try again.");
 					} catch (RemoteException ex) {
-						if(ex instanceof AxisFault) {
-							JOptionPane.showMessageDialog(customer_panel_search_tab, "Incorrect username/password.");
-						} else {
-							JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
-						}
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
+					} catch (ServiceException ex) {
+						JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
+						ex.printStackTrace();
 					}
 					
 				}
@@ -654,7 +653,8 @@ public class GraphicalClient extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				String searchTerm = c_search_2.getText();
 				try {
-					Restaurant[] searchResults = customers.searchForRestaurants(searchTerm);
+					Search search = new SearchServiceLocator().getSearch();
+					Restaurant[] searchResults = search.searchForRestaurants(searchTerm);
 					
 					// Display each of the search results in the results panel
 					DefaultListModel<Restaurant> dlm = new DefaultListModel<Restaurant>();
@@ -666,14 +666,10 @@ public class GraphicalClient extends JFrame {
 					
 					CardLayout cardLayout = (CardLayout) customer_panel_search_tab.getLayout();
 					cardLayout.show(customer_panel_search_tab, "customer_tab_1_results");
-				} catch(NoResultsException ex) {
-					JOptionPane.showMessageDialog(customer_panel_search_tab, "No results for given search term. Please try again.");
+				} catch(EmptySearchTermException ex) {
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "Please provide a non-empty search term.");
 				} catch (Exception ex) {
-					if(ex instanceof AxisFault) {
-						JOptionPane.showMessageDialog(customer_panel_search_tab, "Incorrect username/password.");
-					} else {
-						JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
-					}
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
 				}
 			}
 		});
@@ -876,6 +872,8 @@ public class GraphicalClient extends JFrame {
 					cardLayout.show(customer_panel_search_tab, "customer_tab_1_order_placed");
 				} catch(NullFieldException ex) {
 					JOptionPane.showMessageDialog(customer_tab_1_details, "Please fill in all required fields.");
+				} catch(InvalidPaymentException ex) {
+					JOptionPane.showMessageDialog(customer_tab_1_details, "Please provide 16 digit card number.");
 				} catch (RemoteException e1) {
 					JOptionPane.showMessageDialog(customer_tab_1_details, "An error has occurred. Please try again.");
 				} catch (JMSException ex) {
@@ -919,7 +917,11 @@ public class GraphicalClient extends JFrame {
 					
 					c_orders_list.setModel(dlm);
 					
-				} catch (RemoteException e1) {
+				} catch (NullPointerException ex) {
+					JOptionPane.showMessageDialog(customer_panel_order_status_tab, "No orders to display.");
+				} catch (InvalidIDException ex) {
+					JOptionPane.showMessageDialog(customer_panel_order_status_tab, "Invalid customer ID. Please try again.");
+				} catch (RemoteException ex) {
 					JOptionPane.showMessageDialog(customer_panel_order_status_tab, "An error has occurred. Please try again.");
 				}
 			}
@@ -1037,6 +1039,10 @@ public class GraphicalClient extends JFrame {
 					}
 					r_queued_list.setModel(q_dlm);
 					r_accepted_list.setModel(a_dlm);
+				} catch (NullPointerException ex) {
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "No orders to display.");
+				} catch (InvalidIDException ex) {
+					JOptionPane.showMessageDialog(customer_panel_search_tab, "Invalid restaurant ID. Please try again.");
 				} catch (RemoteException e1) {
 					JOptionPane.showMessageDialog(customer_panel_search_tab, "An error occurred. Please try again.");
 				}
@@ -1072,6 +1078,12 @@ public class GraphicalClient extends JFrame {
 						restaurants.changeOrderStatus(restaurantID, selected.getOrderID(), "ACCEPTED", -1);
 						sendRestaurantMessage("accepting order", selected.getCustomerID());
 					} catch (InvalidIDException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Order or restaurant ID does not exist.");
+					} catch (NullFieldException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Make sure all fields are provided.");
+					} catch (InvalidStatusException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Invalid status. Please try again.");
+					} catch (UnauthorizedException ex) {
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "You are not authorized to change the status of this order.");
 					} catch (RemoteException ex) {
 						ex.printStackTrace();
@@ -1098,6 +1110,12 @@ public class GraphicalClient extends JFrame {
 						restaurants.changeOrderStatus(restaurantID, selected.getOrderID(), "REJECTED", -1);
 						sendRestaurantMessage("rejecting order", selected.getCustomerID());
 					} catch (InvalidIDException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Order or restaurant ID does not exist.");
+					} catch (NullFieldException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Make sure all fields are provided.");
+					} catch (InvalidStatusException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Invalid status. Please try again.");
+					} catch (UnauthorizedException ex) {
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "You are not authorized to change the status of this order.");
 					} catch (RemoteException ex) {
 						ex.printStackTrace();
@@ -1194,6 +1212,12 @@ public class GraphicalClient extends JFrame {
 
 						sendRestaurantMessage("updating order status", selected.getCustomerID());
 					} catch (InvalidIDException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Order or restaurant ID does not exist.");
+					} catch (NullFieldException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Make sure all fields are provided.");
+					} catch (InvalidStatusException ex) {
+						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "Invalid status. Please try again.");
+					} catch (UnauthorizedException ex) {
 						JOptionPane.showMessageDialog(restaurant_panel_orders_tab, "You are not authorized to change the status of this order.");
 					} catch (RemoteException ex) {
 						ex.printStackTrace();
@@ -1246,17 +1270,23 @@ public class GraphicalClient extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Item[] items = restaurants.getMenu(restaurantID);
+					Search search = new SearchServiceLocator().getSearch();
+					Item[] items = search.getMenu(restaurantID);
 					DefaultListModel<Item> dlm = new DefaultListModel<Item>();
 					for(int i = 0; i < items.length; i++) {
 						dlm.addElement(items[i]);
 					}
 					menu_list.setModel(dlm);
-				} catch (NoResultsException ex) {
-					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "No menu exists for this restaurant.");
+				}  catch (NullPointerException ex) {
+					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "No menu to display.");
+				}  catch (InvalidIDException ex) {
+					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "Invalid restaurant ID. Please try again.");
 				} catch (RemoteException ex) {
 					ex.printStackTrace();
 					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "An error occurred. Please try again.");
+				} catch (ServiceException ex) {
+					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "An error occurred. Please try again.");
+					ex.printStackTrace();
 				}
 			}
 		});
@@ -1348,6 +1378,10 @@ public class GraphicalClient extends JFrame {
 					cardLayout.show(restaurant_panel_menu_tab, "rp_mt_current_menu");
 					
 					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "Menu has been updated. Refresh to view.");
+				} catch (InvalidItemException ex) {
+					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "Invalid item. Make sure no titles or prices are empty.");
+				} catch (InvalidIDException ex) {
+					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "Invalid restaurant ID. Please try again.");
 				} catch (RemoteException ex) {
 					ex.printStackTrace();
 					JOptionPane.showMessageDialog(restaurant_panel_menu_tab, "An error occurred. Please try again.");
@@ -1711,7 +1745,7 @@ public class GraphicalClient extends JFrame {
 		restaurant_reg_panel.add(button_1, gbc_button_1);
 	}
 
-	private void updateCustomerOrders() throws RemoteException {
+	private void updateCustomerOrders() throws RemoteException, InvalidIDException {
 		Order[] orders = customers.getOrders(customerID);
 		DefaultListModel<Order> dlm = new DefaultListModel<Order>();
 		for(int i = 0; i < orders.length; i++) {
@@ -1721,7 +1755,7 @@ public class GraphicalClient extends JFrame {
 		c_orders_list.setModel(dlm);
 	}
 	
-	private void updateRestaurantOrders() throws RemoteException {
+	private void updateRestaurantOrders() throws RemoteException, InvalidIDException {
 		Order[] orders = restaurants.getOrders(restaurantID);
 		
 		DefaultListModel<Order> q_dlm = new DefaultListModel<Order>();
@@ -1760,6 +1794,8 @@ public class GraphicalClient extends JFrame {
 		public void onMessage(Message arg0) {
 			try {
 				updateCustomerOrders();
+			} catch (InvalidIDException ex) {
+				ex.printStackTrace();
 			} catch (RemoteException ex) {
 				ex.printStackTrace();
 			}
@@ -1774,6 +1810,8 @@ public class GraphicalClient extends JFrame {
 		public void onMessage(Message arg0) {
 			try {
 				updateRestaurantOrders();
+			} catch (InvalidIDException ex) {
+				ex.printStackTrace();
 			} catch (RemoteException ex) {
 				ex.printStackTrace();
 			}

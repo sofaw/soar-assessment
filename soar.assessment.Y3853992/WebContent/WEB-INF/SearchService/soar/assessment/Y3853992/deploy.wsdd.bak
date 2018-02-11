@@ -1,0 +1,66 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from SearchService WSDL service -->
+
+  <service name="Search" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://Y3853992.assessment.soar"/>
+      <parameter name="wsdlServiceElement" value="SearchService"/>
+      <parameter name="schemaQualified" value="http://Y3853992.assessment.soar"/>
+      <parameter name="wsdlServicePort" value="Search"/>
+      <parameter name="className" value="soar.assessment.Y3853992.SearchSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="Search"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="getMenu" qname="operNS:getMenu" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:getMenuReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Item" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:restaurantID" xmlns:pns="http://Y3853992.assessment.soar" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="InvalidIDException" qname="fns:fault" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.InvalidIDException" type="tns:InvalidIDException" xmlns:tns="http://Y3853992.assessment.soar"/>
+      </operation>
+      <operation name="searchForRestaurants" qname="operNS:searchForRestaurants" xmlns:operNS="http://Y3853992.assessment.soar" returnQName="retNS:searchForRestaurantsReturn" xmlns:retNS="http://Y3853992.assessment.soar" returnType="rtns:Restaurant" xmlns:rtns="http://Y3853992.assessment.soar" soapAction="" >
+        <parameter qname="pns:searchTerm" xmlns:pns="http://Y3853992.assessment.soar" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="EmptySearchTermException" qname="fns:fault1" xmlns:fns="http://Y3853992.assessment.soar" class="soar.assessment.Y3853992.EmptySearchTermException" type="tns:EmptySearchTermException" xmlns:tns="http://Y3853992.assessment.soar"/>
+      </operation>
+      <parameter name="allowedMethods" value="getMenu searchForRestaurants"/>
+
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:EmptySearchTermException"
+        type="java:soar.assessment.Y3853992.EmptySearchTermException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:Item"
+        type="java:soar.assessment.Y3853992.Item"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:Restaurant"
+        type="java:soar.assessment.Y3853992.Restaurant"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://Y3853992.assessment.soar"
+        qname="ns:InvalidIDException"
+        type="java:soar.assessment.Y3853992.InvalidIDException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
